@@ -43,29 +43,14 @@
 #include <QtGui/QSurfaceFormat>
 #include <QtOpenGLWidgets/QOpenGLWidget>
 
+#include "BezierMover.h"
+#include "def.h"
+
 
 #define BML [](int L, QGraphicsPixmapItem* I)
 #define BMLN [L,I]()
 
 
-unsigned int time_s = 0;
-constexpr int sceneWidth = 800;
-constexpr int sceneHeight = 600;
-constexpr int sceneWidthHalf = sceneWidth/2;
-constexpr int sceneHeightHalf = sceneHeight/2;
-// 60 -> 16, 30 -> 33
-constexpr int fpsConstant = 16;
-constexpr int collidingDetectionConstant = fpsConstant*5;
-std::vector<std::vector<QPointF>> BezierCurveList;
-float moveCache[360][2];
-int bullet_player_default_relative;
-int startingPoint[2];
-int score = 0;
-int RL = 100; // 残機
-QStatusBar* MWStatusBar;
-QGraphicsScene* scene;
-class bullet_player_default;
-std::unordered_set<bullet_player_default*> bpd_instances;
 
 
 #ifdef DEBUG
@@ -78,94 +63,8 @@ template <typename T>
 inline void im(T i) {
 	QMetaObject::invokeMethod(QCoreApplication::instance(), i);
 }
-/*
-int subnum(int input, int start, int length, bool back = false) {
-	if (back) {
-		int divisorStart = static_cast<int>(pow(10, start));
-		if (length==0) return (input/divisorStart);
-			else return (input/divisorStart) % static_cast<int>(pow(10, length));
-	} else {
-		int totalDigits = static_cast<int>(log10(input)) + 1;
-		if (length==0) return (input % static_cast<int>(pow(10, totalDigits - start)));
-			else return (input % static_cast<int>(pow(10, totalDigits - start))) / static_cast<int>(pow(10, totalDigits - start - length));
-	}
-}
-*/
-namespace sp {
-	QPixmap* A_aqua;
-	QPixmap* triangle_red;
-	QPixmap* hexagon_yellow;
-	QPixmap* triangle_blue;
-}
-
-//座標.begin
-struct Coord {
-	Coord(int i_x, int i_y, int i_t=10, int i_d=0): x(i_x+sceneWidthHalf), y(i_y+sceneHeightHalf), t(i_t), d(i_d) {}
-	Coord(double i_x, double i_y, int i_t=10, int i_d=0): x(static_cast<int>(i_x)), y(static_cast<int>(i_y)), t(i_t), d(i_d) {}
-	int x, y, d, t;
-};
-//座標.end
-
-struct CoordSet {
-	CoordSet(int time, int i_x, int i_y, int i_t=10, int i_d=0): t(time*10), c(i_x,i_y,i_t,i_d) {}
-	int t;
-	Coord c;
-};
 
 
-
-class BezierMover;
-inline void BezierMoverStopperConnect(QGraphicsPixmapItem* item, BezierMover* this_p);
-class BezierMover : public QObject {
-    Q_OBJECT
-public:
-    BezierMover(QGraphicsPixmapItem* item, const std::vector<QPointF>& controlPoints, std::function<void(int,QGraphicsPixmapItem*)> i_f = nullptr,
-				int duration = 5000, QObject* parent = nullptr): QObject(parent), item(item), controlPoints(controlPoints), duration(duration), t(0.0), f(i_f) {
-        timer = new QTimer(this);
-        connect(timer, &QTimer::timeout, this, &BezierMover::updatePosition);
-        timer->start(fpsConstant); // 約60fpsで更新
-		BezierMoverStopperConnect(item,this);
-    }
-
-private slots:
-    void updatePosition() {
-		// std::cout << "[" << t << "]" << std::endl;
-        t += 16.0 / duration;
-        if (t > 1.0) {
-            t = 1.0;
-            timer->stop();
-        }
-
-        QPointF pos = calculateBezierPoint(t);
-		l++;
-		if (f != nullptr) f(l, item);
-        item->setPos(pos);
-    }
-
-private:
-    QPointF calculateBezierPoint(double t) {
-        int n = controlPoints.size() - 1;
-        QPointF point(0, 0);
-        for (int i = 0; i <= n; ++i) {
-            double binomialCoeff = factorial(n) / (factorial(i) * factorial(n - i));
-            double term = binomialCoeff * std::pow(1 - t, n - i) * std::pow(t, i);
-            point += term * controlPoints[i];
-        }
-        return point;
-    }
-
-    int factorial(int n) {
-        return (n <= 1) ? 1 : n * factorial(n - 1);
-    }
-
-    QGraphicsPixmapItem* item;
-    std::vector<QPointF> controlPoints;
-    QTimer* timer;
-    double t;
-    int duration;
-	short l = 0;
-	std::function<void(int,QGraphicsPixmapItem*)> f;
-};
 
 //basic
 class basic: public QObject, public QGraphicsPixmapItem {
@@ -173,8 +72,6 @@ public:
 	enum { Type = UserType + 1 };
 };
 
-// ##################################################################################################################################################
-			/* basic object */
 class bullet: public basic {
 public:
 	bullet(const Coord& coord, bool enableMove = true) {
@@ -327,7 +224,7 @@ class Player : public QObject, public QGraphicsPixmapItem {
     Q_OBJECT
 public:
     Player(): leftPressed(false), rightPressed(false), upPressed(false), downPressed(false), distance(5), firing(false) {
-        setPixmap(QPixmap("Shooting/triangle_blue.png"));
+        setPixmap(QPixmap("image/triangle_blue.png"));
         timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &Player::updatePosition);
         timer->start(fpsConstant); // 約60fpsで更新
@@ -407,7 +304,7 @@ Player* player;
 class PlayerVCore : public QObject, public QGraphicsPixmapItem {
 public:
     PlayerVCore(QGraphicsItem* parent): QGraphicsPixmapItem(parent), playerPointer(parent) {
-        setPixmap(QPixmap("Shooting/circle_red.png"));
+        setPixmap(QPixmap("image/circle_red.png"));
 		QTimer* timer = new QTimer(this);
 		connect(timer, &QTimer::timeout, this, [&] {
 			for (QGraphicsItem* item : scene()->collidingItems(this)) {
@@ -546,6 +443,111 @@ dthread CLI(true,[]{
 */
 
 
-#include "shooting_fmain.h"
-#include "shooting.moc"
-// #include "shooting_system.moc"
+int main(int argc, char* argv[]) {
+	/* GPU */
+	QSurfaceFormat format;
+    // format.setOption(QSurfaceFormat::DebugContext);
+    format.setProfile(QSurfaceFormat::CoreProfile);
+    format.setVersion(4,6);  // OpenGL4.6 2024/10/15
+    QSurfaceFormat::setDefaultFormat(format);
+
+
+	/* Qt_system */
+	QApplication app(argc, argv);
+	// ミューテックスを利用した多重起動防止機構
+    HANDLE hMutex = CreateMutex(nullptr, TRUE, L"Global\\ShootingAppMutex");
+    if (GetLastError() == ERROR_ALREADY_EXISTS) {
+		QSystemTrayIcon trayIcon;
+		trayIcon.setIcon(QIcon("image/trayIcon.png"));
+		// アイコンをシステムトレイに表示
+		trayIcon.setVisible(false);
+		trayIcon.show();
+		// バルーン通知を表示
+		trayIcon.showMessage(QString::fromLocal8Bit("多重起動は禁止されています"), 
+							 QString::fromLocal8Bit("既に実行されていたゲームを終了します\nもう一度ゲームを開きなおしてください"), QSystemTrayIcon::Warning, 10000);
+		sleepc(tu::s,10);
+		std::system("taskkill /im Shooting.exe");
+		return 1;
+	}
+
+
+	/* 優先度 */
+    // スレッド単位 -> if (!SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_HIGHEST)) {std::cerr << "Failed to set main thread priority."; return 1;}
+	SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS);
+
+
+	/* pixmap */
+	sp::A_aqua = new QPixmap("image/A_aqua.png");
+	sp::triangle_red = new QPixmap("image/triangle_red.png");
+	sp::hexagon_yellow = new QPixmap("image/hexagon_yellow.png");
+	sp::triangle_blue = new QPixmap("image/triangle_blue.png");
+	if (sp::A_aqua->isNull()) throw std::runtime_error("画像を読み込めませんでした"); // 標本調査
+
+
+	/* scene */
+	scene = new QGraphicsScene;
+	scene->setItemIndexMethod(QGraphicsScene::BspTreeIndex);  // インデックス不使用
+	scene->setSceneRect(0, 0, sceneWidth, sceneHeight);
+	scene->setBackgroundBrush(QColor(32, 32, 32));
+	bullet::setScene(scene);
+	enemy::setScene(scene);
+
+
+	/* view */
+	QGraphicsView view(scene);
+	view.setViewport(new QOpenGLWidget);
+	view.setOptimizationFlags(QGraphicsView::DontSavePainterState | QGraphicsView::DontAdjustForAntialiasing);
+	view.setViewportUpdateMode(QGraphicsView::MinimalViewportUpdate);
+	view.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing);
+	view.setFixedSize(sceneWidth, sceneHeight);
+	   // view.setFixedSize(1000,1000);
+	view.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	view.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+
+	/* window */
+	QMainWindow mainWindow;
+	mainWindow.setCentralWidget(&view);
+	MWStatusBar = mainWindow.statusBar();
+	MWStatusBar->setStyleSheet("font-size: 20px;");
+	mainWindow.setFixedSize(sceneWidth, sceneHeight + mainWindow.statusBar()->height());
+	   // mainWindow.setFixedSize(1000, 1000);
+    QRect screenGeometry = QGuiApplication::primaryScreen()->geometry();
+    mainWindow.move(screenGeometry.width()/2-sceneWidthHalf, screenGeometry.height()/2-sceneHeightHalf);
+
+
+	/* player */
+	bullet_player_default_relative = (sp::triangle_blue->width() - sp::hexagon_yellow->width())/2;
+	startingPoint[0] = (sceneWidth - sp::triangle_blue->width()) /2;
+	startingPoint[1] = sceneHeight - sp::triangle_blue->height()-5;
+	player = new Player();
+	PlayerVCore* playerVCore = new PlayerVCore(player);
+	player->setPos(startingPoint[0],startingPoint[1]);
+	playerVCore->setPos((player->pixmap().width() - playerVCore->pixmap().width())/2,  (player->pixmap().height() - playerVCore->pixmap().height()+10)/2);
+	scene->addItem(player);
+	player->setFlag(QGraphicsItem::ItemIsFocusable);
+	player->setFocus();
+
+
+	/* moveCache初期化 */
+	for (int i = 0; i < 359; ++i) {
+		float radians = qDegreesToRadians(i-90);
+		moveCache[i][0] = std::cos(radians);
+		moveCache[i][1] = std::sin(radians);
+    }
+
+
+	/* json */
+	std::string jsonfilename;
+	if (argc==2) jsonfilename = std::string(argv[1]); else jsonfilename = "shooting.json";
+	jsonRead(jsonfilename);
+
+
+	/* ウィンドウ表示&アプリ実行 */
+	mainWindow.show();
+	int appExecReturn = app.exec();
+	ReleaseMutex(hMutex);
+    CloseHandle(hMutex);
+	return appExecReturn;
+}
+#include "Shooting.moc"

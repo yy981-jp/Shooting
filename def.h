@@ -1,8 +1,29 @@
+#pragma once
+#include <unordered_set>
+#include <QtWidgets/QGraphicsScene>
+#include <QtWidgets/QStatusBar>
+
+extern unsigned int time_s;
+extern std::vector<std::vector<QPointF>> BezierCurveList;
+extern float moveCache[360][2];
+extern int bullet_player_default_relative;
+extern int startingPoint[2];
+extern int score, RL; // 残機
+extern QStatusBar* MWStatusBar;
+extern QGraphicsScene* scene;
+class bullet_player_default;
+extern std::unordered_set<bullet_player_default*> bpd_instances;
+
+constexpr int sceneWidth(800), sceneHeight(600);
+constexpr int sceneWidthHalf(sceneWidth/2), sceneHeightHalf(sceneHeight/2);
+constexpr int fpsConstant(16), collidingDetectionConstant(fpsConstant * 5);
+
+// namespace内の画像ポインタも extern
 namespace sp {
-	QPixmap* A_aqua;
-	QPixmap* triangle_red;
-	QPixmap* hexagon_yellow;
-	QPixmap* triangle_blue;
+	extern QPixmap* A_aqua;
+	extern QPixmap* triangle_red;
+	extern QPixmap* hexagon_yellow;
+	extern QPixmap* triangle_blue;
 }
 
 //座標.begin
