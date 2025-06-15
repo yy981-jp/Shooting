@@ -1,14 +1,14 @@
 #include "BezierMover.h"
+#include "entity.basic.h"
 
 
-// class BezierMover;
-// inline void BezierMoverStopperConnect(QGraphicsPixmapItem* item, BezierMover* this_p);
     BezierMover::BezierMover(QGraphicsPixmapItem* item, const std::vector<QPointF>& controlPoints, std::function<void(int,QGraphicsPixmapItem*)> i_f,
 				int duration): QObject(nullptr), item(item), controlPoints(controlPoints), duration(duration), t(0.0), f(i_f) {
         timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &BezierMover::updatePosition);
         timer->start(fpsConstant); // 約60fpsで更新
-		#warning BezierMoverStopperConnect(item,this);
+		QObject::connect(dynamic_cast<enemy*>(item), &enemy::collisionDetected, [this]{this->deleteLater();});
+
     }
 
     void BezierMover::updatePosition() {

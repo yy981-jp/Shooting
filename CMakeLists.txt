@@ -17,12 +17,14 @@ set(SOURCES
 	Shooting.cpp
 	BezierMover.cpp
 	def.cpp
+	entity.basic.cpp
 )
 
 # 君のヘッダーファイル（必要ならUIやQ_OBJECTを含むもの）
 set(HEADERS
 	BezierMover.h
 	def.h
+	entity.basic.h
 )
 
 add_compile_options(-fexec-charset=cp932)
@@ -36,5 +38,5 @@ target_link_libraries(${PROJECT_NAME}
 	Qt6Core
 	Qt6Gui
 	Qt6Widgets
-	Qt6::OpenGLWidgets
+	Qt6OpenGLWidgets
 )

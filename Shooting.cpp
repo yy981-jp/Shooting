@@ -45,6 +45,7 @@
 
 #include "BezierMover.h"
 #include "def.h"
+#include "entity.basic.h"
 
 
 #define BML [](int L, QGraphicsPixmapItem* I)
@@ -62,101 +63,6 @@
 template <typename T>
 inline void im(T i) {
 	QMetaObject::invokeMethod(QCoreApplication::instance(), i);
-}
-
-
-
-//basic
-class basic: public QObject, public QGraphicsPixmapItem {
-public:
-	enum { Type = UserType + 1 };
-};
-
-class bullet: public basic {
-public:
-	bullet(const Coord& coord, bool enableMove = true) {
-		setCacheMode(QGraphicsItem::ItemCoordinateCache);
-		setPos(coord.x, coord.y);
-		setRotation(180);
-		m_scene->addItem(this);
-		if (enableMove) {
-			QTimer* timer = new QTimer(this);
-			connect(timer, &QTimer::timeout, this, [this] {move();});
-			timer->start(coord.t);
-		}
-	}
-	virtual ~bullet() {disconnect();}
-	static void setScene(QGraphicsScene* scene) {m_scene=scene;}
-
-	virtual void move() {
-		int rotate = static_cast<int>(rotation());
-
-		// x方向とy方向に移動
-		setPos(x() + moveCache[rotate][0], y() + moveCache[rotate][1]);
-
-		// 画面外に出たら削除
-		if (x() < 0 || x() > sceneWidth || y() < 0 || y() > sceneHeight) {
-			deleteLater();
-			m_scene->removeItem(this);
-		}
-	}
-
-	static QGraphicsScene* m_scene;
-};
-QGraphicsScene* bullet::m_scene = nullptr;
-
-
-
-inline bool isBulletPlayerDefault(QGraphicsItem* item);
-class enemy: public basic {
-Q_OBJECT
-public:
-	enemy(const Coord& coord) {
-		setCacheMode(QGraphicsItem::ItemCoordinateCache);
-		setPos(coord.x,coord.y);
-		setRotation(180);
-		m_scene->addItem(this);
-		QTimer* timer = new QTimer(this);
-		connect(timer, &QTimer::timeout, this, [&] {
-			for (QGraphicsItem* item : m_scene->collidingItems(this)) {
-				if (isBulletPlayerDefault(item)) {
-					++score;
-					emit collisionDetected();
-					deleteLater();
-					m_scene->removeItem(this);
-				}
-			}
-		});
-		timer->start(collidingDetectionConstant);
-	}
-	virtual ~enemy() {disconnect();}
-
-	static void setScene(QGraphicsScene* scene) {m_scene=scene;}
-
-signals:
-    void collisionDetected();
-
-protected:
-	virtual void process() {};
-	virtual void move(int distance = 5, int interval = 100) {
-		int rotate = static_cast<int>(rotation());
-		
-		// x方向とy方向に移動
-		for (int i = 1; i <= 10; i++) {QThread::msleep(interval);setPos(x() + moveCache[rotate][0], y() + moveCache[rotate][1]);}
-
-		// 画面外に出たら削除
-		if (x() < 0 || x() > sceneWidth || y() < 0 || y() > sceneHeight) {
-			deleteLater();
-			m_scene->removeItem(this);
-		}
-	}
-
-	static QGraphicsScene* m_scene;
-};
-QGraphicsScene* enemy::m_scene = nullptr;
-inline void BezierMoverStopperConnect(QGraphicsPixmapItem* item, BezierMover* this_p) {
-	enemy* enemyItem = dynamic_cast<enemy*>(item);
-	QObject::connect(enemyItem, &enemy::collisionDetected, [this_p]{this_p->deleteLater();});
 }
 
 
@@ -197,21 +103,6 @@ private:
 
 
 
-class bullet_player_default: public bullet {
-public:
-	bullet_player_default(const Coord& coord): bullet(coord,false) {
-		setPixmap(*sp::hexagon_yellow);
-		bpd_instances.emplace(this);
-		QTimer::singleShot(1500, this, [this]{
-			bpd_instances.erase(this);
-			this->deleteLater();
-		});
-	}
-	
-	enum { Type = UserType + 1 };
-	int type() const override {return Type;}
-};
-inline bool isBulletPlayerDefault(QGraphicsItem* item) {return qgraphicsitem_cast<bullet_player_default*>(item) != nullptr;}
 
 
 
@@ -398,12 +289,12 @@ void jsonRead(std::string filename) {
 
 dthread eventloop(tu::l,fpsConstant, []{
 // frame
-	time_s++;
+	++time_s;
 
 // bullet_player_default-move
 	for (bullet_player_default *obj : bpd_instances) {
-		for (int i = 1; i <= 10; i++) im([obj] {
-			obj->setPos(obj->x(), obj->y()-1);
+		/*for (int i = 1; i <= 10; i++) */im([obj] {
+			obj->setPos(obj->x(), obj->y()-10);
 		});
 	}
 
@@ -455,7 +346,7 @@ int main(int argc, char* argv[]) {
 	/* Qt_system */
 	QApplication app(argc, argv);
 	// ミューテックスを利用した多重起動防止機構
-    HANDLE hMutex = CreateMutex(nullptr, TRUE, L"Global\\ShootingAppMutex");
+    HANDLE hMutex = CreateMutex(nullptr, TRUE, "Global\\ShootingAppMutex");
     if (GetLastError() == ERROR_ALREADY_EXISTS) {
 		QSystemTrayIcon trayIcon;
 		trayIcon.setIcon(QIcon("image/trayIcon.png"));
