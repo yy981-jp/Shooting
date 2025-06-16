@@ -12,19 +12,23 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-# 君のソースファイル
+# ソースファイル
 set(SOURCES
 	Shooting.cpp
 	BezierMover.cpp
 	def.cpp
 	entity.basic.cpp
+	main.cpp
+	create.cpp
 )
 
-# 君のヘッダーファイル（必要ならUIやQ_OBJECTを含むもの）
+# ヘッダーファイル（必要ならUIやQ_OBJECTを含むもの）
 set(HEADERS
 	BezierMover.h
 	def.h
 	entity.basic.h
+	main.h
+	create.h
 )
 
 add_compile_options(-fexec-charset=cp932)

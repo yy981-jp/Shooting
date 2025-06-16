@@ -2,6 +2,7 @@
 #include <unordered_set>
 #include <QtWidgets/QGraphicsScene>
 #include <QtWidgets/QStatusBar>
+#include <QtCore/QCoreApplication>
 
 extern unsigned int time_s;
 extern std::vector<std::vector<QPointF>> BezierCurveList;
@@ -17,6 +18,12 @@ extern std::unordered_set<bullet_player_default*> bpd_instances;
 constexpr int sceneWidth(800), sceneHeight(600);
 constexpr int sceneWidthHalf(sceneWidth/2), sceneHeightHalf(sceneHeight/2);
 constexpr int fpsConstant(16), collidingDetectionConstant(fpsConstant * 5);
+
+template <typename T>
+inline void im(T i) {
+	QMetaObject::invokeMethod(QCoreApplication::instance(), i);
+}
+
 
 // namespace内の画像ポインタも extern
 namespace sp {
