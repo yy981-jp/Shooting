@@ -4,6 +4,10 @@
 #include <QtWidgets/QStatusBar>
 #include <QtCore/QCoreApplication>
 
+#define BML [](int L, QGraphicsPixmapItem* I)
+#define BMLN [L,I]()
+
+
 extern unsigned int time_s;
 extern std::vector<std::vector<QPointF>> BezierCurveList;
 extern float moveCache[360][2];

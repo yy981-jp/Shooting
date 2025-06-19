@@ -1,5 +1,5 @@
 #include "BezierMover.h"
-#include "entity.basic.h"
+#include "basic.entity.h"
 
 
     BezierMover::BezierMover(QGraphicsPixmapItem* item, const std::vector<QPointF>& controlPoints, std::function<void(int,QGraphicsPixmapItem*)> i_f,

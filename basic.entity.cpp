@@ -1,4 +1,4 @@
-#include "entity.basic.h"
+#include "basic.entity.h"
 
 
 	bullet::bullet(const Coord& coord, bool enableMove) {

@@ -11,9 +11,10 @@
 #include <yy981/time.h>
 
 #include "def.h"
-#include "entity.basic.h"
+#include "basic.entity.h"
 #include "main.h"
 #include "create.h"
+#include "player.h"
 
 
 int main(int argc, char* argv[]) {
