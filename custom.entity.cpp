@@ -20,9 +20,9 @@
 			// std::cout << "[ct]: " << coord.t << " [02]: " << subnum(coord.t,0,2,true) << " [20]: " << subnum(coord.t,2,0,true) << "\n";
 
 		new BezierMover(this, controlPoints, BML {
-/*			if (L%30==10) for (int i = -1; i <= 1; i++) {
+			if (L%30==10) for (int i = -1; i <= 1; i++) {
 				new bullet_arrow(Coord(I->x()+i,I->y(),10,i*7));
 			};
-*/			if (L%15==0) new bullet_arrow(Coord(I->x(),I->y()));
+			// if (L%15==0) new bullet_arrow(Coord(I->x(),I->y()));
 		},coord.t*1000);
 	}
