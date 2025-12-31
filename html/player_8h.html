@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.14.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Shooting: player.h ファイル</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Shooting
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 構築: Doxygen 1.14.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','検索',true);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){initNavTree('player_8h.html','',''); });
+</script>
+<div id="container">
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">読み取り中…</div>
+<div class="SRStatus" id="Searching">検索中…</div>
+<div class="SRStatus" id="NoMatches">一致する文字列を見つけられません</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">player.h ファイル</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &lt;QtCore/QObject&gt;</code><br />
+<code>#include &lt;QtWidgets/QGraphicsPixmapItem&gt;</code><br />
+<code>#include &lt;QtGui/QKeyEvent&gt;</code><br />
+<code>#include &quot;<a class="el" href="custom_8entity_8h_source.html">custom.entity.h</a>&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+player.h の依存先関係図:</div>
+<div class="dyncontent">
+<div class="center"><img src="player_8h__incl.png" border="0" usemap="#aplayer_8h" loading="lazy" alt=""/></div>
+<map name="aplayer_8h" id="aplayer_8h">
+<area shape="rect" title=" " alt="" coords="255,5,322,32"/>
+<area shape="rect" title=" " alt="" coords="5,229,121,256"/>
+<area shape="poly" title=" " alt="" coords="254,27,149,47,100,63,82,72,70,82,55,113,50,149,52,184,58,214,52,215,47,184,44,148,50,111,66,78,79,67,98,58,148,42,254,22"/>
+<area shape="rect" title=" " alt="" coords="80,80,299,107"/>
+<area shape="poly" title=" " alt="" coords="273,35,220,73,217,69,270,30"/>
+<area shape="rect" title=" " alt="" coords="324,80,450,107"/>
+<area shape="poly" title=" " alt="" coords="307,30,359,69,356,73,304,35"/>
+<area shape="rect" href="custom_8entity_8h.html" title=" " alt="" coords="474,80,585,107"/>
+<area shape="poly" title=" " alt="" coords="323,28,474,72,472,78,322,33"/>
+<area shape="rect" href="basic_8entity_8h.html" title=" " alt="" coords="470,155,568,181"/>
+<area shape="poly" title=" " alt="" coords="530,108,526,140,520,139,525,107"/>
+<area shape="poly" title=" " alt="" coords="470,180,137,232,136,227,469,175"/>
+<area shape="rect" title=" " alt="" coords="156,229,266,256"/>
+<area shape="poly" title=" " alt="" coords="470,184,280,228,279,223,469,178"/>
+<area shape="rect" title=" " alt="" coords="290,229,407,256"/>
+<area shape="poly" title=" " alt="" coords="490,184,393,225,391,220,488,179"/>
+<area shape="rect" title=" " alt="" coords="431,229,607,256"/>
+<area shape="poly" title=" " alt="" coords="522,182,522,214,516,214,516,182"/>
+<area shape="rect" title=" " alt="" coords="498,304,684,331"/>
+<area shape="poly" title=" " alt="" coords="560,180,594,198,609,212,621,228,626,244,625,262,612,292,607,290,620,260,621,245,617,231,605,215,591,203,557,184"/>
+<area shape="rect" href="def_8h.html" title=" " alt="" coords="735,229,786,256"/>
+<area shape="poly" title=" " alt="" coords="562,179,721,227,720,232,560,184"/>
+<area shape="poly" title=" " alt="" coords="736,257,635,300,633,295,734,252"/>
+<area shape="rect" title=" " alt="" coords="709,304,812,331"/>
+<area shape="poly" title=" " alt="" coords="763,257,763,288,758,288,758,257"/>
+<area shape="rect" title=" " alt="" coords="836,304,991,331"/>
+<area shape="poly" title=" " alt="" coords="787,254,874,295,872,299,785,258"/>
+<area shape="rect" title=" " alt="" coords="1016,304,1185,331"/>
+<area shape="poly" title=" " alt="" coords="786,247,1027,298,1026,303,785,252"/>
+</map>
+</div>
+</div><div class="textblock"><div class="dynheader">
+被依存関係図:</div>
+<div class="dyncontent">
+<div class="center"><img src="player_8h__dep__incl.png" border="0" usemap="#aplayer_8hdep" loading="lazy" alt=""/></div>
+<map name="aplayer_8hdep" id="aplayer_8hdep">
+<area shape="rect" title=" " alt="" coords="190,5,257,32"/>
+<area shape="rect" href="_shooting_8cpp.html" title=" " alt="" coords="5,80,103,107"/>
+<area shape="poly" title=" " alt="" coords="181,41,85,82,83,77,179,36"/>
+<area shape="rect" href="eventloop_8h.html" title=" " alt="" coords="127,80,216,107"/>
+<area shape="poly" title=" " alt="" coords="208,46,182,81,178,78,203,43"/>
+<area shape="rect" href="main_8cpp.html" title=" " alt="" coords="240,80,314,107"/>
+<area shape="poly" title=" " alt="" coords="244,43,270,78,265,81,240,46"/>
+<area shape="rect" href="player_8cpp.html" title=" " alt="" coords="337,80,419,107"/>
+<area shape="poly" title=" " alt="" coords="265,37,352,77,350,82,263,41"/>
+<area shape="rect" href="eventloop_8cpp.html" title=" " alt="" coords="120,155,222,181"/>
+<area shape="poly" title=" " alt="" coords="174,122,174,154,169,154,169,122"/>
+</map>
+</div>
+</div>
+<p><a href="player_8h_source.html">[ソースコード]</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+クラス</h2></td></tr>
+<tr class="memitem:Player" id="r_Player"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html">Player</a></td></tr>
+<tr class="memitem:PlayerVCore" id="r_PlayerVCore"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player_v_core.html">PlayerVCore</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
+変数</h2></td></tr>
+<tr class="memitem:a96781128d3743da3d17e0fdd91afba7b" id="r_a96781128d3743da3d17e0fdd91afba7b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_player.html">Player</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96781128d3743da3d17e0fdd91afba7b">player</a></td></tr>
+</table>
+<a name="doc-var-members" id="doc-var-members"></a><h2 id="header-doc-var-members" class="groupheader">変数詳解</h2>
+<a id="a96781128d3743da3d17e0fdd91afba7b" name="a96781128d3743da3d17e0fdd91afba7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96781128d3743da3d17e0fdd91afba7b">&#9670;&#160;</a></span>player</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_player.html">Player</a>* player</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel extern">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<div id="page-nav" class="page-nav-panel">
+<div id="page-nav-resize-handle"></div>
+<div id="page-nav-tree">
+<div id="page-nav-contents">
+</div><!-- page-nav-contents -->
+</div><!-- page-nav-tree -->
+</div><!-- page-nav -->
+</div><!-- container -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="player_8h.html">player.h</a></li>
+    <li class="footer">構築: <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.14.0 </li>
+  </ul>
+</div>
+</body>
+</html>

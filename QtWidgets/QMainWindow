@@ -1,0 +1,11 @@
+#pragma once
+#include "../qt_compat.h"
+
+class QMainWindow {
+public:
+    void setCentralWidget(void*) {}
+    QStatusBar* statusBar() { static QStatusBar s; return &s; }
+    void setFixedSize(int,int) {}
+    void move(int,int) {}
+    void show() {}
+};

@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.14.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Shooting: def.h ソースファイル</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Shooting
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 構築: Doxygen 1.14.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','検索',true);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){initNavTree('def_8h_source.html','',''); });
+</script>
+<div id="container">
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">読み取り中…</div>
+<div class="SRStatus" id="Searching">検索中…</div>
+<div class="SRStatus" id="NoMatches">一致する文字列を見つけられません</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">def.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="def_8h.html">[詳解]</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;unordered_set&gt;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;QtWidgets/QGraphicsScene&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;QtWidgets/QStatusBar&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;QtCore/QCoreApplication&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="def_8h.html#a72d637375fd0538706cefe1014051c69">    7</a></span><span class="preprocessor">#define BML [](int L, QGraphicsPixmapItem* I)</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="def_8h.html#a00998f517aa70f8180ce534436f3ca62">    8</a></span><span class="preprocessor">#define BMLN [L,I]()</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">extern</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="def_8cpp.html#a6e889758354616e63afe43acd839fce0">time_s</a>;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">extern</span> std::vector&lt;std::vector&lt;QPointF&gt;&gt; <a class="code hl_variable" href="def_8cpp.html#abe26e8c2b1a90152d57bbcec03e9dee2">BezierCurveList</a>;</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">extern</span> <span class="keywordtype">float</span> <a class="code hl_variable" href="def_8cpp.html#a0fc5f657d282db900671cd4509599f42">moveCache</a>[360][2];</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">extern</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="def_8cpp.html#a528e189efd7b2e3cd3a46a418704d6fa">bullet_player_default_relative</a>;</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">extern</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="def_8cpp.html#a5bda16083042d525fb5cd1f9716d6ca8">startingPoint</a>[2];</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="def_8h.html#ab891102def18c16cebbacc436f3c2572">   16</a></span><span class="keyword">extern</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="def_8cpp.html#aef160b7437d94056f1dc59646cd5b87d">score</a>, <a class="code hl_variable" href="def_8cpp.html#ab891102def18c16cebbacc436f3c2572">RL</a>; <span class="comment">// 残機</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">extern</span> QStatusBar* <a class="code hl_variable" href="def_8cpp.html#a9b897f421eae5d7a1c6c3bc1b2463de2">MWStatusBar</a>;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">extern</span> QGraphicsScene* <a class="code hl_variable" href="def_8cpp.html#ae3af7a17c7fa217374ed78810c1f885f">scene</a>;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">class </span><a class="code hl_class" href="classbullet__player__default.html">bullet_player_default</a>;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">extern</span> std::unordered_set&lt;bullet_player_default*&gt; <a class="code hl_variable" href="def_8cpp.html#a3c0fe0bc3a1a2e973a2f953f69f2aeb6">bpd_instances</a>;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="def_8h.html#a812b544b95cf8470c0c5cdafa4378812">   22</a></span><span class="keyword">constexpr</span> <span class="keywordtype">int</span> <a class="code hl_function" href="def_8h.html#a07d3c677b15072a2316ab71ddf450065">sceneWidth</a>(800), <a class="code hl_function" href="def_8h.html#a812b544b95cf8470c0c5cdafa4378812">sceneHeight</a>(600);</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="def_8h.html#a98af51cf50b23de0de36dee999e9460f">   23</a></span><span class="keyword">constexpr</span> <span class="keywordtype">int</span> <a class="code hl_function" href="def_8h.html#ad16103f7d28f1dbc78037f9ba854fad8">sceneWidthHalf</a>(<a class="code hl_function" href="def_8h.html#a07d3c677b15072a2316ab71ddf450065">sceneWidth</a>/2), <a class="code hl_function" href="def_8h.html#a98af51cf50b23de0de36dee999e9460f">sceneHeightHalf</a>(<a class="code hl_function" href="def_8h.html#a812b544b95cf8470c0c5cdafa4378812">sceneHeight</a>/2);</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="def_8h.html#a99ec2a39b27f30975dde5fd6a6538fcf">   24</a></span><span class="keyword">constexpr</span> <span class="keywordtype">int</span> <a class="code hl_function" href="def_8h.html#ac87583ccb8e48617c73e1664f3b86ddf">fpsConstant</a>(16), <a class="code hl_function" href="def_8h.html#a99ec2a39b27f30975dde5fd6a6538fcf">collidingDetectionConstant</a>(<a class="code hl_function" href="def_8h.html#ac87583ccb8e48617c73e1664f3b86ddf">fpsConstant</a> * 5);</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="foldopen" id="foldopen00027" data-start="{" data-end="}">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="def_8h.html#abdcad06689453f7fe11767a3e3409d2c">   27</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="def_8h.html#abdcad06689453f7fe11767a3e3409d2c">im</a>(T i) {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    QMetaObject::invokeMethod(QCoreApplication::instance(), i);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>}</div>
+</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">// namespace内の画像ポインタも extern</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacesp.html">sp</a> {</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keyword">extern</span> QPixmap* <a class="code hl_variable" href="namespacesp.html#a6117069b13ae9de79ce8d1435d9e6dd4">A_aqua</a>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">extern</span> QPixmap* <a class="code hl_variable" href="namespacesp.html#a0ca5bf53be12cb590147939103878471">triangle_red</a>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keyword">extern</span> QPixmap* <a class="code hl_variable" href="namespacesp.html#a9eec036ff84f39dbdb04a34b43c42b0b">hexagon_yellow</a>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keyword">extern</span> QPixmap* <a class="code hl_variable" href="namespacesp.html#a67e9526404f48ac7946296deffc9b252">triangle_blue</a>;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>}</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">//座標.begin</span></div>
+<div class="foldopen" id="foldopen00041" data-start="{" data-end="};">
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="struct_coord.html">   41</a></span><span class="keyword">struct </span><a class="code hl_function" href="struct_coord.html#a43acc8244e6029adb22516024ae736d0">Coord</a> {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="struct_coord.html#a43acc8244e6029adb22516024ae736d0">   42</a></span>    <a class="code hl_function" href="struct_coord.html#a43acc8244e6029adb22516024ae736d0">Coord</a>(<span class="keywordtype">int</span> i_x, <span class="keywordtype">int</span> i_y, <span class="keywordtype">int</span> i_t=10, <span class="keywordtype">int</span> i_d=0): <a class="code hl_variable" href="struct_coord.html#a696eaa744360fc791d0e3b331c549dbe">x</a>(i_x+<a class="code hl_function" href="def_8h.html#ad16103f7d28f1dbc78037f9ba854fad8">sceneWidthHalf</a>), <a class="code hl_variable" href="struct_coord.html#a214166cca70cef7dda9201689c3e81ab">y</a>(i_y+<a class="code hl_function" href="def_8h.html#a98af51cf50b23de0de36dee999e9460f">sceneHeightHalf</a>), <a class="code hl_variable" href="struct_coord.html#a10900c71d9f311f2694f730e76b1f334">t</a>(i_t), <a class="code hl_variable" href="struct_coord.html#a8ba8c0228010000371ab4b0894f3c147">d</a>(i_d) {}</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="struct_coord.html#a7746799604af06bf92f8a415a41ce493">   43</a></span>    <a class="code hl_function" href="struct_coord.html#a7746799604af06bf92f8a415a41ce493">Coord</a>(<span class="keywordtype">double</span> i_x, <span class="keywordtype">double</span> i_y, <span class="keywordtype">int</span> i_t=10, <span class="keywordtype">int</span> i_d=0): <a class="code hl_variable" href="struct_coord.html#a696eaa744360fc791d0e3b331c549dbe">x</a>(static_cast&lt;int&gt;(i_x)), <a class="code hl_variable" href="struct_coord.html#a214166cca70cef7dda9201689c3e81ab">y</a>(static_cast&lt;int&gt;(i_y)), <a class="code hl_variable" href="struct_coord.html#a10900c71d9f311f2694f730e76b1f334">t</a>(i_t), <a class="code hl_variable" href="struct_coord.html#a8ba8c0228010000371ab4b0894f3c147">d</a>(i_d) {}</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="struct_coord.html#a8ba8c0228010000371ab4b0894f3c147">   44</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="struct_coord.html#a696eaa744360fc791d0e3b331c549dbe">x</a>, <a class="code hl_variable" href="struct_coord.html#a214166cca70cef7dda9201689c3e81ab">y</a>, <a class="code hl_variable" href="struct_coord.html#a8ba8c0228010000371ab4b0894f3c147">d</a>, <a class="code hl_variable" href="struct_coord.html#a10900c71d9f311f2694f730e76b1f334">t</a>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>};</div>
+</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">//座標.end</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="foldopen" id="foldopen00048" data-start="{" data-end="};">
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="struct_coord_set.html">   48</a></span><span class="keyword">struct </span><a class="code hl_function" href="struct_coord_set.html#a0f09360c2f52d72c768f6a0e6cfcafc3">CoordSet</a> {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="struct_coord_set.html#a0f09360c2f52d72c768f6a0e6cfcafc3">   49</a></span>    <a class="code hl_function" href="struct_coord_set.html#a0f09360c2f52d72c768f6a0e6cfcafc3">CoordSet</a>(<span class="keywordtype">int</span> time, <span class="keywordtype">int</span> i_x, <span class="keywordtype">int</span> i_y, <span class="keywordtype">int</span> i_t=10, <span class="keywordtype">int</span> i_d=0): <a class="code hl_variable" href="struct_coord_set.html#ad674fc061d5ab6d978ebbf32b779f95f">t</a>(time*10), <a class="code hl_variable" href="struct_coord_set.html#a292c9b61a8cb070f2d8bb8681f1ee642">c</a>(i_x,i_y,i_t,i_d) {}</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="struct_coord_set.html#ad674fc061d5ab6d978ebbf32b779f95f">   50</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="struct_coord_set.html#ad674fc061d5ab6d978ebbf32b779f95f">t</a>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="struct_coord_set.html#a292c9b61a8cb070f2d8bb8681f1ee642">   51</a></span>    <a class="code hl_struct" href="struct_coord.html">Coord</a> <a class="code hl_variable" href="struct_coord_set.html#a292c9b61a8cb070f2d8bb8681f1ee642">c</a>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>};</div>
+</div>
+<div class="ttc" id="aclassbullet__player__default_html"><div class="ttname"><a href="classbullet__player__default.html">bullet_player_default</a></div><div class="ttdef"><b>Definition</b> basic.entity.h:26</div></div>
+<div class="ttc" id="adef_8cpp_html_a0fc5f657d282db900671cd4509599f42"><div class="ttname"><a href="def_8cpp.html#a0fc5f657d282db900671cd4509599f42">moveCache</a></div><div class="ttdeci">float moveCache[360][2]</div><div class="ttdef"><b>Definition</b> def.cpp:6</div></div>
+<div class="ttc" id="adef_8cpp_html_a3c0fe0bc3a1a2e973a2f953f69f2aeb6"><div class="ttname"><a href="def_8cpp.html#a3c0fe0bc3a1a2e973a2f953f69f2aeb6">bpd_instances</a></div><div class="ttdeci">std::unordered_set&lt; bullet_player_default * &gt; bpd_instances</div><div class="ttdef"><b>Definition</b> def.cpp:12</div></div>
+<div class="ttc" id="adef_8cpp_html_a528e189efd7b2e3cd3a46a418704d6fa"><div class="ttname"><a href="def_8cpp.html#a528e189efd7b2e3cd3a46a418704d6fa">bullet_player_default_relative</a></div><div class="ttdeci">int bullet_player_default_relative</div><div class="ttdef"><b>Definition</b> def.cpp:7</div></div>
+<div class="ttc" id="adef_8cpp_html_a5bda16083042d525fb5cd1f9716d6ca8"><div class="ttname"><a href="def_8cpp.html#a5bda16083042d525fb5cd1f9716d6ca8">startingPoint</a></div><div class="ttdeci">int startingPoint[2]</div><div class="ttdef"><b>Definition</b> def.cpp:8</div></div>
+<div class="ttc" id="adef_8cpp_html_a6e889758354616e63afe43acd839fce0"><div class="ttname"><a href="def_8cpp.html#a6e889758354616e63afe43acd839fce0">time_s</a></div><div class="ttdeci">unsigned int time_s</div><div class="ttdef"><b>Definition</b> def.cpp:4</div></div>
+<div class="ttc" id="adef_8cpp_html_a9b897f421eae5d7a1c6c3bc1b2463de2"><div class="ttname"><a href="def_8cpp.html#a9b897f421eae5d7a1c6c3bc1b2463de2">MWStatusBar</a></div><div class="ttdeci">QStatusBar * MWStatusBar</div><div class="ttdef"><b>Definition</b> def.cpp:10</div></div>
+<div class="ttc" id="adef_8cpp_html_ab891102def18c16cebbacc436f3c2572"><div class="ttname"><a href="def_8cpp.html#ab891102def18c16cebbacc436f3c2572">RL</a></div><div class="ttdeci">int RL</div><div class="ttdef"><b>Definition</b> def.cpp:9</div></div>
+<div class="ttc" id="adef_8cpp_html_abe26e8c2b1a90152d57bbcec03e9dee2"><div class="ttname"><a href="def_8cpp.html#abe26e8c2b1a90152d57bbcec03e9dee2">BezierCurveList</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; QPointF &gt; &gt; BezierCurveList</div><div class="ttdef"><b>Definition</b> def.cpp:5</div></div>
+<div class="ttc" id="adef_8cpp_html_ae3af7a17c7fa217374ed78810c1f885f"><div class="ttname"><a href="def_8cpp.html#ae3af7a17c7fa217374ed78810c1f885f">scene</a></div><div class="ttdeci">QGraphicsScene * scene</div><div class="ttdef"><b>Definition</b> def.cpp:11</div></div>
+<div class="ttc" id="adef_8cpp_html_aef160b7437d94056f1dc59646cd5b87d"><div class="ttname"><a href="def_8cpp.html#aef160b7437d94056f1dc59646cd5b87d">score</a></div><div class="ttdeci">int score</div><div class="ttdef"><b>Definition</b> def.cpp:9</div></div>
+<div class="ttc" id="adef_8h_html_a07d3c677b15072a2316ab71ddf450065"><div class="ttname"><a href="def_8h.html#a07d3c677b15072a2316ab71ddf450065">sceneWidth</a></div><div class="ttdeci">constexpr int sceneWidth(800)</div></div>
+<div class="ttc" id="adef_8h_html_a812b544b95cf8470c0c5cdafa4378812"><div class="ttname"><a href="def_8h.html#a812b544b95cf8470c0c5cdafa4378812">sceneHeight</a></div><div class="ttdeci">constexpr int sceneHeight(600)</div></div>
+<div class="ttc" id="adef_8h_html_a98af51cf50b23de0de36dee999e9460f"><div class="ttname"><a href="def_8h.html#a98af51cf50b23de0de36dee999e9460f">sceneHeightHalf</a></div><div class="ttdeci">constexpr int sceneHeightHalf(sceneHeight/2)</div></div>
+<div class="ttc" id="adef_8h_html_a99ec2a39b27f30975dde5fd6a6538fcf"><div class="ttname"><a href="def_8h.html#a99ec2a39b27f30975dde5fd6a6538fcf">collidingDetectionConstant</a></div><div class="ttdeci">constexpr int collidingDetectionConstant(fpsConstant *5)</div></div>
+<div class="ttc" id="adef_8h_html_abdcad06689453f7fe11767a3e3409d2c"><div class="ttname"><a href="def_8h.html#abdcad06689453f7fe11767a3e3409d2c">im</a></div><div class="ttdeci">void im(T i)</div><div class="ttdef"><b>Definition</b> def.h:27</div></div>
+<div class="ttc" id="adef_8h_html_ac87583ccb8e48617c73e1664f3b86ddf"><div class="ttname"><a href="def_8h.html#ac87583ccb8e48617c73e1664f3b86ddf">fpsConstant</a></div><div class="ttdeci">constexpr int fpsConstant(16)</div></div>
+<div class="ttc" id="adef_8h_html_ad16103f7d28f1dbc78037f9ba854fad8"><div class="ttname"><a href="def_8h.html#ad16103f7d28f1dbc78037f9ba854fad8">sceneWidthHalf</a></div><div class="ttdeci">constexpr int sceneWidthHalf(sceneWidth/2)</div></div>
+<div class="ttc" id="anamespacesp_html"><div class="ttname"><a href="namespacesp.html">sp</a></div><div class="ttdef"><b>Definition</b> def.cpp:14</div></div>
+<div class="ttc" id="anamespacesp_html_a0ca5bf53be12cb590147939103878471"><div class="ttname"><a href="namespacesp.html#a0ca5bf53be12cb590147939103878471">sp::triangle_red</a></div><div class="ttdeci">QPixmap * triangle_red</div><div class="ttdef"><b>Definition</b> def.cpp:16</div></div>
+<div class="ttc" id="anamespacesp_html_a6117069b13ae9de79ce8d1435d9e6dd4"><div class="ttname"><a href="namespacesp.html#a6117069b13ae9de79ce8d1435d9e6dd4">sp::A_aqua</a></div><div class="ttdeci">QPixmap * A_aqua</div><div class="ttdef"><b>Definition</b> def.cpp:15</div></div>
+<div class="ttc" id="anamespacesp_html_a67e9526404f48ac7946296deffc9b252"><div class="ttname"><a href="namespacesp.html#a67e9526404f48ac7946296deffc9b252">sp::triangle_blue</a></div><div class="ttdeci">QPixmap * triangle_blue</div><div class="ttdef"><b>Definition</b> def.cpp:18</div></div>
+<div class="ttc" id="anamespacesp_html_a9eec036ff84f39dbdb04a34b43c42b0b"><div class="ttname"><a href="namespacesp.html#a9eec036ff84f39dbdb04a34b43c42b0b">sp::hexagon_yellow</a></div><div class="ttdeci">QPixmap * hexagon_yellow</div><div class="ttdef"><b>Definition</b> def.cpp:17</div></div>
+<div class="ttc" id="astruct_coord_html"><div class="ttname"><a href="struct_coord.html">Coord</a></div><div class="ttdef"><b>Definition</b> def.h:41</div></div>
+<div class="ttc" id="astruct_coord_html_a10900c71d9f311f2694f730e76b1f334"><div class="ttname"><a href="struct_coord.html#a10900c71d9f311f2694f730e76b1f334">Coord::t</a></div><div class="ttdeci">int t</div><div class="ttdef"><b>Definition</b> def.h:44</div></div>
+<div class="ttc" id="astruct_coord_html_a214166cca70cef7dda9201689c3e81ab"><div class="ttname"><a href="struct_coord.html#a214166cca70cef7dda9201689c3e81ab">Coord::y</a></div><div class="ttdeci">int y</div><div class="ttdef"><b>Definition</b> def.h:44</div></div>
+<div class="ttc" id="astruct_coord_html_a43acc8244e6029adb22516024ae736d0"><div class="ttname"><a href="struct_coord.html#a43acc8244e6029adb22516024ae736d0">Coord::Coord</a></div><div class="ttdeci">Coord(int i_x, int i_y, int i_t=10, int i_d=0)</div><div class="ttdef"><b>Definition</b> def.h:42</div></div>
+<div class="ttc" id="astruct_coord_html_a696eaa744360fc791d0e3b331c549dbe"><div class="ttname"><a href="struct_coord.html#a696eaa744360fc791d0e3b331c549dbe">Coord::x</a></div><div class="ttdeci">int x</div><div class="ttdef"><b>Definition</b> def.h:44</div></div>
+<div class="ttc" id="astruct_coord_html_a7746799604af06bf92f8a415a41ce493"><div class="ttname"><a href="struct_coord.html#a7746799604af06bf92f8a415a41ce493">Coord::Coord</a></div><div class="ttdeci">Coord(double i_x, double i_y, int i_t=10, int i_d=0)</div><div class="ttdef"><b>Definition</b> def.h:43</div></div>
+<div class="ttc" id="astruct_coord_html_a8ba8c0228010000371ab4b0894f3c147"><div class="ttname"><a href="struct_coord.html#a8ba8c0228010000371ab4b0894f3c147">Coord::d</a></div><div class="ttdeci">int d</div><div class="ttdef"><b>Definition</b> def.h:44</div></div>
+<div class="ttc" id="astruct_coord_set_html_a0f09360c2f52d72c768f6a0e6cfcafc3"><div class="ttname"><a href="struct_coord_set.html#a0f09360c2f52d72c768f6a0e6cfcafc3">CoordSet::CoordSet</a></div><div class="ttdeci">CoordSet(int time, int i_x, int i_y, int i_t=10, int i_d=0)</div><div class="ttdef"><b>Definition</b> def.h:49</div></div>
+<div class="ttc" id="astruct_coord_set_html_a292c9b61a8cb070f2d8bb8681f1ee642"><div class="ttname"><a href="struct_coord_set.html#a292c9b61a8cb070f2d8bb8681f1ee642">CoordSet::c</a></div><div class="ttdeci">Coord c</div><div class="ttdef"><b>Definition</b> def.h:51</div></div>
+<div class="ttc" id="astruct_coord_set_html_ad674fc061d5ab6d978ebbf32b779f95f"><div class="ttname"><a href="struct_coord_set.html#ad674fc061d5ab6d978ebbf32b779f95f">CoordSet::t</a></div><div class="ttdeci">int t</div><div class="ttdef"><b>Definition</b> def.h:50</div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+</div><!-- container -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="def_8h.html">def.h</a></li>
+    <li class="footer">構築: <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.14.0 </li>
+  </ul>
+</div>
+</body>
+</html>

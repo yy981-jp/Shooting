@@ -1,0 +1,14 @@
+#pragma once
+#include "../qt_compat.h"
+
+class QGraphicsView {
+public:
+    QGraphicsView(QGraphicsScene*) {}
+    void setViewport(void*) {}
+    void setOptimizationFlags(int) {}
+    void setViewportUpdateMode(int) {}
+    void setRenderHints(int) {}
+    void setFixedSize(int,int) {}
+    void setHorizontalScrollBarPolicy(int) {}
+    void setVerticalScrollBarPolicy(int) {}
+};

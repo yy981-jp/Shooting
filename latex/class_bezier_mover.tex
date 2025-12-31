@@ -1,0 +1,171 @@
+\doxysection{Bezier\+Mover クラス}
+\hypertarget{class_bezier_mover}{}\label{class_bezier_mover}\index{BezierMover@{BezierMover}}
+
+
+{\ttfamily \#include $<$Bezier\+Mover.\+h$>$}
+
+
+
+Bezier\+Mover の継承関係図
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=151pt]{class_bezier_mover__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Bezier\+Mover 連携図
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=151pt]{class_bezier_mover__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{公開メンバ関数}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_bezier_mover_a6ffa584af0e69981a8cfb242e64baa6d}{Bezier\+Mover}} (QGraphics\+Pixmap\+Item \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{class_bezier_mover_a44ee3d612a36635ea9524c4dfcad461d}{item}}, const std\+::vector$<$ QPointF $>$ \&\mbox{\hyperlink{class_bezier_mover_aaad60322bd80cd0818092d6d020161aa}{control\+Points}}, std\+::function$<$ void(int, QGraphics\+Pixmap\+Item \texorpdfstring{$\ast$}{*})$>$ i\+\_\+f=nullptr, int \mbox{\hyperlink{class_bezier_mover_afe7f45d27dde0393016791c56d9daf5b}{duration}}=5000)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{非公開スロット}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_bezier_mover_a39f7a9ce52851631813a17cfe6b6a507}{update\+Position}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{非公開メンバ関数}
+\begin{DoxyCompactItemize}
+\item 
+QPointF \mbox{\hyperlink{class_bezier_mover_a018882d757a9302159162c16777ffac3}{calculate\+Bezier\+Point}} (double \mbox{\hyperlink{class_bezier_mover_a869bf822bade8620b4b714d67a5cfab6}{t}})
+\item 
+int \mbox{\hyperlink{class_bezier_mover_a6e050a9af7112304af2ad18e93ecccdb}{factorial}} (int n)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{非公開変数類}
+\begin{DoxyCompactItemize}
+\item 
+QGraphics\+Pixmap\+Item \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_bezier_mover_a44ee3d612a36635ea9524c4dfcad461d}{item}}
+\item 
+std\+::vector$<$ QPointF $>$ \mbox{\hyperlink{class_bezier_mover_aaad60322bd80cd0818092d6d020161aa}{control\+Points}}
+\item 
+QTimer \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_bezier_mover_a7b256ec3cd5112ca2d81f632db7f693b}{timer}}
+\item 
+double \mbox{\hyperlink{class_bezier_mover_a869bf822bade8620b4b714d67a5cfab6}{t}}
+\item 
+int \mbox{\hyperlink{class_bezier_mover_afe7f45d27dde0393016791c56d9daf5b}{duration}}
+\item 
+short \mbox{\hyperlink{class_bezier_mover_abaf84dafb89d1777d6a77926ae71da7d}{l}} = 0
+\item 
+std\+::function$<$ void(int, QGraphics\+Pixmap\+Item \texorpdfstring{$\ast$}{*})$>$ \mbox{\hyperlink{class_bezier_mover_abed931d8f08267091a2fc347aa1ce2e7}{f}}
+\end{DoxyCompactItemize}
+
+
+\label{doc-constructors}
+\Hypertarget{class_bezier_mover_doc-constructors}
+\doxysubsection{構築子と解体子}
+\Hypertarget{class_bezier_mover_a6ffa584af0e69981a8cfb242e64baa6d}\index{BezierMover@{BezierMover}!BezierMover@{BezierMover}}
+\index{BezierMover@{BezierMover}!BezierMover@{BezierMover}}
+\doxysubsubsection{\texorpdfstring{BezierMover()}{BezierMover()}}
+{\footnotesize\ttfamily \label{class_bezier_mover_a6ffa584af0e69981a8cfb242e64baa6d} 
+Bezier\+Mover\+::\+Bezier\+Mover (\begin{DoxyParamCaption}\item[{QGraphics\+Pixmap\+Item \texorpdfstring{$\ast$}{*}}]{item}{, }\item[{const std\+::vector$<$ QPointF $>$ \&}]{control\+Points}{, }\item[{std\+::function$<$ void(int, QGraphics\+Pixmap\+Item \texorpdfstring{$\ast$}{*})$>$}]{i\+\_\+f}{ = {\ttfamily nullptr}, }\item[{int}]{duration}{ = {\ttfamily 5000}}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_bezier_mover_doc-func-members}
+\doxysubsection{関数詳解}
+\Hypertarget{class_bezier_mover_a018882d757a9302159162c16777ffac3}\index{BezierMover@{BezierMover}!calculateBezierPoint@{calculateBezierPoint}}
+\index{calculateBezierPoint@{calculateBezierPoint}!BezierMover@{BezierMover}}
+\doxysubsubsection{\texorpdfstring{calculateBezierPoint()}{calculateBezierPoint()}}
+{\footnotesize\ttfamily \label{class_bezier_mover_a018882d757a9302159162c16777ffac3} 
+QPointF Bezier\+Mover\+::calculate\+Bezier\+Point (\begin{DoxyParamCaption}\item[{double}]{t}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+被呼び出し関係図\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_bezier_mover_a018882d757a9302159162c16777ffac3_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_bezier_mover_a6e050a9af7112304af2ad18e93ecccdb}\index{BezierMover@{BezierMover}!factorial@{factorial}}
+\index{factorial@{factorial}!BezierMover@{BezierMover}}
+\doxysubsubsection{\texorpdfstring{factorial()}{factorial()}}
+{\footnotesize\ttfamily \label{class_bezier_mover_a6e050a9af7112304af2ad18e93ecccdb} 
+int Bezier\+Mover\+::factorial (\begin{DoxyParamCaption}\item[{int}]{n}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+被呼び出し関係図\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_bezier_mover_a6e050a9af7112304af2ad18e93ecccdb_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_bezier_mover_a39f7a9ce52851631813a17cfe6b6a507}\index{BezierMover@{BezierMover}!updatePosition@{updatePosition}}
+\index{updatePosition@{updatePosition}!BezierMover@{BezierMover}}
+\doxysubsubsection{\texorpdfstring{updatePosition}{updatePosition}}
+{\footnotesize\ttfamily \label{class_bezier_mover_a39f7a9ce52851631813a17cfe6b6a507} 
+void Bezier\+Mover\+::update\+Position (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [slot]}}
+
+被呼び出し関係図\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_bezier_mover_a39f7a9ce52851631813a17cfe6b6a507_icgraph}
+\end{center}
+\end{figure}
+
+
+\label{doc-variable-members}
+\Hypertarget{class_bezier_mover_doc-variable-members}
+\doxysubsection{メンバ詳解}
+\Hypertarget{class_bezier_mover_aaad60322bd80cd0818092d6d020161aa}\index{BezierMover@{BezierMover}!controlPoints@{controlPoints}}
+\index{controlPoints@{controlPoints}!BezierMover@{BezierMover}}
+\doxysubsubsection{\texorpdfstring{controlPoints}{controlPoints}}
+{\footnotesize\ttfamily \label{class_bezier_mover_aaad60322bd80cd0818092d6d020161aa} 
+std\+::vector$<$QPointF$>$ Bezier\+Mover\+::control\+Points\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_bezier_mover_afe7f45d27dde0393016791c56d9daf5b}\index{BezierMover@{BezierMover}!duration@{duration}}
+\index{duration@{duration}!BezierMover@{BezierMover}}
+\doxysubsubsection{\texorpdfstring{duration}{duration}}
+{\footnotesize\ttfamily \label{class_bezier_mover_afe7f45d27dde0393016791c56d9daf5b} 
+int Bezier\+Mover\+::duration\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_bezier_mover_abed931d8f08267091a2fc347aa1ce2e7}\index{BezierMover@{BezierMover}!f@{f}}
+\index{f@{f}!BezierMover@{BezierMover}}
+\doxysubsubsection{\texorpdfstring{f}{f}}
+{\footnotesize\ttfamily \label{class_bezier_mover_abed931d8f08267091a2fc347aa1ce2e7} 
+std\+::function$<$void(int,QGraphics\+Pixmap\+Item\texorpdfstring{$\ast$}{*})$>$ Bezier\+Mover\+::f\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_bezier_mover_a44ee3d612a36635ea9524c4dfcad461d}\index{BezierMover@{BezierMover}!item@{item}}
+\index{item@{item}!BezierMover@{BezierMover}}
+\doxysubsubsection{\texorpdfstring{item}{item}}
+{\footnotesize\ttfamily \label{class_bezier_mover_a44ee3d612a36635ea9524c4dfcad461d} 
+QGraphics\+Pixmap\+Item\texorpdfstring{$\ast$}{*} Bezier\+Mover\+::item\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_bezier_mover_abaf84dafb89d1777d6a77926ae71da7d}\index{BezierMover@{BezierMover}!l@{l}}
+\index{l@{l}!BezierMover@{BezierMover}}
+\doxysubsubsection{\texorpdfstring{l}{l}}
+{\footnotesize\ttfamily \label{class_bezier_mover_abaf84dafb89d1777d6a77926ae71da7d} 
+short Bezier\+Mover\+::l = 0\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_bezier_mover_a869bf822bade8620b4b714d67a5cfab6}\index{BezierMover@{BezierMover}!t@{t}}
+\index{t@{t}!BezierMover@{BezierMover}}
+\doxysubsubsection{\texorpdfstring{t}{t}}
+{\footnotesize\ttfamily \label{class_bezier_mover_a869bf822bade8620b4b714d67a5cfab6} 
+double Bezier\+Mover\+::t\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_bezier_mover_a7b256ec3cd5112ca2d81f632db7f693b}\index{BezierMover@{BezierMover}!timer@{timer}}
+\index{timer@{timer}!BezierMover@{BezierMover}}
+\doxysubsubsection{\texorpdfstring{timer}{timer}}
+{\footnotesize\ttfamily \label{class_bezier_mover_a7b256ec3cd5112ca2d81f632db7f693b} 
+QTimer\texorpdfstring{$\ast$}{*} Bezier\+Mover\+::timer\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+このクラス詳解は次のファイルから抽出されました\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{_bezier_mover_8h}{Bezier\+Mover.\+h}}\item 
+\mbox{\hyperlink{_bezier_mover_8cpp}{Bezier\+Mover.\+cpp}}\end{DoxyCompactItemize}

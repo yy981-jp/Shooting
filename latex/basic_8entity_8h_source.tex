@@ -1,0 +1,53 @@
+\doxysection{basic.\+entity.\+h}
+\hypertarget{basic_8entity_8h_source}{}\label{basic_8entity_8h_source}\mbox{\hyperlink{basic_8entity_8h}{\mbox{[}詳解\mbox{]}}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <QtCore/QObject>}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <QtCore/QTimer>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <QtCore/QThread>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <QtWidgets/QGraphicsItem>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <QtWidgets/QGraphicsScene>}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{def_8h}{def.h}}"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{comment}{//basic}}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classbasic}{basic}}:\ \textcolor{keyword}{public}\ QObject,\ \textcolor{keyword}{public}\ QGraphicsPixmapItem\ \{}
+\DoxyCodeLine{00013\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keyword}{enum}\ \{\ \mbox{\hyperlink{classbasic_a155130fc3808548ba09e4623dfc6a93eac1f52c13471f25d2e27594f3b92df521}{Type}}\ =\ UserType\ +\ 1\ \};}
+\DoxyCodeLine{00015\ \};}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classbullet_af1063a7222addba3e6bb544b38cc3f68}{bullet}}:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classbasic}{basic}}\ \{}
+\DoxyCodeLine{00018\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00019\ \ \ \ \ \mbox{\hyperlink{classbullet_af1063a7222addba3e6bb544b38cc3f68}{bullet}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_coord}{Coord}}\&\ coord,\ \textcolor{keywordtype}{bool}\ enableMove\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classbullet_a82a107fafc86d136e4a78ff13d14ceaf}{\string~bullet}}();}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classbullet_a82232c186da8492bc09183daaa623e6c}{setScene}}(QGraphicsScene*\ \mbox{\hyperlink{def_8cpp_ae3af7a17c7fa217374ed78810c1f885f}{scene}});}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classbullet_a3bdb1b2baf6d20f30c573baf52a09cc4}{move}}();}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{static}\ QGraphicsScene*\ \mbox{\hyperlink{classbullet_a1e1d1293da68c72b4c9c87ee5c23c556}{m\_scene}};}
+\DoxyCodeLine{00024\ \};}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classbullet__player__default_ad47ddb3526aaa0d2bb17a59a853b9a2f}{bullet\_player\_default}}:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classbullet_af1063a7222addba3e6bb544b38cc3f68}{bullet}}\ \{}
+\DoxyCodeLine{00027\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \ \ \mbox{\hyperlink{classbullet__player__default_ad47ddb3526aaa0d2bb17a59a853b9a2f}{bullet\_player\_default}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_coord}{Coord}}\&\ coord);\ \ \ \ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classbullet__player__default_a6af4fdbf48cb77cf8fa654d5178048cb}{Type}}\ =\ UserType\ +\ 2;}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classbullet__player__default_aed8afc673ee5b033d8ef68009a9f9e86}{type}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00031\ \};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classenemy_a4f2c36c71fb8711c278a57a8dca22623}{enemy}}:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classbasic}{basic}}\ \{}
+\DoxyCodeLine{00035\ Q\_OBJECT}
+\DoxyCodeLine{00036\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00037\ \ \ \ \ \mbox{\hyperlink{classenemy_a4f2c36c71fb8711c278a57a8dca22623}{enemy}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_coord}{Coord}}\&\ coord);}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classenemy_a9b38fa27c04e7cfec2596bfa6a5820e0}{\string~enemy}}();}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classenemy_adaafcfd4b68e0451013103acee2834ca}{setScene}}(QGraphicsScene*\ \mbox{\hyperlink{def_8cpp_ae3af7a17c7fa217374ed78810c1f885f}{scene}});}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ signals:}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classenemy_aed0b600704f997f962c64f9f6f0bfc21}{collisionDetected}}();}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classenemy_a9b8bafb760fcc928fd16b20350d416bc}{process}}();}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classenemy_ad6744e9a004a7b959933eca45b943f84}{move}}(\textcolor{keywordtype}{int}\ distance\ =\ 5,\ \textcolor{keywordtype}{int}\ interval\ =\ 100);}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keyword}{static}\ QGraphicsScene*\ \mbox{\hyperlink{classenemy_ae07167357b85e9476b5a7a5e9586f86b}{m\_scene}};}
+\DoxyCodeLine{00048\ \};}
+
+\end{DoxyCode}

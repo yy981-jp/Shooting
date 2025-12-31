@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.14.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Shooting: create.cpp ファイル</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Shooting
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 構築: Doxygen 1.14.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','検索',true);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){initNavTree('create_8cpp.html','',''); });
+</script>
+<div id="container">
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">読み取り中…</div>
+<div class="SRStatus" id="Searching">検索中…</div>
+<div class="SRStatus" id="NoMatches">一致する文字列を見つけられません</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">create.cpp ファイル</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &lt;thread&gt;</code><br />
+<code>#include &lt;fstream&gt;</code><br />
+<code>#include &lt;nlohmann/json.hpp&gt;</code><br />
+<code>#include &lt;yy981/time.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="create_8h_source.html">create.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="custom_8entity_8h_source.html">custom.entity.h</a>&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+create.cpp の依存先関係図:</div>
+<div class="dyncontent">
+<div class="center"><img src="create_8cpp__incl.png" border="0" usemap="#acreate_8cpp" loading="lazy" alt=""/></div>
+<map name="acreate_8cpp" id="acreate_8cpp">
+<area shape="rect" title=" " alt="" coords="268,5,350,32"/>
+<area shape="rect" title=" " alt="" coords="5,80,63,107"/>
+<area shape="poly" title=" " alt="" coords="268,33,79,82,77,76,266,28"/>
+<area shape="rect" title=" " alt="" coords="87,80,152,107"/>
+<area shape="poly" title=" " alt="" coords="277,35,168,76,166,71,275,30"/>
+<area shape="rect" title=" " alt="" coords="176,80,306,107"/>
+<area shape="poly" title=" " alt="" coords="299,34,265,70,261,67,295,31"/>
+<area shape="rect" title=" " alt="" coords="330,80,426,107"/>
+<area shape="poly" title=" " alt="" coords="323,31,357,67,354,70,319,34"/>
+<area shape="rect" href="create_8h.html" title=" " alt="" coords="450,80,519,107"/>
+<area shape="poly" title=" " alt="" coords="340,30,441,71,439,76,338,35"/>
+<area shape="rect" href="custom_8entity_8h.html" title=" " alt="" coords="564,80,674,107"/>
+<area shape="poly" title=" " alt="" coords="351,27,551,73,550,79,349,32"/>
+<area shape="rect" title=" " alt="" coords="341,155,394,181"/>
+<area shape="poly" title=" " alt="" coords="466,109,402,149,399,144,463,105"/>
+<area shape="rect" title=" " alt="" coords="419,155,476,181"/>
+<area shape="poly" title=" " alt="" coords="481,108,463,142,458,140,476,106"/>
+<area shape="rect" href="def_8h.html" title=" " alt="" coords="448,229,498,256"/>
+<area shape="poly" title=" " alt="" coords="489,107,492,141,491,182,484,215,479,214,486,181,487,141,484,107"/>
+<area shape="rect" title=" " alt="" coords="81,304,184,331"/>
+<area shape="poly" title=" " alt="" coords="448,252,200,304,199,299,447,247"/>
+<area shape="rect" title=" " alt="" coords="581,304,767,331"/>
+<area shape="poly" title=" " alt="" coords="499,251,626,296,624,301,497,256"/>
+<area shape="rect" title=" " alt="" coords="208,304,364,331"/>
+<area shape="poly" title=" " alt="" coords="448,256,334,300,332,295,446,251"/>
+<area shape="rect" title=" " alt="" coords="388,304,557,331"/>
+<area shape="poly" title=" " alt="" coords="475,257,475,288,470,288,470,257"/>
+<area shape="rect" href="basic_8entity_8h.html" title=" " alt="" coords="581,155,679,181"/>
+<area shape="poly" title=" " alt="" coords="624,107,629,139,623,140,619,108"/>
+<area shape="poly" title=" " alt="" coords="604,184,513,226,511,221,601,179"/>
+<area shape="poly" title=" " alt="" coords="609,184,588,198,570,216,560,235,559,245,563,255,585,279,614,295,611,300,582,283,558,257,554,246,554,234,566,213,585,194,606,180"/>
+<area shape="rect" title=" " alt="" coords="572,229,688,256"/>
+<area shape="poly" title=" " alt="" coords="633,182,633,214,627,214,627,182"/>
+<area shape="rect" title=" " alt="" coords="712,229,822,256"/>
+<area shape="poly" title=" " alt="" coords="655,180,731,219,729,224,653,184"/>
+<area shape="rect" title=" " alt="" coords="846,229,963,256"/>
+<area shape="poly" title=" " alt="" coords="679,179,842,222,841,227,677,184"/>
+<area shape="rect" title=" " alt="" coords="988,229,1163,256"/>
+<area shape="poly" title=" " alt="" coords="680,175,983,224,982,229,679,180"/>
+</map>
+</div>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:a5f095e842c806ac971fea8d4ed513b8b" id="r_a5f095e842c806ac971fea8d4ed513b8b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f095e842c806ac971fea8d4ed513b8b">create</a> (std::vector&lt; <a class="el" href="struct_coord_set.html">CoordSet</a> &gt;queue)</td></tr>
+<tr class="memitem:acd705d81fcb6ad47122f3af7d2d0c813" id="r_acd705d81fcb6ad47122f3af7d2d0c813"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acd705d81fcb6ad47122f3af7d2d0c813">jsonRead</a> (std::string filename)</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
+変数</h2></td></tr>
+<tr class="memitem:a58baae16cfb6ab9f63a3c89fcd2767ec" id="r_a58baae16cfb6ab9f63a3c89fcd2767ec"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a58baae16cfb6ab9f63a3c89fcd2767ec">entityList</a> []</td></tr>
+</table>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">関数詳解</h2>
+<a id="a5f095e842c806ac971fea8d4ed513b8b" name="a5f095e842c806ac971fea8d4ed513b8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f095e842c806ac971fea8d4ed513b8b">&#9670;&#160;</a></span>create()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void create </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="struct_coord_set.html">CoordSet</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>queue</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+被呼び出し関係図:</div>
+<div class="dyncontent">
+<div class="center"><img src="create_8cpp_a5f095e842c806ac971fea8d4ed513b8b_icgraph.png" border="0" usemap="#acreate_8cpp_a5f095e842c806ac971fea8d4ed513b8b_icgraph" loading="lazy" alt=""/></div>
+<map name="acreate_8cpp_a5f095e842c806ac971fea8d4ed513b8b_icgraph" id="acreate_8cpp_a5f095e842c806ac971fea8d4ed513b8b_icgraph">
+<area shape="rect" title=" " alt="" coords="227,5,284,32"/>
+<area shape="rect" href="create_8cpp.html#acd705d81fcb6ad47122f3af7d2d0c813" title=" " alt="" coords="103,5,179,32"/>
+<area shape="poly" title=" " alt="" coords="211,21,179,21,179,16,211,16"/>
+<area shape="rect" href="main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,5,55,32"/>
+<area shape="poly" title=" " alt="" coords="87,21,55,21,55,16,87,16"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="acd705d81fcb6ad47122f3af7d2d0c813" name="acd705d81fcb6ad47122f3af7d2d0c813"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd705d81fcb6ad47122f3af7d2d0c813">&#9670;&#160;</a></span>jsonRead()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void jsonRead </td>
+          <td>(</td>
+          <td class="paramtype">std::string</td>          <td class="paramname"><span class="paramname"><em>filename</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+被呼び出し関係図:</div>
+<div class="dyncontent">
+<div class="center"><img src="create_8cpp_acd705d81fcb6ad47122f3af7d2d0c813_icgraph.png" border="0" usemap="#acreate_8cpp_acd705d81fcb6ad47122f3af7d2d0c813_icgraph" loading="lazy" alt=""/></div>
+<map name="acreate_8cpp_acd705d81fcb6ad47122f3af7d2d0c813_icgraph" id="acreate_8cpp_acd705d81fcb6ad47122f3af7d2d0c813_icgraph">
+<area shape="rect" title=" " alt="" coords="103,5,179,32"/>
+<area shape="rect" href="main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,5,55,32"/>
+<area shape="poly" title=" " alt="" coords="87,21,55,21,55,16,87,16"/>
+</map>
+</div>
+
+</div>
+</div>
+<a name="doc-var-members" id="doc-var-members"></a><h2 id="header-doc-var-members" class="groupheader">変数詳解</h2>
+<a id="a58baae16cfb6ab9f63a3c89fcd2767ec" name="a58baae16cfb6ab9f63a3c89fcd2767ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58baae16cfb6ab9f63a3c89fcd2767ec">&#9670;&#160;</a></span>entityList</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string entityList[]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>初期値:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">    <span class="stringliteral">&quot;enemy_default&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;bullet_track&quot;</span></div>
+<div class="line"> </div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<div id="page-nav" class="page-nav-panel">
+<div id="page-nav-resize-handle"></div>
+<div id="page-nav-tree">
+<div id="page-nav-contents">
+</div><!-- page-nav-contents -->
+</div><!-- page-nav-tree -->
+</div><!-- page-nav -->
+</div><!-- container -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="create_8cpp.html">create.cpp</a></li>
+    <li class="footer">構築: <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.14.0 </li>
+  </ul>
+</div>
+</body>
+</html>

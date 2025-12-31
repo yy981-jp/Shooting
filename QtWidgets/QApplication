@@ -1,0 +1,8 @@
+#pragma once
+#include "../qt_compat.h"
+
+class QApplication {
+public:
+    QApplication(int argc, char** argv) {}
+    int exec() { return 0; }
+};

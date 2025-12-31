@@ -1,0 +1,267 @@
+\doxysection{def.\+h ファイル}
+\hypertarget{def_8h}{}\label{def_8h}\index{def.h@{def.h}}
+{\ttfamily \#include $<$unordered\+\_\+set$>$}\newline
+{\ttfamily \#include $<$Qt\+Widgets/\+QGraphics\+Scene$>$}\newline
+{\ttfamily \#include $<$Qt\+Widgets/\+QStatus\+Bar$>$}\newline
+{\ttfamily \#include $<$Qt\+Core/\+QCore\+Application$>$}\newline
+def.\+h の依存先関係図\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{def_8h__incl}
+\end{center}
+\end{figure}
+被依存関係図\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{def_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{クラス}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_coord}{Coord}}
+\item 
+struct \mbox{\hyperlink{struct_coord_set}{Coord\+Set}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{名前空間}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacesp}{sp}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{マクロ定義}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{def_8h_a72d637375fd0538706cefe1014051c69}{BML}}~\mbox{[}$\,$\mbox{]}(int L, QGraphics\+Pixmap\+Item\texorpdfstring{$\ast$}{*} I)
+\item 
+\#define \mbox{\hyperlink{def_8h_a00998f517aa70f8180ce534436f3ca62}{BMLN}}~\mbox{[}L,I\mbox{]}()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{関数}
+\begin{DoxyCompactItemize}
+\item 
+constexpr int \mbox{\hyperlink{def_8h_a07d3c677b15072a2316ab71ddf450065}{scene\+Width}} (800)
+\item 
+constexpr int \mbox{\hyperlink{def_8h_a812b544b95cf8470c0c5cdafa4378812}{scene\+Height}} (600)
+\item 
+constexpr int \mbox{\hyperlink{def_8h_ad16103f7d28f1dbc78037f9ba854fad8}{scene\+Width\+Half}} (\mbox{\hyperlink{def_8h_a07d3c677b15072a2316ab71ddf450065}{scene\+Width}}/2)
+\item 
+constexpr int \mbox{\hyperlink{def_8h_a98af51cf50b23de0de36dee999e9460f}{scene\+Height\+Half}} (\mbox{\hyperlink{def_8h_a812b544b95cf8470c0c5cdafa4378812}{scene\+Height}}/2)
+\item 
+constexpr int \mbox{\hyperlink{def_8h_ac87583ccb8e48617c73e1664f3b86ddf}{fps\+Constant}} (16)
+\item 
+constexpr int \mbox{\hyperlink{def_8h_a99ec2a39b27f30975dde5fd6a6538fcf}{colliding\+Detection\+Constant}} (\mbox{\hyperlink{def_8h_ac87583ccb8e48617c73e1664f3b86ddf}{fps\+Constant}} \texorpdfstring{$\ast$}{*}5)
+\item 
+{\footnotesize template$<$typename T$>$ }\\void \mbox{\hyperlink{def_8h_abdcad06689453f7fe11767a3e3409d2c}{im}} (T i)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{変数}
+\begin{DoxyCompactItemize}
+\item 
+unsigned int \mbox{\hyperlink{def_8h_a6e889758354616e63afe43acd839fce0}{time\+\_\+s}}
+\item 
+std\+::vector$<$ std\+::vector$<$ QPointF $>$ $>$ \mbox{\hyperlink{def_8h_abe26e8c2b1a90152d57bbcec03e9dee2}{Bezier\+Curve\+List}}
+\item 
+float \mbox{\hyperlink{def_8h_a0fc5f657d282db900671cd4509599f42}{move\+Cache}} \mbox{[}360\mbox{]}\mbox{[}2\mbox{]}
+\item 
+int \mbox{\hyperlink{def_8h_a528e189efd7b2e3cd3a46a418704d6fa}{bullet\+\_\+player\+\_\+default\+\_\+relative}}
+\item 
+int \mbox{\hyperlink{def_8h_a5bda16083042d525fb5cd1f9716d6ca8}{starting\+Point}} \mbox{[}2\mbox{]}
+\item 
+int \mbox{\hyperlink{def_8h_aef160b7437d94056f1dc59646cd5b87d}{score}}
+\item 
+int \mbox{\hyperlink{def_8h_ab891102def18c16cebbacc436f3c2572}{RL}}
+\item 
+QStatus\+Bar \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{def_8h_a9b897f421eae5d7a1c6c3bc1b2463de2}{MWStatus\+Bar}}
+\item 
+QGraphics\+Scene \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{def_8h_ae3af7a17c7fa217374ed78810c1f885f}{scene}}
+\item 
+std\+::unordered\+\_\+set$<$ \mbox{\hyperlink{classbullet__player__default}{bullet\+\_\+player\+\_\+default}} \texorpdfstring{$\ast$}{*} $>$ \mbox{\hyperlink{def_8h_a3c0fe0bc3a1a2e973a2f953f69f2aeb6}{bpd\+\_\+instances}}
+\end{DoxyCompactItemize}
+
+
+\label{doc-define-members}
+\Hypertarget{def_8h_doc-define-members}
+\doxysubsection{マクロ定義詳解}
+\Hypertarget{def_8h_a72d637375fd0538706cefe1014051c69}\index{def.h@{def.h}!BML@{BML}}
+\index{BML@{BML}!def.h@{def.h}}
+\doxysubsubsection{\texorpdfstring{BML}{BML}}
+{\footnotesize\ttfamily \label{def_8h_a72d637375fd0538706cefe1014051c69} 
+\#define BML~\mbox{[}$\,$\mbox{]}(int L, QGraphics\+Pixmap\+Item\texorpdfstring{$\ast$}{*} I)}
+
+\Hypertarget{def_8h_a00998f517aa70f8180ce534436f3ca62}\index{def.h@{def.h}!BMLN@{BMLN}}
+\index{BMLN@{BMLN}!def.h@{def.h}}
+\doxysubsubsection{\texorpdfstring{BMLN}{BMLN}}
+{\footnotesize\ttfamily \label{def_8h_a00998f517aa70f8180ce534436f3ca62} 
+\#define BMLN~\mbox{[}L,I\mbox{]}()}
+
+
+
+\label{doc-func-members}
+\Hypertarget{def_8h_doc-func-members}
+\doxysubsection{関数詳解}
+\Hypertarget{def_8h_a99ec2a39b27f30975dde5fd6a6538fcf}\index{def.h@{def.h}!collidingDetectionConstant@{collidingDetectionConstant}}
+\index{collidingDetectionConstant@{collidingDetectionConstant}!def.h@{def.h}}
+\doxysubsubsection{\texorpdfstring{collidingDetectionConstant()}{collidingDetectionConstant()}}
+{\footnotesize\ttfamily \label{def_8h_a99ec2a39b27f30975dde5fd6a6538fcf} 
+int colliding\+Detection\+Constant (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{def_8h_ac87583ccb8e48617c73e1664f3b86ddf}{fps\+Constant}} \texorpdfstring{$\ast$}{*}}]{5}{}\end{DoxyParamCaption})}
+
+被呼び出し関係図\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{def_8h_a99ec2a39b27f30975dde5fd6a6538fcf_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{def_8h_ac87583ccb8e48617c73e1664f3b86ddf}\index{def.h@{def.h}!fpsConstant@{fpsConstant}}
+\index{fpsConstant@{fpsConstant}!def.h@{def.h}}
+\doxysubsubsection{\texorpdfstring{fpsConstant()}{fpsConstant()}}
+{\footnotesize\ttfamily \label{def_8h_ac87583ccb8e48617c73e1664f3b86ddf} 
+int fps\+Constant (\begin{DoxyParamCaption}\item[{16}]{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+被呼び出し関係図\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{def_8h_ac87583ccb8e48617c73e1664f3b86ddf_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{def_8h_abdcad06689453f7fe11767a3e3409d2c}\index{def.h@{def.h}!im@{im}}
+\index{im@{im}!def.h@{def.h}}
+\doxysubsubsection{\texorpdfstring{im()}{im()}}
+{\footnotesize\ttfamily \label{def_8h_abdcad06689453f7fe11767a3e3409d2c} 
+template$<$typename T$>$ \\
+void im (\begin{DoxyParamCaption}\item[{T}]{i}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+被呼び出し関係図\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{def_8h_abdcad06689453f7fe11767a3e3409d2c_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{def_8h_a812b544b95cf8470c0c5cdafa4378812}\index{def.h@{def.h}!sceneHeight@{sceneHeight}}
+\index{sceneHeight@{sceneHeight}!def.h@{def.h}}
+\doxysubsubsection{\texorpdfstring{sceneHeight()}{sceneHeight()}}
+{\footnotesize\ttfamily \label{def_8h_a812b544b95cf8470c0c5cdafa4378812} 
+int scene\+Height (\begin{DoxyParamCaption}\item[{600}]{}{}\end{DoxyParamCaption})}
+
+被呼び出し関係図\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{def_8h_a812b544b95cf8470c0c5cdafa4378812_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{def_8h_a98af51cf50b23de0de36dee999e9460f}\index{def.h@{def.h}!sceneHeightHalf@{sceneHeightHalf}}
+\index{sceneHeightHalf@{sceneHeightHalf}!def.h@{def.h}}
+\doxysubsubsection{\texorpdfstring{sceneHeightHalf()}{sceneHeightHalf()}}
+{\footnotesize\ttfamily \label{def_8h_a98af51cf50b23de0de36dee999e9460f} 
+int scene\+Height\+Half (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{def_8h_a812b544b95cf8470c0c5cdafa4378812}{scene\+Height}}/}]{2}{}\end{DoxyParamCaption})}
+
+被呼び出し関係図\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=279pt]{def_8h_a98af51cf50b23de0de36dee999e9460f_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{def_8h_a07d3c677b15072a2316ab71ddf450065}\index{def.h@{def.h}!sceneWidth@{sceneWidth}}
+\index{sceneWidth@{sceneWidth}!def.h@{def.h}}
+\doxysubsubsection{\texorpdfstring{sceneWidth()}{sceneWidth()}}
+{\footnotesize\ttfamily \label{def_8h_a07d3c677b15072a2316ab71ddf450065} 
+int scene\+Width (\begin{DoxyParamCaption}\item[{800}]{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+被呼び出し関係図\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{def_8h_a07d3c677b15072a2316ab71ddf450065_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{def_8h_ad16103f7d28f1dbc78037f9ba854fad8}\index{def.h@{def.h}!sceneWidthHalf@{sceneWidthHalf}}
+\index{sceneWidthHalf@{sceneWidthHalf}!def.h@{def.h}}
+\doxysubsubsection{\texorpdfstring{sceneWidthHalf()}{sceneWidthHalf()}}
+{\footnotesize\ttfamily \label{def_8h_ad16103f7d28f1dbc78037f9ba854fad8} 
+int scene\+Width\+Half (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{def_8h_a07d3c677b15072a2316ab71ddf450065}{scene\+Width}}/}]{2}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+被呼び出し関係図\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=276pt]{def_8h_ad16103f7d28f1dbc78037f9ba854fad8_icgraph}
+\end{center}
+\end{figure}
+
+
+\label{doc-var-members}
+\Hypertarget{def_8h_doc-var-members}
+\doxysubsection{変数詳解}
+\Hypertarget{def_8h_abe26e8c2b1a90152d57bbcec03e9dee2}\index{def.h@{def.h}!BezierCurveList@{BezierCurveList}}
+\index{BezierCurveList@{BezierCurveList}!def.h@{def.h}}
+\doxysubsubsection{\texorpdfstring{BezierCurveList}{BezierCurveList}}
+{\footnotesize\ttfamily \label{def_8h_abe26e8c2b1a90152d57bbcec03e9dee2} 
+std\+::vector$<$std\+::vector$<$QPointF$>$ $>$ Bezier\+Curve\+List\hspace{0.3cm}{\ttfamily [extern]}}
+
+\Hypertarget{def_8h_a3c0fe0bc3a1a2e973a2f953f69f2aeb6}\index{def.h@{def.h}!bpd\_instances@{bpd\_instances}}
+\index{bpd\_instances@{bpd\_instances}!def.h@{def.h}}
+\doxysubsubsection{\texorpdfstring{bpd\_instances}{bpd\_instances}}
+{\footnotesize\ttfamily \label{def_8h_a3c0fe0bc3a1a2e973a2f953f69f2aeb6} 
+std\+::unordered\+\_\+set$<$\mbox{\hyperlink{classbullet__player__default}{bullet\+\_\+player\+\_\+default}}\texorpdfstring{$\ast$}{*}$>$ bpd\+\_\+instances\hspace{0.3cm}{\ttfamily [extern]}}
+
+\Hypertarget{def_8h_a528e189efd7b2e3cd3a46a418704d6fa}\index{def.h@{def.h}!bullet\_player\_default\_relative@{bullet\_player\_default\_relative}}
+\index{bullet\_player\_default\_relative@{bullet\_player\_default\_relative}!def.h@{def.h}}
+\doxysubsubsection{\texorpdfstring{bullet\_player\_default\_relative}{bullet\_player\_default\_relative}}
+{\footnotesize\ttfamily \label{def_8h_a528e189efd7b2e3cd3a46a418704d6fa} 
+int bullet\+\_\+player\+\_\+default\+\_\+relative\hspace{0.3cm}{\ttfamily [extern]}}
+
+\Hypertarget{def_8h_a0fc5f657d282db900671cd4509599f42}\index{def.h@{def.h}!moveCache@{moveCache}}
+\index{moveCache@{moveCache}!def.h@{def.h}}
+\doxysubsubsection{\texorpdfstring{moveCache}{moveCache}}
+{\footnotesize\ttfamily \label{def_8h_a0fc5f657d282db900671cd4509599f42} 
+float move\+Cache\mbox{[}360\mbox{]}\mbox{[}2\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+\Hypertarget{def_8h_a9b897f421eae5d7a1c6c3bc1b2463de2}\index{def.h@{def.h}!MWStatusBar@{MWStatusBar}}
+\index{MWStatusBar@{MWStatusBar}!def.h@{def.h}}
+\doxysubsubsection{\texorpdfstring{MWStatusBar}{MWStatusBar}}
+{\footnotesize\ttfamily \label{def_8h_a9b897f421eae5d7a1c6c3bc1b2463de2} 
+QStatus\+Bar\texorpdfstring{$\ast$}{*} MWStatus\+Bar\hspace{0.3cm}{\ttfamily [extern]}}
+
+\Hypertarget{def_8h_ab891102def18c16cebbacc436f3c2572}\index{def.h@{def.h}!RL@{RL}}
+\index{RL@{RL}!def.h@{def.h}}
+\doxysubsubsection{\texorpdfstring{RL}{RL}}
+{\footnotesize\ttfamily \label{def_8h_ab891102def18c16cebbacc436f3c2572} 
+int RL}
+
+\Hypertarget{def_8h_ae3af7a17c7fa217374ed78810c1f885f}\index{def.h@{def.h}!scene@{scene}}
+\index{scene@{scene}!def.h@{def.h}}
+\doxysubsubsection{\texorpdfstring{scene}{scene}}
+{\footnotesize\ttfamily \label{def_8h_ae3af7a17c7fa217374ed78810c1f885f} 
+QGraphics\+Scene\texorpdfstring{$\ast$}{*} scene\hspace{0.3cm}{\ttfamily [extern]}}
+
+\Hypertarget{def_8h_aef160b7437d94056f1dc59646cd5b87d}\index{def.h@{def.h}!score@{score}}
+\index{score@{score}!def.h@{def.h}}
+\doxysubsubsection{\texorpdfstring{score}{score}}
+{\footnotesize\ttfamily \label{def_8h_aef160b7437d94056f1dc59646cd5b87d} 
+int score\hspace{0.3cm}{\ttfamily [extern]}}
+
+\Hypertarget{def_8h_a5bda16083042d525fb5cd1f9716d6ca8}\index{def.h@{def.h}!startingPoint@{startingPoint}}
+\index{startingPoint@{startingPoint}!def.h@{def.h}}
+\doxysubsubsection{\texorpdfstring{startingPoint}{startingPoint}}
+{\footnotesize\ttfamily \label{def_8h_a5bda16083042d525fb5cd1f9716d6ca8} 
+int starting\+Point\mbox{[}2\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+\Hypertarget{def_8h_a6e889758354616e63afe43acd839fce0}\index{def.h@{def.h}!time\_s@{time\_s}}
+\index{time\_s@{time\_s}!def.h@{def.h}}
+\doxysubsubsection{\texorpdfstring{time\_s}{time\_s}}
+{\footnotesize\ttfamily \label{def_8h_a6e889758354616e63afe43acd839fce0} 
+unsigned int time\+\_\+s\hspace{0.3cm}{\ttfamily [extern]}}
+

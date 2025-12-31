@@ -1,0 +1,51 @@
+\doxysection{eventloop.\+cpp ファイル}
+\hypertarget{eventloop_8cpp}{}\label{eventloop_8cpp}\index{eventloop.cpp@{eventloop.cpp}}
+{\ttfamily \#include "{}eventloop.\+h"{}}\newline
+eventloop.\+cpp の依存先関係図\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{eventloop_8cpp__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{マクロ定義}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{eventloop_8cpp_a49b9d01236a72214af6812fd9005e0a1}{YHO}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{関数}
+\begin{DoxyCompactItemize}
+\item 
+dthread \mbox{\hyperlink{eventloop_8cpp_ac4b63dd5a854781544db074dac2d68cf}{eventloop}} (tu\+::l, \mbox{\hyperlink{def_8h_ac87583ccb8e48617c73e1664f3b86ddf}{fps\+Constant}}, \mbox{[}$\,$\mbox{]}\{++\mbox{\hyperlink{def_8cpp_a6e889758354616e63afe43acd839fce0}{time\+\_\+s}};for(\mbox{\hyperlink{classbullet__player__default}{bullet\+\_\+player\+\_\+default}} \texorpdfstring{$\ast$}{*}obj \+:\mbox{\hyperlink{def_8cpp_a3c0fe0bc3a1a2e973a2f953f69f2aeb6}{bpd\+\_\+instances}}) \{ \mbox{\hyperlink{def_8h_abdcad06689453f7fe11767a3e3409d2c}{im}}(\mbox{[}obj\mbox{]} \{ obj-\/$>$set\+Pos(obj-\/$>$x(), obj-\/$>$y() -\/10);\});\} if(\mbox{\hyperlink{def_8cpp_ab891102def18c16cebbacc436f3c2572}{RL}}$<$=0) \{ \mbox{\hyperlink{player_8cpp_a96781128d3743da3d17e0fdd91afba7b}{player}}-\/$>$delete\+Later();\mbox{\hyperlink{def_8h_abdcad06689453f7fe11767a3e3409d2c}{im}}(\mbox{[}$\,$\mbox{]}\{ \mbox{\hyperlink{def_8cpp_a9b897f421eae5d7a1c6c3bc1b2463de2}{MWStatus\+Bar}}-\/$>$set\+Style\+Sheet("{}color\+: red; font-\/size\+: 20px;"{});MWStatus\+Bar-\/$>$show\+Message("{}Game\+Over   スコア"{}+QString\+::number(\mbox{\hyperlink{def_8cpp_aef160b7437d94056f1dc59646cd5b87d}{score}})+"{}   \mbox{[}ゲームを終了してください\mbox{]}"{});\});sleepc(tu\+::s, 30);exit(0);\} \mbox{\hyperlink{def_8h_abdcad06689453f7fe11767a3e3409d2c}{im}}(\mbox{[}$\,$\mbox{]}\{ \mbox{\hyperlink{def_8cpp_a9b897f421eae5d7a1c6c3bc1b2463de2}{MWStatus\+Bar}}-\/$>$show\+Message(QString("{}スコア\+: \%1   残機\+: \%2   \texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|}DEBUG scene内オブジェクト数\+: \%3   フレーム数\+: \%4"{}) .arg(\mbox{\hyperlink{def_8cpp_aef160b7437d94056f1dc59646cd5b87d}{score}}).arg(\mbox{\hyperlink{def_8cpp_ab891102def18c16cebbacc436f3c2572}{RL}}).arg(\mbox{\hyperlink{def_8cpp_ae3af7a17c7fa217374ed78810c1f885f}{scene}}-\/$>$items().size()).arg(\mbox{\hyperlink{def_8cpp_a6e889758354616e63afe43acd839fce0}{time\+\_\+s}}));\});\})
+\item 
+dthread \mbox{\hyperlink{eventloop_8cpp_ad4a07c12a12ab259f8468c167712d9b2}{CLI}} (true,\mbox{[}$\,$\mbox{]}\{ while(true) \{ std\+::cin.\+get();\mbox{\hyperlink{def_8h_abdcad06689453f7fe11767a3e3409d2c}{im}}(\mbox{[}$\,$\mbox{]}\{ for(QGraphics\+Item \texorpdfstring{$\ast$}{*}item \+:\mbox{\hyperlink{def_8cpp_ae3af7a17c7fa217374ed78810c1f885f}{scene}}-\/$>$items()) \{ if(item-\/$>$type()==\mbox{\hyperlink{classbasic_a155130fc3808548ba09e4623dfc6a93eac1f52c13471f25d2e27594f3b92df521}{basic\+::\+Type}}) \{ \mbox{\hyperlink{def_8cpp_ae3af7a17c7fa217374ed78810c1f885f}{scene}}-\/$>$remove\+Item(item);dynamic\+\_\+cast$<$ \mbox{\hyperlink{classbasic}{basic}} \texorpdfstring{$\ast$}{*} $>$(item) -\/$>$delete\+Later();\} \} \});\} \})
+\end{DoxyCompactItemize}
+
+
+\label{doc-define-members}
+\Hypertarget{eventloop_8cpp_doc-define-members}
+\doxysubsection{マクロ定義詳解}
+\Hypertarget{eventloop_8cpp_a49b9d01236a72214af6812fd9005e0a1}\index{eventloop.cpp@{eventloop.cpp}!YHO@{YHO}}
+\index{YHO@{YHO}!eventloop.cpp@{eventloop.cpp}}
+\doxysubsubsection{\texorpdfstring{YHO}{YHO}}
+{\footnotesize\ttfamily \label{eventloop_8cpp_a49b9d01236a72214af6812fd9005e0a1} 
+\#define YHO}
+
+
+
+\label{doc-func-members}
+\Hypertarget{eventloop_8cpp_doc-func-members}
+\doxysubsection{関数詳解}
+\Hypertarget{eventloop_8cpp_ad4a07c12a12ab259f8468c167712d9b2}\index{eventloop.cpp@{eventloop.cpp}!CLI@{CLI}}
+\index{CLI@{CLI}!eventloop.cpp@{eventloop.cpp}}
+\doxysubsubsection{\texorpdfstring{CLI()}{CLI()}}
+{\footnotesize\ttfamily \label{eventloop_8cpp_ad4a07c12a12ab259f8468c167712d9b2} 
+dthread CLI (\begin{DoxyParamCaption}\item[{true}]{}{, }\item[{\mbox{[}$\,$\mbox{]} \{ while(true) \{ std\+::cin.\+get();\mbox{\hyperlink{def_8h_abdcad06689453f7fe11767a3e3409d2c}{im}}(\mbox{[}$\,$\mbox{]}\{ for(QGraphics\+Item \texorpdfstring{$\ast$}{*}item \+:\mbox{\hyperlink{def_8cpp_ae3af7a17c7fa217374ed78810c1f885f}{scene}}-\/$>$items()) \{ if(item-\/$>$type()==\mbox{\hyperlink{classbasic_a155130fc3808548ba09e4623dfc6a93eac1f52c13471f25d2e27594f3b92df521}{basic\+::\+Type}}) \{ \mbox{\hyperlink{def_8cpp_ae3af7a17c7fa217374ed78810c1f885f}{scene}}-\/$>$remove\+Item(item);dynamic\+\_\+cast$<$ \mbox{\hyperlink{classbasic}{basic}} \texorpdfstring{$\ast$}{*} $>$(item) -\/$>$delete\+Later();\} \} \});\} \}}]{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{eventloop_8cpp_ac4b63dd5a854781544db074dac2d68cf}\index{eventloop.cpp@{eventloop.cpp}!eventloop@{eventloop}}
+\index{eventloop@{eventloop}!eventloop.cpp@{eventloop.cpp}}
+\doxysubsubsection{\texorpdfstring{eventloop()}{eventloop()}}
+{\footnotesize\ttfamily \label{eventloop_8cpp_ac4b63dd5a854781544db074dac2d68cf} 
+dthread eventloop (\begin{DoxyParamCaption}\item[{tu\+::l}]{}{, }\item[{\mbox{\hyperlink{def_8h_ac87583ccb8e48617c73e1664f3b86ddf}{fps\+Constant}}}]{}{, }\item[{\mbox{[}$\,$\mbox{]} \{++\mbox{\hyperlink{def_8cpp_a6e889758354616e63afe43acd839fce0}{time\+\_\+s}};for(\mbox{\hyperlink{classbullet__player__default}{bullet\+\_\+player\+\_\+default}} \texorpdfstring{$\ast$}{*}obj \+:\mbox{\hyperlink{def_8cpp_a3c0fe0bc3a1a2e973a2f953f69f2aeb6}{bpd\+\_\+instances}}) \{ \mbox{\hyperlink{def_8h_abdcad06689453f7fe11767a3e3409d2c}{im}}(\mbox{[}obj\mbox{]} \{ obj-\/$>$set\+Pos(obj-\/$>$x(), obj-\/$>$y() -\/10);\});\} if(\mbox{\hyperlink{def_8cpp_ab891102def18c16cebbacc436f3c2572}{RL}}$<$=0) \{ \mbox{\hyperlink{player_8cpp_a96781128d3743da3d17e0fdd91afba7b}{player}}-\/$>$delete\+Later();\mbox{\hyperlink{def_8h_abdcad06689453f7fe11767a3e3409d2c}{im}}(\mbox{[}$\,$\mbox{]}\{ \mbox{\hyperlink{def_8cpp_a9b897f421eae5d7a1c6c3bc1b2463de2}{MWStatus\+Bar}}-\/$>$set\+Style\+Sheet("{}color\+: red; font-\/size\+: 20px;"{});MWStatus\+Bar-\/$>$show\+Message("{}Game\+Over   スコア"{}+QString\+::number(\mbox{\hyperlink{def_8cpp_aef160b7437d94056f1dc59646cd5b87d}{score}})+"{}   \mbox{[}ゲームを終了してください\mbox{]}"{});\});sleepc(tu\+::s, 30);exit(0);\} \mbox{\hyperlink{def_8h_abdcad06689453f7fe11767a3e3409d2c}{im}}(\mbox{[}$\,$\mbox{]}\{ \mbox{\hyperlink{def_8cpp_a9b897f421eae5d7a1c6c3bc1b2463de2}{MWStatus\+Bar}}-\/$>$show\+Message(QString("{}スコア\+: \%1   残機\+: \%2   \texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|}DEBUG scene内オブジェクト数\+: \%3   フレーム数\+: \%4"{}) .arg(\mbox{\hyperlink{def_8cpp_aef160b7437d94056f1dc59646cd5b87d}{score}}).arg(\mbox{\hyperlink{def_8cpp_ab891102def18c16cebbacc436f3c2572}{RL}}).arg(\mbox{\hyperlink{def_8cpp_ae3af7a17c7fa217374ed78810c1f885f}{scene}}-\/$>$items().size()).arg(\mbox{\hyperlink{def_8cpp_a6e889758354616e63afe43acd839fce0}{time\+\_\+s}}));\});\}}]{}{}\end{DoxyParamCaption})}
+

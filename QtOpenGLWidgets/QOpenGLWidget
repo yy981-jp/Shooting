@@ -1,0 +1,4 @@
+#pragma once
+#include "../qt_compat.h"
+
+class QOpenGLWidget {};

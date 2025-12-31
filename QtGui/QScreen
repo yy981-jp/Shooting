@@ -1,0 +1,4 @@
+#pragma once
+#include "../qt_compat.h"
+
+class QScreen {public: struct Rect{int width; int height; Rect(int w=0,int h=0):width(w),height(h){}}; Rect geometry() const { return Rect(800,600); }};

@@ -1,0 +1,36 @@
+\doxysection{Bezier\+Mover.\+h}
+\hypertarget{_bezier_mover_8h_source}{}\label{_bezier_mover_8h_source}\mbox{\hyperlink{_bezier_mover_8h}{\mbox{[}詳解\mbox{]}}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <functional>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <QtCore/QObject>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <QtCore/QPointF>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <QtCore/QTimer>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <QtWidgets/QGraphicsPixmapItem>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{def_8h}{def.h}}"{}}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_bezier_mover_a6ffa584af0e69981a8cfb242e64baa6d}{BezierMover}}\ :\ \textcolor{keyword}{public}\ QObject\ \{}
+\DoxyCodeLine{00012\ Q\_OBJECT}
+\DoxyCodeLine{00013\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00014\ \ \ \ \ \mbox{\hyperlink{class_bezier_mover_a6ffa584af0e69981a8cfb242e64baa6d}{BezierMover}}(QGraphicsPixmapItem*\ \mbox{\hyperlink{class_bezier_mover_a44ee3d612a36635ea9524c4dfcad461d}{item}},\ \textcolor{keyword}{const}\ std::vector<QPointF>\&\ \mbox{\hyperlink{class_bezier_mover_aaad60322bd80cd0818092d6d020161aa}{controlPoints}},\ std::function<\textcolor{keywordtype}{void}(\textcolor{keywordtype}{int},QGraphicsPixmapItem*)>\ i\_f\ =\ \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_bezier_mover_afe7f45d27dde0393016791c56d9daf5b}{duration}}\ =\ 5000);}
+\DoxyCodeLine{00016\ \textcolor{keyword}{private}\ slots:}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_bezier_mover_a39f7a9ce52851631813a17cfe6b6a507}{updatePosition}}();}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00020\ \ \ \ \ QPointF\ \mbox{\hyperlink{class_bezier_mover_a018882d757a9302159162c16777ffac3}{calculateBezierPoint}}(\textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_bezier_mover_a869bf822bade8620b4b714d67a5cfab6}{t}});}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_bezier_mover_a6e050a9af7112304af2ad18e93ecccdb}{factorial}}(\textcolor{keywordtype}{int}\ n);}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \ \ \ \ QGraphicsPixmapItem*\ \mbox{\hyperlink{class_bezier_mover_a44ee3d612a36635ea9524c4dfcad461d}{item}};}
+\DoxyCodeLine{00025\ \ \ \ \ std::vector<QPointF>\ \mbox{\hyperlink{class_bezier_mover_aaad60322bd80cd0818092d6d020161aa}{controlPoints}};}
+\DoxyCodeLine{00026\ \ \ \ \ QTimer*\ \mbox{\hyperlink{class_bezier_mover_a7b256ec3cd5112ca2d81f632db7f693b}{timer}};}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_bezier_mover_a869bf822bade8620b4b714d67a5cfab6}{t}};}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_bezier_mover_afe7f45d27dde0393016791c56d9daf5b}{duration}};}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{short}\ \mbox{\hyperlink{class_bezier_mover_abaf84dafb89d1777d6a77926ae71da7d}{l}}\ =\ 0;}
+\DoxyCodeLine{00030\ \ \ \ \ std::function<void(\textcolor{keywordtype}{int},QGraphicsPixmapItem*)>\ \mbox{\hyperlink{class_bezier_mover_abed931d8f08267091a2fc347aa1ce2e7}{f}};}
+\DoxyCodeLine{00031\ \};}
+
+\end{DoxyCode}

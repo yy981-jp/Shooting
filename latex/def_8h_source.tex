@@ -1,0 +1,57 @@
+\doxysection{def.\+h}
+\hypertarget{def_8h_source}{}\label{def_8h_source}\mbox{\hyperlink{def_8h}{\mbox{[}詳解\mbox{]}}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <unordered\_set>}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <QtWidgets/QGraphicsScene>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <QtWidgets/QStatusBar>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <QtCore/QCoreApplication>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#define\ BML\ [](int\ L,\ QGraphicsPixmapItem*\ I)}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#define\ BMLN\ [L,I]()}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{def_8cpp_a6e889758354616e63afe43acd839fce0}{time\_s}};}
+\DoxyCodeLine{00012\ \textcolor{keyword}{extern}\ std::vector<std::vector<QPointF>>\ \mbox{\hyperlink{def_8cpp_abe26e8c2b1a90152d57bbcec03e9dee2}{BezierCurveList}};}
+\DoxyCodeLine{00013\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{def_8cpp_a0fc5f657d282db900671cd4509599f42}{moveCache}}[360][2];}
+\DoxyCodeLine{00014\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{def_8cpp_a528e189efd7b2e3cd3a46a418704d6fa}{bullet\_player\_default\_relative}};}
+\DoxyCodeLine{00015\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{def_8cpp_a5bda16083042d525fb5cd1f9716d6ca8}{startingPoint}}[2];}
+\DoxyCodeLine{00016\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{def_8cpp_aef160b7437d94056f1dc59646cd5b87d}{score}},\ \mbox{\hyperlink{def_8cpp_ab891102def18c16cebbacc436f3c2572}{RL}};\ \textcolor{comment}{//\ 残機}}
+\DoxyCodeLine{00017\ \textcolor{keyword}{extern}\ QStatusBar*\ \mbox{\hyperlink{def_8cpp_a9b897f421eae5d7a1c6c3bc1b2463de2}{MWStatusBar}};}
+\DoxyCodeLine{00018\ \textcolor{keyword}{extern}\ QGraphicsScene*\ \mbox{\hyperlink{def_8cpp_ae3af7a17c7fa217374ed78810c1f885f}{scene}};}
+\DoxyCodeLine{00019\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classbullet__player__default}{bullet\_player\_default}};}
+\DoxyCodeLine{00020\ \textcolor{keyword}{extern}\ std::unordered\_set<bullet\_player\_default*>\ \mbox{\hyperlink{def_8cpp_a3c0fe0bc3a1a2e973a2f953f69f2aeb6}{bpd\_instances}};}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{def_8h_a07d3c677b15072a2316ab71ddf450065}{sceneWidth}}(800),\ \mbox{\hyperlink{def_8h_a812b544b95cf8470c0c5cdafa4378812}{sceneHeight}}(600);}
+\DoxyCodeLine{00023\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{def_8h_ad16103f7d28f1dbc78037f9ba854fad8}{sceneWidthHalf}}(\mbox{\hyperlink{def_8h_a07d3c677b15072a2316ab71ddf450065}{sceneWidth}}/2),\ \mbox{\hyperlink{def_8h_a98af51cf50b23de0de36dee999e9460f}{sceneHeightHalf}}(\mbox{\hyperlink{def_8h_a812b544b95cf8470c0c5cdafa4378812}{sceneHeight}}/2);}
+\DoxyCodeLine{00024\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{def_8h_ac87583ccb8e48617c73e1664f3b86ddf}{fpsConstant}}(16),\ \mbox{\hyperlink{def_8h_a99ec2a39b27f30975dde5fd6a6538fcf}{collidingDetectionConstant}}(\mbox{\hyperlink{def_8h_ac87583ccb8e48617c73e1664f3b86ddf}{fpsConstant}}\ *\ 5);}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00027\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{def_8h_abdcad06689453f7fe11767a3e3409d2c}{im}}(T\ i)\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ QMetaObject::invokeMethod(QCoreApplication::instance(),\ i);}
+\DoxyCodeLine{00029\ \}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ namespace内の画像ポインタも\ extern}}
+\DoxyCodeLine{00033\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacesp}{sp}}\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{extern}\ QPixmap*\ \mbox{\hyperlink{namespacesp_a6117069b13ae9de79ce8d1435d9e6dd4}{A\_aqua}};}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{extern}\ QPixmap*\ \mbox{\hyperlink{namespacesp_a0ca5bf53be12cb590147939103878471}{triangle\_red}};}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{extern}\ QPixmap*\ \mbox{\hyperlink{namespacesp_a9eec036ff84f39dbdb04a34b43c42b0b}{hexagon\_yellow}};}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{extern}\ QPixmap*\ \mbox{\hyperlink{namespacesp_a67e9526404f48ac7946296deffc9b252}{triangle\_blue}};}
+\DoxyCodeLine{00038\ \}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{comment}{//座標.begin}}
+\DoxyCodeLine{00041\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_coord_a43acc8244e6029adb22516024ae736d0}{Coord}}\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \mbox{\hyperlink{struct_coord_a43acc8244e6029adb22516024ae736d0}{Coord}}(\textcolor{keywordtype}{int}\ i\_x,\ \textcolor{keywordtype}{int}\ i\_y,\ \textcolor{keywordtype}{int}\ i\_t=10,\ \textcolor{keywordtype}{int}\ i\_d=0):\ \mbox{\hyperlink{struct_coord_a696eaa744360fc791d0e3b331c549dbe}{x}}(i\_x+\mbox{\hyperlink{def_8h_ad16103f7d28f1dbc78037f9ba854fad8}{sceneWidthHalf}}),\ \mbox{\hyperlink{struct_coord_a214166cca70cef7dda9201689c3e81ab}{y}}(i\_y+\mbox{\hyperlink{def_8h_a98af51cf50b23de0de36dee999e9460f}{sceneHeightHalf}}),\ \mbox{\hyperlink{struct_coord_a10900c71d9f311f2694f730e76b1f334}{t}}(i\_t),\ \mbox{\hyperlink{struct_coord_a8ba8c0228010000371ab4b0894f3c147}{d}}(i\_d)\ \{\}}
+\DoxyCodeLine{00043\ \ \ \ \ \mbox{\hyperlink{struct_coord_a7746799604af06bf92f8a415a41ce493}{Coord}}(\textcolor{keywordtype}{double}\ i\_x,\ \textcolor{keywordtype}{double}\ i\_y,\ \textcolor{keywordtype}{int}\ i\_t=10,\ \textcolor{keywordtype}{int}\ i\_d=0):\ \mbox{\hyperlink{struct_coord_a696eaa744360fc791d0e3b331c549dbe}{x}}(static\_cast<int>(i\_x)),\ \mbox{\hyperlink{struct_coord_a214166cca70cef7dda9201689c3e81ab}{y}}(static\_cast<int>(i\_y)),\ \mbox{\hyperlink{struct_coord_a10900c71d9f311f2694f730e76b1f334}{t}}(i\_t),\ \mbox{\hyperlink{struct_coord_a8ba8c0228010000371ab4b0894f3c147}{d}}(i\_d)\ \{\}}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{struct_coord_a696eaa744360fc791d0e3b331c549dbe}{x}},\ \mbox{\hyperlink{struct_coord_a214166cca70cef7dda9201689c3e81ab}{y}},\ \mbox{\hyperlink{struct_coord_a8ba8c0228010000371ab4b0894f3c147}{d}},\ \mbox{\hyperlink{struct_coord_a10900c71d9f311f2694f730e76b1f334}{t}};}
+\DoxyCodeLine{00045\ \};}
+\DoxyCodeLine{00046\ \textcolor{comment}{//座標.end}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_coord_set_a0f09360c2f52d72c768f6a0e6cfcafc3}{CoordSet}}\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \mbox{\hyperlink{struct_coord_set_a0f09360c2f52d72c768f6a0e6cfcafc3}{CoordSet}}(\textcolor{keywordtype}{int}\ time,\ \textcolor{keywordtype}{int}\ i\_x,\ \textcolor{keywordtype}{int}\ i\_y,\ \textcolor{keywordtype}{int}\ i\_t=10,\ \textcolor{keywordtype}{int}\ i\_d=0):\ \mbox{\hyperlink{struct_coord_set_ad674fc061d5ab6d978ebbf32b779f95f}{t}}(time*10),\ \mbox{\hyperlink{struct_coord_set_a292c9b61a8cb070f2d8bb8681f1ee642}{c}}(i\_x,i\_y,i\_t,i\_d)\ \{\}}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{struct_coord_set_ad674fc061d5ab6d978ebbf32b779f95f}{t}};}
+\DoxyCodeLine{00051\ \ \ \ \ \mbox{\hyperlink{struct_coord}{Coord}}\ \mbox{\hyperlink{struct_coord_set_a292c9b61a8cb070f2d8bb8681f1ee642}{c}};}
+\DoxyCodeLine{00052\ \};}
+
+\end{DoxyCode}

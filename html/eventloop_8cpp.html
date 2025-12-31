@@ -1,0 +1,232 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.14.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Shooting: eventloop.cpp ファイル</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Shooting
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 構築: Doxygen 1.14.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','検索',true);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){initNavTree('eventloop_8cpp.html','',''); });
+</script>
+<div id="container">
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">読み取り中…</div>
+<div class="SRStatus" id="Searching">検索中…</div>
+<div class="SRStatus" id="NoMatches">一致する文字列を見つけられません</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">eventloop.cpp ファイル</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &quot;<a class="el" href="eventloop_8h_source.html">eventloop.h</a>&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+eventloop.cpp の依存先関係図:</div>
+<div class="dyncontent">
+<div class="center"><img src="eventloop_8cpp__incl.png" border="0" usemap="#aeventloop_8cpp" loading="lazy" alt=""/></div>
+<map name="aeventloop_8cpp" id="aeventloop_8cpp">
+<area shape="rect" title=" " alt="" coords="296,5,398,32"/>
+<area shape="rect" href="eventloop_8h.html" title=" " alt="" coords="303,80,391,107"/>
+<area shape="poly" title=" " alt="" coords="350,33,350,64,344,64,344,33"/>
+<area shape="rect" title=" " alt="" coords="107,155,179,181"/>
+<area shape="poly" title=" " alt="" coords="312,110,194,151,192,146,311,105"/>
+<area shape="rect" title=" " alt="" coords="203,155,310,181"/>
+<area shape="poly" title=" " alt="" coords="333,109,285,147,282,143,330,105"/>
+<area shape="rect" href="def_8h.html" title=" " alt="" coords="244,379,295,405"/>
+<area shape="poly" title=" " alt="" coords="346,108,279,364,274,363,341,106"/>
+<area shape="rect" href="basic_8entity_8h.html" title=" " alt="" coords="526,304,624,331"/>
+<area shape="poly" title=" " alt="" coords="354,106,386,185,406,227,425,254,466,282,512,300,510,305,464,287,421,258,401,230,381,187,349,108"/>
+<area shape="rect" href="player_8h.html" title=" " alt="" coords="607,155,674,181"/>
+<area shape="poly" title=" " alt="" coords="392,103,592,152,591,157,391,108"/>
+<area shape="rect" title=" " alt="" coords="378,453,481,480"/>
+<area shape="poly" title=" " alt="" coords="296,402,389,444,387,449,294,407"/>
+<area shape="rect" title=" " alt="" coords="610,453,796,480"/>
+<area shape="poly" title=" " alt="" coords="296,400,308,403,457,432,595,451,594,456,456,437,306,408,295,405"/>
+<area shape="rect" title=" " alt="" coords="5,453,161,480"/>
+<area shape="poly" title=" " alt="" coords="245,406,131,450,129,445,243,401"/>
+<area shape="rect" title=" " alt="" coords="185,453,354,480"/>
+<area shape="poly" title=" " alt="" coords="272,406,272,438,267,438,267,406"/>
+<area shape="poly" title=" " alt="" coords="526,331,430,351,310,381,309,376,429,346,525,326"/>
+<area shape="poly" title=" " alt="" coords="625,324,718,344,758,359,784,377,790,397,781,416,764,433,744,448,741,443,761,429,777,413,784,397,780,380,756,364,716,349,624,329"/>
+<area shape="rect" title=" " alt="" coords="844,379,959,405"/>
+<area shape="poly" title=" " alt="" coords="625,327,830,372,829,377,624,332"/>
+<area shape="rect" title=" " alt="" coords="318,379,429,405"/>
+<area shape="poly" title=" " alt="" coords="541,334,424,375,422,370,539,329"/>
+<area shape="rect" title=" " alt="" coords="452,379,570,405"/>
+<area shape="poly" title=" " alt="" coords="566,333,534,369,530,365,562,329"/>
+<area shape="rect" title=" " alt="" coords="594,379,769,405"/>
+<area shape="poly" title=" " alt="" coords="595,329,652,367,649,372,592,333"/>
+<area shape="poly" title=" " alt="" coords="657,180,877,366,874,370,653,184"/>
+<area shape="rect" title=" " alt="" coords="769,229,989,256"/>
+<area shape="poly" title=" " alt="" coords="675,177,824,222,822,227,674,182"/>
+<area shape="rect" title=" " alt="" coords="434,229,561,256"/>
+<area shape="poly" title=" " alt="" coords="617,184,537,224,535,219,614,179"/>
+<area shape="rect" href="custom_8entity_8h.html" title=" " alt="" coords="585,229,696,256"/>
+<area shape="poly" title=" " alt="" coords="643,182,643,214,638,214,638,182"/>
+<area shape="poly" title=" " alt="" coords="631,258,598,294,594,291,627,255"/>
+</map>
+</div>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
+マクロ定義</h2></td></tr>
+<tr class="memitem:a49b9d01236a72214af6812fd9005e0a1" id="r_a49b9d01236a72214af6812fd9005e0a1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a49b9d01236a72214af6812fd9005e0a1">YHO</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ac4b63dd5a854781544db074dac2d68cf" id="r_ac4b63dd5a854781544db074dac2d68cf"><td class="memItemLeft" align="right" valign="top">dthread&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac4b63dd5a854781544db074dac2d68cf">eventloop</a> (tu::l, <a class="el" href="def_8h.html#ac87583ccb8e48617c73e1664f3b86ddf">fpsConstant</a>, []{++<a class="el" href="def_8cpp.html#a6e889758354616e63afe43acd839fce0">time_s</a>;for(<a class="el" href="classbullet__player__default.html">bullet_player_default</a> *obj :<a class="el" href="def_8cpp.html#a3c0fe0bc3a1a2e973a2f953f69f2aeb6">bpd_instances</a>) { <a class="el" href="def_8h.html#abdcad06689453f7fe11767a3e3409d2c">im</a>([obj] { obj-&gt;setPos(obj-&gt;x(), obj-&gt;y() -10);});} if(<a class="el" href="def_8cpp.html#ab891102def18c16cebbacc436f3c2572">RL</a>&lt;=0) { <a class="el" href="player_8cpp.html#a96781128d3743da3d17e0fdd91afba7b">player</a>-&gt;deleteLater();<a class="el" href="def_8h.html#abdcad06689453f7fe11767a3e3409d2c">im</a>([]{ <a class="el" href="def_8cpp.html#a9b897f421eae5d7a1c6c3bc1b2463de2">MWStatusBar</a>-&gt;setStyleSheet(&quot;color: red; font-size: 20px;&quot;);MWStatusBar-&gt;showMessage(&quot;GameOver   スコア&quot;+QString::number(<a class="el" href="def_8cpp.html#aef160b7437d94056f1dc59646cd5b87d">score</a>)+&quot;   [ゲームを終了してください]&quot;);});sleepc(tu::s, 30);exit(0);} <a class="el" href="def_8h.html#abdcad06689453f7fe11767a3e3409d2c">im</a>([]{ <a class="el" href="def_8cpp.html#a9b897f421eae5d7a1c6c3bc1b2463de2">MWStatusBar</a>-&gt;showMessage(QString(&quot;スコア: %1   残機: %2   |||DEBUG scene内オブジェクト数: %3   フレーム数: %4&quot;) .arg(<a class="el" href="def_8cpp.html#aef160b7437d94056f1dc59646cd5b87d">score</a>).arg(<a class="el" href="def_8cpp.html#ab891102def18c16cebbacc436f3c2572">RL</a>).arg(<a class="el" href="def_8cpp.html#ae3af7a17c7fa217374ed78810c1f885f">scene</a>-&gt;items().size()).arg(<a class="el" href="def_8cpp.html#a6e889758354616e63afe43acd839fce0">time_s</a>));});})</td></tr>
+<tr class="memitem:ad4a07c12a12ab259f8468c167712d9b2" id="r_ad4a07c12a12ab259f8468c167712d9b2"><td class="memItemLeft" align="right" valign="top">dthread&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4a07c12a12ab259f8468c167712d9b2">CLI</a> (true,[]{ while(true) { std::cin.get();<a class="el" href="def_8h.html#abdcad06689453f7fe11767a3e3409d2c">im</a>([]{ for(QGraphicsItem *item :<a class="el" href="def_8cpp.html#ae3af7a17c7fa217374ed78810c1f885f">scene</a>-&gt;items()) { if(item-&gt;type()==<a class="el" href="classbasic.html#a155130fc3808548ba09e4623dfc6a93eac1f52c13471f25d2e27594f3b92df521">basic::Type</a>) { <a class="el" href="def_8cpp.html#ae3af7a17c7fa217374ed78810c1f885f">scene</a>-&gt;removeItem(item);dynamic_cast&lt; <a class="el" href="classbasic.html">basic</a> * &gt;(item) -&gt;deleteLater();} } });} })</td></tr>
+</table>
+<a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">マクロ定義詳解</h2>
+<a id="a49b9d01236a72214af6812fd9005e0a1" name="a49b9d01236a72214af6812fd9005e0a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49b9d01236a72214af6812fd9005e0a1">&#9670;&#160;</a></span>YHO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define YHO</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">関数詳解</h2>
+<a id="ad4a07c12a12ab259f8468c167712d9b2" name="ad4a07c12a12ab259f8468c167712d9b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4a07c12a12ab259f8468c167712d9b2">&#9670;&#160;</a></span>CLI()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">dthread CLI </td>
+          <td>(</td>
+          <td class="paramtype">true</td>          <td class="paramname"><span class="paramname"><em></em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">[] { while(true) { std::cin.get();<a class="el" href="def_8h.html#abdcad06689453f7fe11767a3e3409d2c">im</a>([]{ for(QGraphicsItem *item :<a class="el" href="def_8cpp.html#ae3af7a17c7fa217374ed78810c1f885f">scene</a>-&gt;items()) { if(item-&gt;type()==<a class="el" href="classbasic.html#a155130fc3808548ba09e4623dfc6a93eac1f52c13471f25d2e27594f3b92df521">basic::Type</a>) { <a class="el" href="def_8cpp.html#ae3af7a17c7fa217374ed78810c1f885f">scene</a>-&gt;removeItem(item);dynamic_cast&lt; <a class="el" href="classbasic.html">basic</a> * &gt;(item) -&gt;deleteLater();} } });} }</td>          <td class="paramname"><span class="paramname"><em></em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac4b63dd5a854781544db074dac2d68cf" name="ac4b63dd5a854781544db074dac2d68cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4b63dd5a854781544db074dac2d68cf">&#9670;&#160;</a></span>eventloop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">dthread eventloop </td>
+          <td>(</td>
+          <td class="paramtype">tu::l</td>          <td class="paramname"><span class="paramname"><em></em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="def_8h.html#ac87583ccb8e48617c73e1664f3b86ddf">fpsConstant</a></td>          <td class="paramname"><span class="paramname"><em></em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">[] {++<a class="el" href="def_8cpp.html#a6e889758354616e63afe43acd839fce0">time_s</a>;for(<a class="el" href="classbullet__player__default.html">bullet_player_default</a> *obj :<a class="el" href="def_8cpp.html#a3c0fe0bc3a1a2e973a2f953f69f2aeb6">bpd_instances</a>) { <a class="el" href="def_8h.html#abdcad06689453f7fe11767a3e3409d2c">im</a>([obj] { obj-&gt;setPos(obj-&gt;x(), obj-&gt;y() -10);});} if(<a class="el" href="def_8cpp.html#ab891102def18c16cebbacc436f3c2572">RL</a>&lt;=0) { <a class="el" href="player_8cpp.html#a96781128d3743da3d17e0fdd91afba7b">player</a>-&gt;deleteLater();<a class="el" href="def_8h.html#abdcad06689453f7fe11767a3e3409d2c">im</a>([]{ <a class="el" href="def_8cpp.html#a9b897f421eae5d7a1c6c3bc1b2463de2">MWStatusBar</a>-&gt;setStyleSheet(&quot;color: red; font-size: 20px;&quot;);MWStatusBar-&gt;showMessage(&quot;GameOver   スコア&quot;+QString::number(<a class="el" href="def_8cpp.html#aef160b7437d94056f1dc59646cd5b87d">score</a>)+&quot;   [ゲームを終了してください]&quot;);});sleepc(tu::s, 30);exit(0);} <a class="el" href="def_8h.html#abdcad06689453f7fe11767a3e3409d2c">im</a>([]{ <a class="el" href="def_8cpp.html#a9b897f421eae5d7a1c6c3bc1b2463de2">MWStatusBar</a>-&gt;showMessage(QString(&quot;スコア: %1   残機: %2   |||DEBUG scene内オブジェクト数: %3   フレーム数: %4&quot;) .arg(<a class="el" href="def_8cpp.html#aef160b7437d94056f1dc59646cd5b87d">score</a>).arg(<a class="el" href="def_8cpp.html#ab891102def18c16cebbacc436f3c2572">RL</a>).arg(<a class="el" href="def_8cpp.html#ae3af7a17c7fa217374ed78810c1f885f">scene</a>-&gt;items().size()).arg(<a class="el" href="def_8cpp.html#a6e889758354616e63afe43acd839fce0">time_s</a>));});}</td>          <td class="paramname"><span class="paramname"><em></em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<div id="page-nav" class="page-nav-panel">
+<div id="page-nav-resize-handle"></div>
+<div id="page-nav-tree">
+<div id="page-nav-contents">
+</div><!-- page-nav-contents -->
+</div><!-- page-nav-tree -->
+</div><!-- page-nav -->
+</div><!-- container -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="eventloop_8cpp.html">eventloop.cpp</a></li>
+    <li class="footer">構築: <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.14.0 </li>
+  </ul>
+</div>
+</body>
+</html>

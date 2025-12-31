@@ -11,10 +11,9 @@ class Player : public QObject, public QGraphicsPixmapItem {
 public:
     Player();
 
-protected:
     void keyPressEvent(QKeyEvent* event) override;
     void keyReleaseEvent(QKeyEvent* event) override;
-	void focusOutEvent(QFocusEvent *event) override;
+    void focusOutEvent(QFocusEvent *event) override;
 
 private slots:
     void updatePosition();

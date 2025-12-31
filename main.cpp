@@ -1,14 +1,7 @@
-#include <windows.h>
-#include <QtGui/QSurfaceFormat>
-#include <QtGui/QGuiApplication>
-#include <QtGui/QScreen>
-#include <QtOpenGLWidgets/QOpenGLWidget>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QSystemTrayIcon>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QGraphicsView>
-
-#include <yy981/time.h>
+#include <SDL.h>
+#include <SDL_image.h>
+#include <iostream>
+#include <unordered_map>
 
 #include "def.h"
 #include "basic.entity.h"
@@ -16,81 +9,38 @@
 #include "create.h"
 #include "player.h"
 
-
 int main(int argc, char* argv[]) {
-	/* GPU */
-	QSurfaceFormat format;
-    // format.setOption(QSurfaceFormat::DebugContext);
-    format.setProfile(QSurfaceFormat::CoreProfile);
-    format.setVersion(4,6);  // OpenGL4.6 2024/10/15
-    QSurfaceFormat::setDefaultFormat(format);
-
-
-	/* Qt_system */
-	QApplication app(argc, argv);
-	// ミューテックスを利用した多重起動防止機構
-    HANDLE hMutex = CreateMutex(nullptr, TRUE, "Global\\ShootingAppMutex");
-    if (GetLastError() == ERROR_ALREADY_EXISTS) {
-		QSystemTrayIcon trayIcon;
-		trayIcon.setIcon(QIcon("image/trayIcon.png"));
-		// アイコンをシステムトレイに表示
-		trayIcon.setVisible(false);
-		trayIcon.show();
-		// バルーン通知を表示
-		trayIcon.showMessage(QString::fromLocal8Bit("多重起動は禁止されています"), 
-							 QString::fromLocal8Bit("既に実行されていたゲームを終了します\nもう一度ゲームを開きなおしてください"), QSystemTrayIcon::Warning, 10000);
-		sleepc(tu::s,10);
-		std::system("taskkill /im Shooting.exe");
+	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+		std::cerr << "SDL_Init Error: " << SDL_GetError() << std::endl;
+		return 1;
+	}
+	if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
+		std::cerr << "IMG_Init Error: " << IMG_GetError() << std::endl;
+		SDL_Quit();
 		return 1;
 	}
 
+	SDL_Window* window = SDL_CreateWindow("Shooting", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, sceneWidth, sceneHeight, SDL_WINDOW_SHOWN);
+	if (!window) { std::cerr << "CreateWindow failed: " << SDL_GetError() << std::endl; return 1; }
+	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if (!renderer) { std::cerr << "CreateRenderer failed: " << SDL_GetError() << std::endl; return 1; }
+	qt::setRenderer(renderer);
 
-	/* 優先度 */
-    // スレッド単位 -> if (!SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_HIGHEST)) {std::cerr << "Failed to set main thread priority."; return 1;}
-	SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS);
-
-
-	/* pixmap */
+	// load pixmaps
 	sp::A_aqua = new QPixmap("image/A_aqua.png");
 	sp::triangle_red = new QPixmap("image/triangle_red.png");
 	sp::hexagon_yellow = new QPixmap("image/hexagon_yellow.png");
 	sp::triangle_blue = new QPixmap("image/triangle_blue.png");
-	if (sp::A_aqua->isNull()) throw std::runtime_error("画像を読み込めませんでした"); // 標本調査
+	if (sp::A_aqua->isNull()) throw std::runtime_error("画像を読み込めませんでした");
 
-
-	/* scene */
+	// scene
 	scene = new QGraphicsScene;
-	scene->setItemIndexMethod(QGraphicsScene::BspTreeIndex);  // インデックス不使用
-	scene->setSceneRect(0, 0, sceneWidth, sceneHeight);
-	scene->setBackgroundBrush(QColor(32, 32, 32));
+	scene->setSceneRect(0,0,sceneWidth,sceneHeight);
+	scene->setBackgroundBrush(QColor(32,32,32));
 	bullet::setScene(scene);
 	enemy::setScene(scene);
 
-
-	/* view */
-	QGraphicsView view(scene);
-	view.setViewport(new QOpenGLWidget);
-	view.setOptimizationFlags(QGraphicsView::DontSavePainterState | QGraphicsView::DontAdjustForAntialiasing);
-	view.setViewportUpdateMode(QGraphicsView::MinimalViewportUpdate);
-	view.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing);
-	view.setFixedSize(sceneWidth, sceneHeight);
-	   // view.setFixedSize(1000,1000);
-	view.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	view.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-
-	/* window */
-	QMainWindow mainWindow;
-	mainWindow.setCentralWidget(&view);
-	MWStatusBar = mainWindow.statusBar();
-	MWStatusBar->setStyleSheet("font-size: 20px;");
-	mainWindow.setFixedSize(sceneWidth, sceneHeight + mainWindow.statusBar()->height());
-	   // mainWindow.setFixedSize(1000, 1000);
-    QRect screenGeometry = QGuiApplication::primaryScreen()->geometry();
-    mainWindow.move(screenGeometry.width()/2-sceneWidthHalf, screenGeometry.height()/2-sceneHeightHalf);
-
-
-	/* player */
+	// player
 	bullet_player_default_relative = (sp::triangle_blue->width() - sp::hexagon_yellow->width())/2;
 	startingPoint[0] = (sceneWidth - sp::triangle_blue->width()) /2;
 	startingPoint[1] = sceneHeight - sp::triangle_blue->height()-5;
@@ -99,28 +49,71 @@ int main(int argc, char* argv[]) {
 	player->setPos(startingPoint[0],startingPoint[1]);
 	playerVCore->setPos((player->pixmap().width() - playerVCore->pixmap().width())/2,  (player->pixmap().height() - playerVCore->pixmap().height()+10)/2);
 	scene->addItem(player);
-	player->setFlag(QGraphicsItem::ItemIsFocusable);
-	player->setFocus();
 
+	// texture cache
+	std::unordered_map<SDL_Surface*, SDL_Texture*> texcache;
 
-	/* moveCache初期化 */
-	for (int i = 0; i < 359; ++i) {
-		float radians = qDegreesToRadians(i-90);
-		moveCache[i][0] = std::cos(radians);
-		moveCache[i][1] = std::sin(radians);
-    }
+	bool running = true;
+	SDL_Event e;
+	uint32_t last = SDL_GetTicks();
+	while (running) {
+		uint32_t now = SDL_GetTicks();
+		int dt = static_cast<int>(now - last);
+		last = now;
+		tick_timers(dt);
 
+		while (SDL_PollEvent(&e)) {
+			if (e.type == SDL_QUIT) running = false;
+			else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP) {
+				bool down = (e.type == SDL_KEYDOWN);
+				int key = e.key.keysym.sym;
+				int qk = 0;
+				switch (key) {
+					case SDLK_LEFT: qk = Qt::Key_Left; break;
+					case SDLK_RIGHT: qk = Qt::Key_Right; break;
+					case SDLK_UP: qk = Qt::Key_Up; break;
+					case SDLK_DOWN: qk = Qt::Key_Down; break;
+					case SDLK_LSHIFT: case SDLK_RSHIFT: qk = Qt::Key_Shift; break;
+					case SDLK_z: qk = Qt::Key_Z; break;
+					default: qk = key; break;
+				}
+				QKeyEvent qev(qk);
+				if (player) {
+					if (down) player->keyPressEvent(&qev); else player->keyReleaseEvent(&qev);
+				}
+			}
+		}
 
-	/* json */
-	std::string jsonfilename;
-	if (argc==2) jsonfilename = std::string(argv[1]); else jsonfilename = "shooting.json";
-	jsonRead(jsonfilename);
+		// render
+		SDL_SetRenderDrawColor(renderer, 32,32,32,255);
+		SDL_RenderClear(renderer);
+		for (auto item : scene->items()) {
+			QGraphicsPixmapItem* pi = dynamic_cast<QGraphicsPixmapItem*>(item);
+			if (!pi) continue;
+			QPixmap pm = pi->pixmap();
+			if (pm.surf==nullptr) continue;
+			SDL_Texture* tex = nullptr;
+			auto it = texcache.find(pm.surf);
+			if (it!=texcache.end()) tex = it->second; else {
+				tex = SDL_CreateTextureFromSurface(renderer, pm.surf);
+				if (tex) texcache[pm.surf] = tex;
+			}
+			if (tex) {
+				SDL_Rect dst{ static_cast<int>(item->x()), static_cast<int>(item->y()), pm.width(), pm.height() };
+				SDL_RenderCopy(renderer, tex, nullptr, &dst);
+			}
+		}
+		SDL_RenderPresent(renderer);
 
+		SDL_Delay(1);
+	}
 
-	/* ウィンドウ表示&アプリ実行 */
-	mainWindow.show();
-	int appExecReturn = app.exec();
-	ReleaseMutex(hMutex);
-    CloseHandle(hMutex);
-	return appExecReturn;
+	// cleanup
+	for (auto &p : texcache) if (p.second) SDL_DestroyTexture(p.second);
+	delete sp::A_aqua; delete sp::triangle_red; delete sp::hexagon_yellow; delete sp::triangle_blue;
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+	IMG_Quit();
+	SDL_Quit();
+	return 0;
 }

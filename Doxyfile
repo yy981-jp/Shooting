@@ -1,0 +1,13 @@
+PROJECT_NAME           = "Shooting"
+OUTPUT_LANGUAGE        = Japanese
+NUM_PROC_THREADS       = 32
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+FILE_PATTERNS          = *.cpp *.h
+RECURSIVE              = YES
+EXCLUDE_PATTERNS       = */build/*
+HAVE_DOT               = YES
+DOT_NUM_THREADS        = 1
+CALLER_GRAPH           = YES
+DOT_IMAGE_FORMAT       = png

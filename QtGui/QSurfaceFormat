@@ -1,0 +1,11 @@
+#pragma once
+#include "../qt_compat.h"
+
+class QSurfaceFormat {
+public:
+    enum FormatOption { DebugContext };
+    enum OpenGLContextProfile { CoreProfile };
+    void setProfile(OpenGLContextProfile) {}
+    void setVersion(int,int) {}
+    static void setDefaultFormat(const QSurfaceFormat&) {}
+};

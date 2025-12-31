@@ -46,3 +46,6 @@ protected:
 	virtual void move(int distance = 5, int interval = 100);
 	static QGraphicsScene* m_scene;
 };
+
+// Provide inline empty implementation for signal functions (moc emulation)
+inline void enemy::collisionDetected() {}

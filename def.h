@@ -1,8 +1,6 @@
 #pragma once
 #include <unordered_set>
-#include <QtWidgets/QGraphicsScene>
-#include <QtWidgets/QStatusBar>
-#include <QtCore/QCoreApplication>
+#include "qt_compat.h"
 
 #define BML [](int L, QGraphicsPixmapItem* I)
 #define BMLN [L,I]()
@@ -25,7 +23,7 @@ constexpr int fpsConstant(16), collidingDetectionConstant(fpsConstant * 5);
 
 template <typename T>
 inline void im(T i) {
-	QMetaObject::invokeMethod(QCoreApplication::instance(), i);
+	i();
 }
 
 

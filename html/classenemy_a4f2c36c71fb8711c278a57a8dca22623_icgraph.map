@@ -1,0 +1,5 @@
+<map id="enemy::enemy" name="enemy::enemy">
+<area shape="rect" id="Node000001" title=" " alt="" coords="207,13,314,40"/>
+<area shape="rect" id="Node000002" href="$classenemy__default.html#ac35e16987bc37db53106e4d0847c3695" title=" " alt="" coords="5,5,159,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="191,29,159,29,159,24,191,24"/>
+</map>

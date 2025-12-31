@@ -1,0 +1,7 @@
+#pragma once
+#include "../qt_compat.h"
+
+class QCoreApplication {
+public:
+    static QCoreApplication* instance() { return nullptr; }
+};

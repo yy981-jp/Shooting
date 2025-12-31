@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.14.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Shooting: player.h ソースファイル</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Shooting
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 構築: Doxygen 1.14.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','検索',true);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){initNavTree('player_8h_source.html','',''); });
+</script>
+<div id="container">
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">読み取り中…</div>
+<div class="SRStatus" id="Searching">検索中…</div>
+<div class="SRStatus" id="NoMatches">一致する文字列を見つけられません</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">player.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="player_8h.html">[詳解]</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;QtCore/QObject&gt;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;QtWidgets/QGraphicsPixmapItem&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;QtGui/QKeyEvent&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="custom_8entity_8h.html">custom.entity.h</a>&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">//Player.begin</span></div>
+<div class="foldopen" id="foldopen00009" data-start="{" data-end="};">
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="class_player.html">    9</a></span><span class="keyword">class </span><a class="code hl_function" href="class_player.html#affe0cc3cb714f6deb4e62f0c0d3f1fd8">Player</a> : <span class="keyword">public</span> QObject, <span class="keyword">public</span> QGraphicsPixmapItem {</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    Q_OBJECT</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <a class="code hl_function" href="class_player.html#affe0cc3cb714f6deb4e62f0c0d3f1fd8">Player</a>();</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_player.html#a0fa8b81e2c44c19a3dff10a8c02c2f66">keyPressEvent</a>(QKeyEvent* event) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_player.html#af9465343fdb40093c7fa46b8cf5efae3">keyReleaseEvent</a>(QKeyEvent* event) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_player.html#a4669f38700a5d569b2db7a4f2dbc90e7">focusOutEvent</a>(QFocusEvent *event) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">private</span> slots:</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keywordtype">void</span> <a class="code hl_slot" href="class_player.html#a1cb7ff18fe3b07cc1dcd27519bde8329">updatePosition</a>();</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="class_player.html#a330e0ba9fb78c2ddb75a718c353a9b65">   23</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="class_player.html#a330e0ba9fb78c2ddb75a718c353a9b65">leftPressed</a>;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="class_player.html#a1caa97a21751bdc88b9faa7d4a9c2276">   24</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="class_player.html#a1caa97a21751bdc88b9faa7d4a9c2276">rightPressed</a>;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="class_player.html#a7a9502fee787819ef308f42594993985">   25</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="class_player.html#a7a9502fee787819ef308f42594993985">upPressed</a>;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="class_player.html#a5dd35c5d2f1845332d31e94bcddeb039">   26</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="class_player.html#a5dd35c5d2f1845332d31e94bcddeb039">downPressed</a>;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="class_player.html#a0c8713a0a584552c6d63e1bd39e7ed0f">   27</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="class_player.html#a0c8713a0a584552c6d63e1bd39e7ed0f">firing</a>;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="class_player.html#aed53a72894e3b2226ba957a7dde1e38c">   28</a></span>    QTimer* <a class="code hl_variable" href="class_player.html#aed53a72894e3b2226ba957a7dde1e38c">timer</a>;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="class_player.html#a81d012f7efc6f6c7fc0245bebdf88f4a">   29</a></span>    <span class="keywordtype">short</span> <a class="code hl_variable" href="class_player.html#a81d012f7efc6f6c7fc0245bebdf88f4a">distance</a>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>};</div>
+</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">//Player.end</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="keyword">extern</span> <a class="code hl_class" href="class_player.html">Player</a>* <a class="code hl_variable" href="player_8cpp.html#a96781128d3743da3d17e0fdd91afba7b">player</a>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">//PlayerVCore.begin</span></div>
+<div class="foldopen" id="foldopen00037" data-start="{" data-end="};">
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="class_player_v_core.html">   37</a></span><span class="keyword">class </span><a class="code hl_function" href="class_player_v_core.html#a23560b84b47385d3f01d4faa5cf42bde">PlayerVCore</a> : <span class="keyword">public</span> QObject, <span class="keyword">public</span> QGraphicsPixmapItem {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <a class="code hl_function" href="class_player_v_core.html#a23560b84b47385d3f01d4faa5cf42bde">PlayerVCore</a>(QGraphicsItem* parent);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="class_player_v_core.html#a88e17f60282d428a8d5aff4382af4aa7">   41</a></span><span class="keyword">private</span>: QGraphicsItem* <a class="code hl_variable" href="class_player_v_core.html#a88e17f60282d428a8d5aff4382af4aa7">playerPointer</a>;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>};</div>
+</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">//PlayerVCore.end</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="ttc" id="aclass_player_html"><div class="ttname"><a href="class_player.html">Player</a></div><div class="ttdef"><b>Definition</b> player.h:9</div></div>
+<div class="ttc" id="aclass_player_html_a0c8713a0a584552c6d63e1bd39e7ed0f"><div class="ttname"><a href="class_player.html#a0c8713a0a584552c6d63e1bd39e7ed0f">Player::firing</a></div><div class="ttdeci">bool firing</div><div class="ttdef"><b>Definition</b> player.h:27</div></div>
+<div class="ttc" id="aclass_player_html_a0fa8b81e2c44c19a3dff10a8c02c2f66"><div class="ttname"><a href="class_player.html#a0fa8b81e2c44c19a3dff10a8c02c2f66">Player::keyPressEvent</a></div><div class="ttdeci">void keyPressEvent(QKeyEvent *event) override</div><div class="ttdef"><b>Definition</b> player.cpp:22</div></div>
+<div class="ttc" id="aclass_player_html_a1caa97a21751bdc88b9faa7d4a9c2276"><div class="ttname"><a href="class_player.html#a1caa97a21751bdc88b9faa7d4a9c2276">Player::rightPressed</a></div><div class="ttdeci">bool rightPressed</div><div class="ttdef"><b>Definition</b> player.h:24</div></div>
+<div class="ttc" id="aclass_player_html_a1cb7ff18fe3b07cc1dcd27519bde8329"><div class="ttname"><a href="class_player.html#a1cb7ff18fe3b07cc1dcd27519bde8329">Player::updatePosition</a></div><div class="ttdeci">void updatePosition()</div><div class="ttdef"><b>Definition</b> player.cpp:49</div></div>
+<div class="ttc" id="aclass_player_html_a330e0ba9fb78c2ddb75a718c353a9b65"><div class="ttname"><a href="class_player.html#a330e0ba9fb78c2ddb75a718c353a9b65">Player::leftPressed</a></div><div class="ttdeci">bool leftPressed</div><div class="ttdef"><b>Definition</b> player.h:23</div></div>
+<div class="ttc" id="aclass_player_html_a4669f38700a5d569b2db7a4f2dbc90e7"><div class="ttname"><a href="class_player.html#a4669f38700a5d569b2db7a4f2dbc90e7">Player::focusOutEvent</a></div><div class="ttdeci">void focusOutEvent(QFocusEvent *event) override</div><div class="ttdef"><b>Definition</b> player.cpp:44</div></div>
+<div class="ttc" id="aclass_player_html_a5dd35c5d2f1845332d31e94bcddeb039"><div class="ttname"><a href="class_player.html#a5dd35c5d2f1845332d31e94bcddeb039">Player::downPressed</a></div><div class="ttdeci">bool downPressed</div><div class="ttdef"><b>Definition</b> player.h:26</div></div>
+<div class="ttc" id="aclass_player_html_a7a9502fee787819ef308f42594993985"><div class="ttname"><a href="class_player.html#a7a9502fee787819ef308f42594993985">Player::upPressed</a></div><div class="ttdeci">bool upPressed</div><div class="ttdef"><b>Definition</b> player.h:25</div></div>
+<div class="ttc" id="aclass_player_html_a81d012f7efc6f6c7fc0245bebdf88f4a"><div class="ttname"><a href="class_player.html#a81d012f7efc6f6c7fc0245bebdf88f4a">Player::distance</a></div><div class="ttdeci">short distance</div><div class="ttdef"><b>Definition</b> player.h:29</div></div>
+<div class="ttc" id="aclass_player_html_aed53a72894e3b2226ba957a7dde1e38c"><div class="ttname"><a href="class_player.html#aed53a72894e3b2226ba957a7dde1e38c">Player::timer</a></div><div class="ttdeci">QTimer * timer</div><div class="ttdef"><b>Definition</b> player.h:28</div></div>
+<div class="ttc" id="aclass_player_html_af9465343fdb40093c7fa46b8cf5efae3"><div class="ttname"><a href="class_player.html#af9465343fdb40093c7fa46b8cf5efae3">Player::keyReleaseEvent</a></div><div class="ttdeci">void keyReleaseEvent(QKeyEvent *event) override</div><div class="ttdef"><b>Definition</b> player.cpp:33</div></div>
+<div class="ttc" id="aclass_player_html_affe0cc3cb714f6deb4e62f0c0d3f1fd8"><div class="ttname"><a href="class_player.html#affe0cc3cb714f6deb4e62f0c0d3f1fd8">Player::Player</a></div><div class="ttdeci">Player()</div><div class="ttdef"><b>Definition</b> player.cpp:8</div></div>
+<div class="ttc" id="aclass_player_v_core_html_a23560b84b47385d3f01d4faa5cf42bde"><div class="ttname"><a href="class_player_v_core.html#a23560b84b47385d3f01d4faa5cf42bde">PlayerVCore::PlayerVCore</a></div><div class="ttdeci">PlayerVCore(QGraphicsItem *parent)</div><div class="ttdef"><b>Definition</b> player.cpp:73</div></div>
+<div class="ttc" id="aclass_player_v_core_html_a88e17f60282d428a8d5aff4382af4aa7"><div class="ttname"><a href="class_player_v_core.html#a88e17f60282d428a8d5aff4382af4aa7">PlayerVCore::playerPointer</a></div><div class="ttdeci">QGraphicsItem * playerPointer</div><div class="ttdef"><b>Definition</b> player.h:41</div></div>
+<div class="ttc" id="acustom_8entity_8h_html"><div class="ttname"><a href="custom_8entity_8h.html">custom.entity.h</a></div></div>
+<div class="ttc" id="aplayer_8cpp_html_a96781128d3743da3d17e0fdd91afba7b"><div class="ttname"><a href="player_8cpp.html#a96781128d3743da3d17e0fdd91afba7b">player</a></div><div class="ttdeci">Player * player</div><div class="ttdef"><b>Definition</b> player.cpp:68</div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+</div><!-- container -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="player_8h.html">player.h</a></li>
+    <li class="footer">構築: <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.14.0 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,153 @@
+\doxysection{enemy クラス}
+\hypertarget{classenemy}{}\label{classenemy}\index{enemy@{enemy}}
+
+
+{\ttfamily \#include $<$basic.\+entity.\+h$>$}
+
+
+
+enemy の継承関係図
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=266pt]{classenemy__inherit__graph}
+\end{center}
+\end{figure}
+
+
+enemy 連携図
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=266pt]{classenemy__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{シグナル}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classenemy_aed0b600704f997f962c64f9f6f0bfc21}{collision\+Detected}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{公開メンバ関数}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classenemy_a4f2c36c71fb8711c278a57a8dca22623}{enemy}} (const \mbox{\hyperlink{struct_coord}{Coord}} \&coord)
+\item 
+virtual \mbox{\hyperlink{classenemy_a9b38fa27c04e7cfec2596bfa6a5820e0}{\texorpdfstring{$\sim$}{\string~}enemy}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{静的公開メンバ関数}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classenemy_adaafcfd4b68e0451013103acee2834ca}{set\+Scene}} (QGraphics\+Scene \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{def_8cpp_ae3af7a17c7fa217374ed78810c1f885f}{scene}})
+\end{DoxyCompactItemize}
+\doxysubsubsection*{限定公開メンバ関数}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classenemy_a9b8bafb760fcc928fd16b20350d416bc}{process}} ()
+\item 
+virtual void \mbox{\hyperlink{classenemy_ad6744e9a004a7b959933eca45b943f84}{move}} (int distance=5, int interval=100)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{静的限定公開変数類}
+\begin{DoxyCompactItemize}
+\item 
+static QGraphics\+Scene \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classenemy_ae07167357b85e9476b5a7a5e9586f86b}{m\+\_\+scene}} = nullptr
+\end{DoxyCompactItemize}
+\doxysubsubsection*{その他の継承メンバ}
+\doxysubsection*{基底クラス \mbox{\hyperlink{classbasic}{basic}} に属する継承公開型}
+\begin{DoxyCompactItemize}
+\item 
+enum \{ \mbox{\hyperlink{classbasic_a155130fc3808548ba09e4623dfc6a93eac1f52c13471f25d2e27594f3b92df521}{Type}} = User\+Type + 1
+ \}
+\end{DoxyCompactItemize}
+
+
+\label{doc-constructors}
+\Hypertarget{classenemy_doc-constructors}
+\doxysubsection{構築子と解体子}
+\Hypertarget{classenemy_a4f2c36c71fb8711c278a57a8dca22623}\index{enemy@{enemy}!enemy@{enemy}}
+\index{enemy@{enemy}!enemy@{enemy}}
+\doxysubsubsection{\texorpdfstring{enemy()}{enemy()}}
+{\footnotesize\ttfamily \label{classenemy_a4f2c36c71fb8711c278a57a8dca22623} 
+enemy\+::enemy (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_coord}{Coord}} \&}]{coord}{}\end{DoxyParamCaption})}
+
+被呼び出し関係図\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=312pt]{classenemy_a4f2c36c71fb8711c278a57a8dca22623_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classenemy_a9b38fa27c04e7cfec2596bfa6a5820e0}\index{enemy@{enemy}!````~enemy@{\texorpdfstring{$\sim$}{\string~}enemy}}
+\index{````~enemy@{\texorpdfstring{$\sim$}{\string~}enemy}!enemy@{enemy}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}enemy()}{\string~enemy()}}
+{\footnotesize\ttfamily \label{classenemy_a9b38fa27c04e7cfec2596bfa6a5820e0} 
+enemy\+::\texorpdfstring{$\sim$}{\string~}enemy (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+\label{doc-func-members}
+\Hypertarget{classenemy_doc-func-members}
+\doxysubsection{関数詳解}
+\Hypertarget{classenemy_aed0b600704f997f962c64f9f6f0bfc21}\index{enemy@{enemy}!collisionDetected@{collisionDetected}}
+\index{collisionDetected@{collisionDetected}!enemy@{enemy}}
+\doxysubsubsection{\texorpdfstring{collisionDetected}{collisionDetected}}
+{\footnotesize\ttfamily \label{classenemy_aed0b600704f997f962c64f9f6f0bfc21} 
+void enemy\+::collision\+Detected (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [signal]}}
+
+被呼び出し関係図\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classenemy_aed0b600704f997f962c64f9f6f0bfc21_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classenemy_ad6744e9a004a7b959933eca45b943f84}\index{enemy@{enemy}!move@{move}}
+\index{move@{move}!enemy@{enemy}}
+\doxysubsubsection{\texorpdfstring{move()}{move()}}
+{\footnotesize\ttfamily \label{classenemy_ad6744e9a004a7b959933eca45b943f84} 
+void enemy\+::move (\begin{DoxyParamCaption}\item[{int}]{distance}{ = {\ttfamily 5}, }\item[{int}]{interval}{ = {\ttfamily 100}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+\Hypertarget{classenemy_a9b8bafb760fcc928fd16b20350d416bc}\index{enemy@{enemy}!process@{process}}
+\index{process@{process}!enemy@{enemy}}
+\doxysubsubsection{\texorpdfstring{process()}{process()}}
+{\footnotesize\ttfamily \label{classenemy_a9b8bafb760fcc928fd16b20350d416bc} 
+void enemy\+::process (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+\mbox{\hyperlink{classenemy__default_a4c1b7634b6023de7529e136bf1b0c4c3}{enemy\+\_\+default}}で再実装されています。
+
+\Hypertarget{classenemy_adaafcfd4b68e0451013103acee2834ca}\index{enemy@{enemy}!setScene@{setScene}}
+\index{setScene@{setScene}!enemy@{enemy}}
+\doxysubsubsection{\texorpdfstring{setScene()}{setScene()}}
+{\footnotesize\ttfamily \label{classenemy_adaafcfd4b68e0451013103acee2834ca} 
+void enemy\+::set\+Scene (\begin{DoxyParamCaption}\item[{QGraphics\+Scene \texorpdfstring{$\ast$}{*}}]{scene}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+被呼び出し関係図\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classenemy_adaafcfd4b68e0451013103acee2834ca_icgraph}
+\end{center}
+\end{figure}
+
+
+\label{doc-variable-members}
+\Hypertarget{classenemy_doc-variable-members}
+\doxysubsection{メンバ詳解}
+\Hypertarget{classenemy_ae07167357b85e9476b5a7a5e9586f86b}\index{enemy@{enemy}!m\_scene@{m\_scene}}
+\index{m\_scene@{m\_scene}!enemy@{enemy}}
+\doxysubsubsection{\texorpdfstring{m\_scene}{m\_scene}}
+{\footnotesize\ttfamily \label{classenemy_ae07167357b85e9476b5a7a5e9586f86b} 
+QGraphics\+Scene \texorpdfstring{$\ast$}{*} enemy\+::m\+\_\+scene = nullptr\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [protected]}}
+
+
+
+このクラス詳解は次のファイルから抽出されました\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{basic_8entity_8h}{basic.\+entity.\+h}}\item 
+\mbox{\hyperlink{basic_8entity_8cpp}{basic.\+entity.\+cpp}}\end{DoxyCompactItemize}

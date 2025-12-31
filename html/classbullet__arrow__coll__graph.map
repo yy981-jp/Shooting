@@ -1,0 +1,11 @@
+<map id="bullet_arrow" name="bullet_arrow">
+<area shape="rect" id="Node000001" title=" " alt="" coords="62,229,154,256"/>
+<area shape="rect" id="Node000002" href="$classbullet.html" title=" " alt="" coords="82,155,134,181"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,197,111,229,105,229,105,197"/>
+<area shape="rect" id="Node000003" href="$classbasic.html" title=" " alt="" coords="82,80,134,107"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="111,122,111,154,105,154,105,122"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,5,75,32"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="64,42,98,78,94,81,60,45"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="99,5,253,32"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="156,45,122,81,118,78,152,42"/>
+</map>
