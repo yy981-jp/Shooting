@@ -1,43 +1,39 @@
 #include <string>
 #include <stdexcept>
 
+#include "gfx.h"
+#include "player.h"
+
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+
 
 class Game {
     SDL_Window* window;
-    SDL_Renderer* renderer;
+    SDL_Renderer* rendererNative;
     SDL_Texture* texture;
 
     static constexpr int
         width = 800,
         height = 600;
 
+    struct KeyStat {
+        bool
+            up      = false,
+            down    = false,
+            left    = false,
+            right   = false,
+            z       = false,
+            shift   = false;
+    } keyStat;
+
+    Renderer* renderer;
+    Player player;
+
 public:
-    Game(int windowWidth, int windowHeight) {
-        window = SDL_CreateWindow(
-            "Shooting-SDL2",
-            SDL_WINDOWPOS_CENTERED,
-            SDL_WINDOWPOS_CENTERED,
-            windowWidth,
-            windowHeight,
-            SDL_WINDOW_SHOWN
-        );
-        if (!window) throw std::runtime_error(std::string("SDL_CreateWindow failed: ") + SDL_GetError());
-
-        renderer = SDL_CreateRenderer(
-            window,
-            -1,
-            SDL_RENDERER_ACCELERATED
-        );
-        if (!renderer) throw std::runtime_error(std::string("SDL_CreateRenderer failed: ") + SDL_GetError());
-
-
-        texture = SDL_CreateTexture(
-            renderer,
-            SDL_PIXELFORMAT_ARGB8888,
-            SDL_TEXTUREACCESS_STREAMING,
-            width,
-            height
-        );
-        if (!texture) throw std::runtime_error(std::string("SDL_CreateTexture failed: ") + SDL_GetError());
-    }
+    Game(int windowWidth, int windowHeight);
+    void update();
+    void draw() const;
+    void onKeyDown(const SDL_KeyboardEvent& e);
+    void onKeyUP(const SDL_KeyboardEvent& e);
 };
