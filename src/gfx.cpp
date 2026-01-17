@@ -6,28 +6,32 @@
 #include <yy981/UMT.h>
 
 
-    SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
-        SDL_Surface* s = IMG_Load(path.c_str());
-        if (!s) {
-            throw std::runtime_error(std::string("IMG_Load error: ") + IMG_GetError());
-        }
-
-        int width  = s->w;
-        int height = s->h;
-
-        SDL_Texture* t = SDL_CreateTextureFromSurface(renderer, s);
-        if (!t) {
-            throw std::runtime_error(std::string("SDL_CreateTextureFromSurface") + IMG_GetError());
-        }
-        SDL_FreeSurface(s);
-
-        return SpriteInfo{t, width, height};
+SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
+    SDL_Surface* s = IMG_Load(path.c_str());
+    if (!s) {
+        throw std::runtime_error(std::string("IMG_Load error: ") + IMG_GetError());
     }
 
-    std::string deriveFileName(std::unordered_map<std::string,std::string>& imageTable, int index) {
-        return "assets/image/" + imageTable[std::to_string(index)] + ".png";
-    }
+    int width  = s->w;
+    int height = s->h;
 
+    SDL_Texture* t = SDL_CreateTextureFromSurface(renderer, s);
+    if (!t) {
+        throw std::runtime_error(std::string("SDL_CreateTextureFromSurface") + IMG_GetError());
+    }
+    SDL_FreeSurface(s);
+
+    return SpriteInfo{t, width, height};
+}
+
+std::string deriveFileName(std::unordered_map<std::string,std::string>& imageTable, int index) {
+    return "assets/image/" + imageTable[std::to_string(index)] + ".png";
+}
+
+
+/*------------------------------**
+**          Renderer            **
+**------------------------------*/
     Renderer::Renderer(void* sdlRenderer): native(sdlRenderer) {
         auto* renderer = static_cast<SDL_Renderer*>(native);
 
@@ -39,6 +43,14 @@
     }
 
     Renderer::~Renderer() {}
+
+    Vec2 Renderer::getSpriteSize(SPR spriteID) {
+        SpriteInfo sprite = spriteTable[static_cast<size_t>(spriteID)];
+        Vec2 vec;
+        vec.x = sprite.w;
+        vec.y = sprite.h;
+        return vec;
+    }
 
     void Renderer::drawSprite(SPR spriteID, const Vec2& pos) const {
         auto* renderer = static_cast<SDL_Renderer*>(native);

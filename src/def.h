@@ -1,5 +1,15 @@
 #pragma once
 
+#include <cstdint>
+
+
+enum class SPR: uint16_t {
+    background,
+    player,
+    playerBullet,
+    count
+};
+
 
 struct Vec2 {int x, y;};
 struct Vec2F {
@@ -24,4 +34,3 @@ inline Vec2F operator*(float scalar, const Vec2F& p) {
 inline Vec2F operator*(const Vec2& p, float scalar) {
     return Vec2F(p.x * scalar, p.y * scalar);
 }
-

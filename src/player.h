@@ -5,29 +5,24 @@
 #include "def.h"
 #include "gfx.h"
 
+
+struct ShotRequest {
+	bool shouldShoot = false;
+	Vec2 spawnPos{};
+};
+
 class Player {
     int speed;
     float moveTable[3][3][2]; // y, x, [cos,sin]
     Vec2F pos;
+    Vec2 border;
+    Vec2 spriteSize;
+    int shootInterval = 20; // ms
+    int elapsedTime = 0;
+
 public:
-    Player(int speed): speed(speed), pos(400, 300) {
-        for (int y = -1; y <= 1; ++y) {
-            for (int x = -1; x <= 1; ++x) {
-                float& cx = moveTable[y + 1][x + 1][0];
-                float& cy = moveTable[y + 1][x + 1][1];
+    Player(int speed, Vec2 border, Vec2 spriteSize);
 
-                if (x == 0 && y == 0) {
-                    cx = cy = 0.0f;
-                    continue;
-                }
-
-                float len = std::sqrt(float(x*x + y*y));
-                cx = x / len;
-                cy = y / len;
-            }
-        }
-    }
-
-    void update(int dx, int dy, bool slow);
+    ShotRequest update(int deltaTime, int dx, int dy, bool slow, bool shot);
     void draw(const Renderer* renderer) const;
 };

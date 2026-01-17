@@ -1,8 +1,10 @@
 #include <string>
 #include <stdexcept>
 
+#include "time.h"
 #include "gfx.h"
 #include "player.h"
+#include "playerBullet.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -28,10 +30,12 @@ class Game {
     } keyStat;
 
     Renderer* renderer;
-    Player player;
+    Player* player;
+    PlayerBullet_Manager playerBullet_Manager;
+    ElapsedTime elapsedTime;
 
 public:
-    Game(int windowWidth, int windowHeight);
+    Game(int windowWidth, int windowHeight, int FPSDelayMS);
     void update();
     void draw() const;
     void onKeyDown(const SDL_KeyboardEvent& e);

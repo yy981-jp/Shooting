@@ -7,12 +7,6 @@
 #include "def.h"
 #include "SDL_def.h"
 
-enum class SPR: uint16_t {
-    Player,
-
-    count
-};
-
 struct SpriteInfo {
     SpriteInfo(): tex(nullptr), w(0), h(0) {}
     SpriteInfo(SDL_Texture* tex, int width, int height):
@@ -31,6 +25,7 @@ public:
 	Renderer(void* sdlRenderer);
     ~Renderer();
 
+    Vec2 getSpriteSize(SPR spriteID);
 	void drawSprite(SPR spriteID, const Vec2& pos) const;
 	void drawSprite(SPR spriteID, const Vec2F& pos) const;
 };

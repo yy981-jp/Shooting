@@ -9,7 +9,7 @@ Vec2 makeDir(bool up, bool down, bool left, bool right) {
 
 
 
-    Game::Game(int windowWidth, int windowHeight): player(5) {
+    Game::Game(int windowWidth, int windowHeight, int FPSDelayMS) {
         window = SDL_CreateWindow(
             "Shooting-SDL2",
             SDL_WINDOWPOS_CENTERED,
@@ -38,14 +38,22 @@ Vec2 makeDir(bool up, bool down, bool left, bool right) {
         if (!texture) throw std::runtime_error(std::string("SDL_CreateTexture failed: ") + SDL_GetError());
 
         renderer = new Renderer(rendererNative);
+        player = new Player(5,Vec2(width,height),renderer->getSpriteSize(SPR::player));
+        
+        SDL_RenderSetLogicalSize(rendererNative, width, height);
     }
 
     void Game::update() {
+        if (!elapsedTime) elapsedTime.init();
+        int deltaTime = elapsedTime.get();
         Vec2 d = makeDir(keyStat.up, keyStat.down, keyStat.left, keyStat.right);
-        player.update(d.x, d.y, keyStat.shift);
+        ShotRequest playerShotReq = player->update(deltaTime, d.x, d.y, keyStat.shift, keyStat.z);
+        if (playerShotReq.shouldShoot) playerBullet_Manager.generate(playerShotReq.spawnPos);
+        playerBullet_Manager.update();
     }
 
     void Game::onKeyDown(const SDL_KeyboardEvent& e) {
+        if (e.repeat) return;
         switch (e.keysym.sym) {
             case SDLK_UP: keyStat.up = true; break;
             case SDLK_DOWN: keyStat.down = true; break;
@@ -68,7 +76,9 @@ Vec2 makeDir(bool up, bool down, bool left, bool right) {
     }
 
     void Game::draw() const {
-        SDL_RenderClear(rendererNative);
-        player.draw(renderer);
+        // SDL_RenderClear(rendererNative); (これがあると黒帯領域が発生する なんでかって? 未来の自分調べといて)
+        renderer->drawSprite(SPR::background, Vec2(0,0));
+        player->draw(renderer);
+        playerBullet_Manager.draw(renderer);
         SDL_RenderPresent(rendererNative);
     }
