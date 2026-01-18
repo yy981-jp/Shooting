@@ -2,8 +2,8 @@
 
 #include <cmath>
 
-#include "def.h"
-#include "gfx.h"
+#include "../core/def.h"
+#include "../graphics/gfx.h"
 
 
 struct ShotRequest {

@@ -1,0 +1,25 @@
+
+:startGame
+
+	spawn enemyBezier x=100 y=50
+	wait 5s
+	repeat 3
+		spawn enemyBezier x=100 y=50 pattern="spiral" level=2
+		wait 50ms
+	end
+	wait 1s
+	waitUntil boss.hp > 0
+
+end
+
+:main
+	call startGame
+end
+
+/*
+	時間は基本相対的時間 waitUntilのみ絶対的時間
+	ネストは深さ32まで許可
+	データ型はint,float,string,bool
+	時間は、msやsをつけることでコンパイラがフレーム数に変換する
+	SpaceとTabは区別せず何個あっても連続していれば1つとみなす
+*/

@@ -2,8 +2,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-
-#include <yy981/UMT.h>
+#include <stdexcept>
 
 
 SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
@@ -24,27 +23,21 @@ SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
     return SpriteInfo{t, width, height};
 }
 
-std::string deriveFileName(std::unordered_map<std::string,std::string>& imageTable, int index) {
-    return "assets/image/" + imageTable[std::to_string(index)] + ".png";
-}
-
 
 /*------------------------------**
 **          Renderer            **
 **------------------------------*/
-    Renderer::Renderer(void* sdlRenderer): native(sdlRenderer) {
+    Renderer::Renderer(void* sdlRenderer): native(sdlRenderer), spriteTable(entityTable.size()) {
         auto* renderer = static_cast<SDL_Renderer*>(native);
 
-        UMT imageTable("assets/imageTable.umt");
-
-        for (int i = 0; i < static_cast<size_t>(SPR::count); ++i) {
-            spriteTable[i] = loadSprite(deriveFileName(imageTable.data,i), renderer);
+        for (const auto& [entities,id]: entityTable) {
+            spriteTable[id] = loadSprite(Assets + "image/" + entities + ".png", renderer);
         }
     }
 
     Renderer::~Renderer() {}
 
-    Vec2 Renderer::getSpriteSize(SPR spriteID) {
+    Vec2 Renderer::getSpriteSize(entityID spriteID) {
         SpriteInfo sprite = spriteTable[static_cast<size_t>(spriteID)];
         Vec2 vec;
         vec.x = sprite.w;
@@ -52,7 +45,7 @@ std::string deriveFileName(std::unordered_map<std::string,std::string>& imageTab
         return vec;
     }
 
-    void Renderer::drawSprite(SPR spriteID, const Vec2& pos) const {
+    void Renderer::drawSprite(entityID spriteID, const Vec2& pos) const {
         auto* renderer = static_cast<SDL_Renderer*>(native);
         if (!renderer) return;
 
@@ -68,7 +61,7 @@ std::string deriveFileName(std::unordered_map<std::string,std::string>& imageTab
         SDL_RenderCopy(renderer, sprite.tex, nullptr, &dst);
     }
 
-    void Renderer::drawSprite(SPR spriteID, const Vec2F& posF) const {
+    void Renderer::drawSprite(entityID spriteID, const Vec2F& posF) const {
         Vec2 pos;
         pos.x = posF.x;
         pos.y = posF.y;

@@ -2,9 +2,9 @@
 #include <stdexcept>
 
 #include "time.h"
-#include "gfx.h"
-#include "player.h"
-#include "playerBullet.h"
+#include "../graphics/gfx.h"
+#include "../player/player.h"
+#include "../bullet/playerBullet.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -33,6 +33,8 @@ class Game {
     Player* player;
     PlayerBullet_Manager playerBullet_Manager;
     ElapsedTime elapsedTime;
+
+    void loadEntityTable();
 
 public:
     Game(int windowWidth, int windowHeight, int FPSDelayMS);

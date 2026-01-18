@@ -3,9 +3,10 @@
 #include <cstdint>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
-#include "def.h"
-#include "SDL_def.h"
+#include "../core/def.h"
+#include "../core/SDL_def.h"
 
 struct SpriteInfo {
     SpriteInfo(): tex(nullptr), w(0), h(0) {}
@@ -19,13 +20,13 @@ struct SpriteInfo {
 
 class Renderer {
 	void* native;
-    SpriteInfo spriteTable[static_cast<size_t>(SPR::count)];
+    std::vector<SpriteInfo> spriteTable;
 
 public:
 	Renderer(void* sdlRenderer);
     ~Renderer();
 
-    Vec2 getSpriteSize(SPR spriteID);
-	void drawSprite(SPR spriteID, const Vec2& pos) const;
-	void drawSprite(SPR spriteID, const Vec2F& pos) const;
+    Vec2 getSpriteSize(entityID spriteID);
+	void drawSprite(entityID spriteID, const Vec2& pos) const;
+	void drawSprite(entityID spriteID, const Vec2F& pos) const;
 };

@@ -1,0 +1,2 @@
+bossはenemyの一種
+stgはリンクする

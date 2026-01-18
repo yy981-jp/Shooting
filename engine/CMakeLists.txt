@@ -4,7 +4,7 @@ add_compile_options(-fdiagnostics-color=always)
 
 set(CMAKE_CXX_STANDARD 23)
 
-file(GLOB SOURCES src/*.cpp)
+file(GLOB_RECURSE SOURCES src/*.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 

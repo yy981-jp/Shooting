@@ -28,7 +28,7 @@
     }
 
     void Player::draw(const Renderer* renderer) const {
-        renderer->drawSprite(SPR::player, pos);
+        renderer->drawSprite(entityTable["player"], pos);
     }
 
     Player::Player(int speed, Vec2 i_border, Vec2 spriteSize):

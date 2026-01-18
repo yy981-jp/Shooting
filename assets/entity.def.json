@@ -1,0 +1,11 @@
+{
+    "background": {
+        "id": 0
+    },
+    "player": {
+        "id": 1
+    },
+    "playerBullet": {
+        "id": 2
+    }
+}

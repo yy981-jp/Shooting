@@ -1,6 +1,6 @@
 #pragma once
 
-#include "def.h"
+#include "../core/def.h"
 
 #include <deque>
 
@@ -20,7 +20,7 @@ public:
     }
 
     void draw(const Renderer* renderer) const {
-        renderer->drawSprite(SPR::playerBullet,pos);
+        renderer->drawSprite(entityTable["playerBullet"],pos);
     }
 };
 

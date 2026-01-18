@@ -1,5 +1,11 @@
 #include "Game.h"
 
+#include <rapidjson/document.h>
+#include <rapidjson/istreamwrapper.h>
+#include <fstream>
+
+namespace rj = rapidjson;
+
 Vec2 makeDir(bool up, bool down, bool left, bool right) {
 	return {
 		(right ? 1 : 0) - (left ? 1 : 0),
@@ -7,7 +13,20 @@ Vec2 makeDir(bool up, bool down, bool left, bool right) {
 	};
 }
 
+    void Game::loadEntityTable() {
+        std::ifstream ifs(Assets + "entity.def.json");
+        if (!ifs) throw std::runtime_error("Game::loadEntityTable(): ifs");
+        rj::IStreamWrapper isw(ifs);
+        rj::Document doc;
+        doc.ParseStream(isw);
+        const rj::Value& obj = doc;
 
+        for (auto itr = obj.MemberBegin(); itr != obj.MemberEnd(); ++itr) {
+            const char* key = itr->name.GetString();
+            const rj::Value& value = itr->value;
+            entityTable[key] = value["id"].GetInt();
+        }
+    }
 
     Game::Game(int windowWidth, int windowHeight, int FPSDelayMS) {
         window = SDL_CreateWindow(
@@ -37,8 +56,10 @@ Vec2 makeDir(bool up, bool down, bool left, bool right) {
         );
         if (!texture) throw std::runtime_error(std::string("SDL_CreateTexture failed: ") + SDL_GetError());
 
+        loadEntityTable();
+
         renderer = new Renderer(rendererNative);
-        player = new Player(5,Vec2(width,height),renderer->getSpriteSize(SPR::player));
+        player = new Player(5,Vec2(width,height),renderer->getSpriteSize(entityTable["player"]));
         
         SDL_RenderSetLogicalSize(rendererNative, width, height);
     }
@@ -77,7 +98,7 @@ Vec2 makeDir(bool up, bool down, bool left, bool right) {
 
     void Game::draw() const {
         // SDL_RenderClear(rendererNative); (これがあると黒帯領域が発生する なんでかって? 未来の自分調べといて)
-        renderer->drawSprite(SPR::background, Vec2(0,0));
+        renderer->drawSprite(entityTable["background"], Vec2(0,0));
         player->draw(renderer);
         playerBullet_Manager.draw(renderer);
         SDL_RenderPresent(rendererNative);

@@ -1,15 +1,14 @@
 #pragma once
 
 #include <cstdint>
+#include <unordered_map>
+#include <string>
 
 
-enum class SPR: uint16_t {
-    background,
-    player,
-    playerBullet,
-    count
-};
+using entityID = uint16_t;
+extern std::unordered_map<std::string, uint16_t> entityTable;
 
+constexpr std::string Assets = "../../assets/";
 
 struct Vec2 {int x, y;};
 struct Vec2F {
