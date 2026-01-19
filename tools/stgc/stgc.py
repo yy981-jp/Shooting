@@ -15,14 +15,12 @@ class Instruction:
 
 
 @dataclass
-class RepeatBlock:
-	count: int
-	body: list
-
-
-@dataclass
 class Call:
 	target: str
+
+FPS: int = 60
+MAX_NEST: int = 16
+pc: int = 0
 
 
 # ==========
@@ -31,13 +29,20 @@ class Call:
 
 class STGCompiler:
 	def __init__(self, path: str):
-		self.lines = open(path, encoding="utf-8").readlines()
-		self.labels: Dict[str, list] = {}
-		self.pos = 0
+		raw = open(path, encoding="utf-8").read()
+		raw = self._remove_comments(raw)
+		self.lines = raw.splitlines()
+		self.labels: Dict[str, str] = {}
+		self.pc = 0
 
 	def compile(self):
+		instructions = []
+
 		self._collect_labels()
-		return self._compile_label("main")
+		for label in self.labels:
+			instructions.extend(self._compile_label(label))
+		
+		return instructions, self.labels["main"]
 
 	# ----------------
 	# 1パス目：ラベル収集
@@ -53,7 +58,7 @@ class STGCompiler:
 				current = line[1:]
 				if current in self.labels:
 					raise SyntaxError(f"duplicate label: {current}")
-				self.labels[current] = []
+				self.labels[current] = None
 
 		if "main" not in self.labels:
 			raise SyntaxError("main label not found")
@@ -61,34 +66,42 @@ class STGCompiler:
 	# ----------------
 	# ラベル単位でコンパイル
 	# ----------------
-	def _compile_label(self, name: str):
+	def _compile_label(self, name:str):
+		self.labels[name] = self.pc
 		instructions = []
-		self.pos = 0
+		pos = 0
+		loopStack = []
 
 		# 対象ラベルまで進める
-		while self.pos < len(self.lines):
-			if self.lines[self.pos].strip() == f":{name}":
-				self.pos += 1
+		while pos < len(self.lines):
+			if self.lines[pos].strip() == f":{name}":
+				pos += 1
 				break
-			self.pos += 1
+			pos += 1
 
-		while self.pos < len(self.lines):
-			line = self.lines[self.pos].strip()
-			self.pos += 1
+		while pos < len(self.lines):
+			line = self.lines[pos].strip()
+			pos += 1
 
-			if not line or line.startswith("//"):
-				continue
+			self.pc += 1
 
 			if line.startswith(":"):
-				break
+				break # 関数終了
 
 			tokens = line.split()
+			if not tokens:
+				continue
 
 			cmd = tokens[0]
 
 			if cmd == "wait":
 				instructions.append(
-					Instruction("wait", [int(tokens[1])])
+					Instruction("wait", self._parse_second(tokens[1]))
+				)
+
+			elif cmd == "waitUntil":
+				instructions.append(
+					Instruction("waitUntil",tokens[1])
 				)
 
 			elif cmd == "spawn":
@@ -100,93 +113,125 @@ class STGCompiler:
 
 			elif cmd == "call":
 				instructions.append(
-					Call(tokens[1])
+					Instruction("call", tokens[1])
 				)
 
 			elif cmd == "repeat":
-				count = int(tokens[1])
-				body = self._parse_repeat()
 				instructions.append(
-					RepeatBlock(count, body)
+					Instruction("repeat", int(tokens[1]))
 				)
+				if (len(loopStack) >= MAX_NEST):
+					raise SyntaxError(f"深さ{MAX_NEST}以上のネストは許容できません")
+				loopStack.append(self.pc)
+
+			elif cmd == "repeatUntil":
+				instructions.append(
+					Instruction("repeatUntil", tokens[1])
+				)
+				if (len(loopStack) >= MAX_NEST):
+					raise SyntaxError(f"深さ{MAX_NEST}以上のネストは許容できません")
+				loopStack.append(self.pc)
 
 			elif cmd == "end":
-				break
+				if not loopStack:
+					raise SyntaxError("repeat に対応する end がありません")
+				loopStack.pop()
+				instructions.append(
+					Instruction("end")
+				)
 
 			else:
 				raise SyntaxError(f"unknown command: {cmd}")
+	
+		if loopStack:
+			raise SyntaxError("repeat に対応する end が足りません")
 
+		if (name == "main"):
+			instructions.append(Instruction("shutdown"))
 		return instructions
 
-	# ----------------
-	# repeat の中身
-	# ----------------
-	def _parse_repeat(self):
-		body = []
 
-		while self.pos < len(self.lines):
-			line = self.lines[self.pos].strip()
-			self.pos += 1
+	def _remove_comments(self, text: str) -> str:
+		result = []
+		i = 0
+		n = len(text)
+		in_block_comment = False
 
-			if not line or line.startswith("//"):
+		while i < n:
+			# ブロックコメント中
+			if in_block_comment:
+				if text[i:i+2] == "*/":
+					in_block_comment = False
+					i += 2
+				else:
+					i += 1
 				continue
 
-			if line == "end":
-				return body
+			# 行コメント //
+			if text[i:i+2] == "//":
+				# 行末までスキップ
+				while i < n and text[i] != "\n":
+					i += 1
+				continue
 
-			tokens = line.split()
-			cmd = tokens[0]
+			# ブロックコメント開始 /*
+			if text[i:i+2] == "/*":
+				in_block_comment = True
+				i += 2
+				continue
 
-			if cmd == "wait":
-				body.append(Instruction("wait", [int(tokens[1])]))
+			# 通常文字
+			result.append(text[i])
+			i += 1
 
-			elif cmd == "spawn":
-				args = self._parse_kv(tokens[2:])
-				args["type"] = tokens[1]
-				body.append(Instruction("spawn", args))
+		if in_block_comment:
+			raise SyntaxError("ブロックコメントが閉じられていません")
 
-			elif cmd == "repeat":
-				count = int(tokens[1])
-				nested = self._parse_repeat()
-				body.append(RepeatBlock(count, nested))
+		return "".join(result)
+	def _parse_value(self, value: str):
+		v = value.strip()
 
-			else:
-				raise SyntaxError(f"invalid in repeat: {cmd}")
+		# bool
+		if v.lower() == "true":
+			return True
+		if v.lower() == "false":
+			return False
 
-		raise SyntaxError("repeat without end")
+		# int
+		try:
+			return int(v)
+		except ValueError:
+			pass
 
-	# ----------------
-	# key=value パース
-	# ----------------
+		# float
+		try:
+			return float(v)
+		except ValueError:
+			pass
+
+		# string
+		return v
 	def _parse_kv(self, items):
 		result = {}
 		for item in items:
-			key, value = item.split("=")
-			if value.isdigit():
-				value = int(value)
-			result[key] = value
+			key, value = item.split("=", 1)
+			result[key] = self._parse_value(value)
 		return result
+	def _parse_second(self, value: str):
+		tick: int = 0
+		if value.endswith("ms"):
+			tick = int(value[:-2]) *FPS *1000
+		elif value.endswith("s"):
+			tick = int(value[:-1]) *FPS
+		else:
+			tick = int(value)
+		return tick
 
-
-# ==========
-# 動作確認
-# ==========
+from pprint import pprint
 
 if __name__ == "__main__":
 	compiler = STGCompiler(sys.argv[1])
-	prog = compiler.compile()
+	prog, mainAddr = compiler.compile()
 
-	def dump(obj, indent=0):
-		p = "  " * indent
-		if isinstance(obj, list):
-			for x in obj:
-				dump(x, indent)
-		elif isinstance(obj, Instruction):
-			print(p, obj)
-		elif isinstance(obj, RepeatBlock):
-			print(p, f"Repeat {obj.count}")
-			dump(obj.body, indent + 1)
-		elif isinstance(obj, Call):
-			print(p, f"Call {obj.target}")
-
-	dump(prog)
+	print(f"CompiledSize: {len(prog)}")
+	pprint(prog)

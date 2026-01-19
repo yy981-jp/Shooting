@@ -1,2 +1,31 @@
 bossはenemyの一種
 stgはリンクする
+
+IRでrepeat,callは展開しない
+spriteIDはenumclassを廃止 imageTableも廃止 すべて中央テーブルで管理する jsonでも使う?
+	enummclassはintで表現
+
+entity.def.json
+{
+	"background": { // imgはentity名と一致させる
+		"id": 0
+	}
+}
+
+entityID以外にも振る舞いのkvに対するID対応表が必要 定義jsonを増やす?
+
+enemyBezier.def.json
+{
+	Bezier
+}
+
+Assets/
+	entity.def.json
+	entity/
+		enemyBezier.def.json
+
+
+
+
+call,None:	call,ret 	- callStack
+repeat,end:	repeat,end 	- loopStack

@@ -10,11 +10,15 @@
 	wait 1s
 	waitUntil boss.hp > 0
 
-end
+:boss
+	repeatUntil testFlag1
+		wait 10s
+	end
+
 
 :main
 	call startGame
-end
+	call boss
 
 /*
 	時間は基本相対的時間 waitUntilのみ絶対的時間
