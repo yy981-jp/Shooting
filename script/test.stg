@@ -4,11 +4,11 @@
 	spawn enemyBezier x=100 y=50
 	wait 5s
 	repeat 3
-		spawn enemyBezier x=100 y=50 pattern="spiral" level=2
+		spawn enemyBezier x=100 y=50 pattern="spiral" duration=2
 		wait 50ms
 	end
 	wait 1s
-	waitUntil boss.hp > 0
+	waitUntil bossDead
 
 :boss
 	repeatUntil testFlag1

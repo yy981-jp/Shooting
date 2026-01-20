@@ -1,0 +1,15 @@
+{
+    "flags": [
+        "testFlag1",
+        "bossDead"
+    ],
+    "property": {
+        "enemyBezier": {
+            "patterns": [
+                "default",
+                "spiral",
+                "zigzag"
+            ]
+        }
+    }
+}

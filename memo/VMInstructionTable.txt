@@ -1,0 +1,11 @@
+shutdown
+wait
+waitUntil
+spawn
+call
+ret
+repeat
+repeatUntil
+end
+
+// 0から割り当てる

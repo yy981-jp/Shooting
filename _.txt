@@ -21,6 +21,7 @@ enemyBezier.def.json
 
 Assets/
 	entity.def.json
+	eventTable.json
 	entity/
 		enemyBezier.def.json
 
@@ -29,3 +30,14 @@ Assets/
 
 call,None:	call,ret 	- callStack
 repeat,end:	repeat,end 	- loopStack
+
+stgのspawnのparamはeventTable.jsonを参照する
+
+struct STGHeader {
+    char magic[8];
+    uint16_t version;
+    uint32_t entry_pc;
+    uint32_t code_size;
+};
+
+opcode = 1byte
