@@ -7,6 +7,7 @@
 
 #include "core/Game.h"
 #include "core/time.h"
+#include "VM/VM.h"
 
 
 Game* game;

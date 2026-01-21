@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "util.h"
 
 #include <rapidjson/document.h>
 #include <rapidjson/istreamwrapper.h>
@@ -14,14 +15,9 @@ Vec2 makeDir(bool up, bool down, bool left, bool right) {
 }
 
     void Game::loadEntityTable() {
-        std::ifstream ifs(Assets + "entity.def.json");
-        if (!ifs) throw std::runtime_error("Game::loadEntityTable(): ifs");
-        rj::IStreamWrapper isw(ifs);
-        rj::Document doc;
-        doc.ParseStream(isw);
-        const rj::Value& obj = doc;
-
-        for (auto itr = obj.MemberBegin(); itr != obj.MemberEnd(); ++itr) {
+        auto j = readJson(Assets + "entity.def.json");
+        
+        for (auto itr = j.MemberBegin(); itr != j.MemberEnd(); ++itr) {
             const char* key = itr->name.GetString();
             const rj::Value& value = itr->value;
             entityTable[key] = value["id"].GetInt();
