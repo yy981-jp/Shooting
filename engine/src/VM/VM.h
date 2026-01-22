@@ -23,7 +23,7 @@ class VM {
     #pragma pack(pop)
     static_assert(sizeof(FileHeader) == 18);
     
-    enum opCode: uint8_t {
+    enum OPCode: uint8_t {
         shutdown,
         wait,
         waitUntil,
@@ -33,18 +33,51 @@ class VM {
         repeat,
         repeatUntil,
         end,
-
-        none = UINT8_MAX
     };
+
+
+    enum class ExecState : uint8_t {
+        Running,
+        WaitTick,
+        WaitFlag
+    };
+
+    struct ExecFrame {
+        uint32_t pc;
+        ExecState state;
+
+        uint32_t waitTick = 0;
+        uint16_t waitFlag = 0;
+        uint16_t loopCount = 0;
+    } frame;
+
+
+    enum class LoopType : uint8_t {
+        Count,		// repeat N
+        Until		// repeatUntil flag
+    };
+
+    struct LoopFrame {
+        LoopFrame(const LoopType& type, const uint32_t& begin_pc, const uint16_t& value)
+            : type(type), begin_pc(begin_pc), value(value) {}
+
+        LoopType type;
+        uint32_t begin_pc;
+
+        uint16_t value;
+    };
+
 
     uint16_t read_u16() {
         uint16_t v;
-        memcpy(&v, &instr[++pc], sizeof(uint16_t));
+        memcpy(&v, &instr[pc], sizeof(uint16_t));
+        pc += sizeof(uint16_t);
         return v;
     }
     uint32_t read_u32() {
         uint32_t v;
-        memcpy(&v, &instr[++pc], sizeof(uint32_t));
+        memcpy(&v, &instr[pc], sizeof(uint32_t));
+        pc += sizeof(uint32_t);
         return v;
     }
 
@@ -52,12 +85,12 @@ class VM {
     bool running = true;
     BIN instr;
     uint32_t pc;
-    std::vector<uint32_t> callStack, loopStack;
+    std::vector<uint32_t> callStack;
+    std::vector<LoopFrame> loopStack;
     inline static bool instanced = false; // 2つ以上インスタンス作られるとstatic変数がバグる
 
     constexpr static std::string nullStr = "VM_const-null";
 
-    uint8_t processing = none;
     const rj::Value& eventTable;
     std::unordered_map<uint16_t,std::string> flagsTable;
     
@@ -94,41 +127,68 @@ public:
 
     bool step() {
         if (!running) return false;
-        if (processing == none) processing = instr[++pc];
-        switch (processing) {
+
+        // 複数tick処理
+        switch (frame.state) {
+        case ExecState::WaitTick:
+            if (--frame.waitTick == 0)
+                frame.state = ExecState::Running;
+            return true;
+
+        case ExecState::WaitFlag:
+            if (flags[flagsTable[frame.waitFlag]])
+                frame.state = ExecState::Running;
+            return true;
+
+        case ExecState::Running:
+            break;
+        }
+        
+        // bin解析
+        uint8_t opCode = instr[pc++];
+        switch (opCode) {
             case shutdown: running = false; break;
             case wait: {
-                static uint32_t remainingTick = 0;
-                if (!remainingTick) {
-                    remainingTick = read_u32();
-                    processing = wait;
-                }
-                if (!--remainingTick) processing = none;
+                frame.waitTick = read_u32();
+                frame.state = ExecState::WaitTick;
             } break;
             case waitUntil: {
-                static std::string flagID = nullStr;
-                if (flagID == nullStr) {
-                    flagID = flagsTable[read_u16()];
-                    processing = waitUntil;
-                }
-                if (flags[flagID]) {
-                    processing = none;
-                    flagID = nullStr;
-                }
+                frame.waitFlag = read_u16();
+                frame.state = ExecState::WaitFlag;
             } break;
             case spawn: {
 
             } break;
             case call: {
-                
+                uint32_t jumpAddr = read_u32();
+                callStack.push_back(pc);
+                pc = jumpAddr;
             } break;
             case ret: {
+                uint32_t jumpAddr = callStack.back();
+                callStack.pop_back();
+                pc = jumpAddr;
             } break;
             case repeat: {
+                uint16_t loopCount = read_u16();
+                loopStack.push_back({LoopType::Count, pc, loopCount});
             } break;
             case repeatUntil: {
+                uint16_t flagID = read_u16();
+                loopStack.push_back({LoopType::Until, pc, flagID});
             } break;
             case end: {
+                LoopFrame& lf = loopStack.back();
+                switch (lf.type) {
+                    case LoopType::Count: {
+                        if (!--lf.value) loopStack.pop_back();
+                            else pc = lf.begin_pc;
+                    } break;
+                    case LoopType::Until: {
+                        if (flags[flagsTable[lf.value]]) loopStack.pop_back();
+                            else pc = lf.begin_pc;
+                    } break;
+                }
             } break;
         }
         return true;
