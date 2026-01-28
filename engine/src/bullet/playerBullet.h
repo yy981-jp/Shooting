@@ -20,7 +20,7 @@ public:
     }
 
     void draw(const Renderer* renderer) const {
-        renderer->drawSprite(entityTable["playerBullet"],pos);
+        renderer->drawSprite(entityTable.get("playerBullet"),pos);
     }
 };
 

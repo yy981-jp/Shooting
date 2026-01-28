@@ -2,4 +2,8 @@
 #include <string>
 #include <cstdint>
 
-std::unordered_map<std::string, uint16_t> entityTable;
+#include "EntityTable.h"
+#include "ParamTable.h"
+
+EntityTable entityTable;
+ParamTable paramTable;

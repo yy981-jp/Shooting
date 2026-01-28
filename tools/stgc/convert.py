@@ -8,7 +8,9 @@ from pathlib import Path
 opSizeTable: Dict[str,int] # op -> size(byte)
 EVENT_TABLE: Dict[str,Any] = {}
 FLAGS_TABLE: Dict[str,int] = {}
-PROPERTY_TABLE: Dict[str,Any] ={}
+PARAM_TABLE: Dict[str,Any] ={}
+ENTITY_TABLE: Dict[str,Any] ={}
+ENTITY_MAP: Dict[str,int] ={}
 enemyBezier_patterns: Dict[str,int] = {}
 
 # loadJson
@@ -16,9 +18,14 @@ with open("../../assets/eventTable.json", "r", encoding="utf-8") as f:
     EVENT_TABLE = json.load(f)
     for idx, name in enumerate(EVENT_TABLE["flags"]):
         FLAGS_TABLE[name] = idx
-    PROPERTY_TABLE = EVENT_TABLE["property"]
-    patterns = PROPERTY_TABLE["enemyBezier"]["patterns"]
+    PARAM_TABLE = EVENT_TABLE["param"]
+    patterns = PARAM_TABLE["enemyBezier"]["patterns"]
     enemyBezier_patterns = {name: i for i, name in enumerate(patterns)}
+
+with open("../../assets/entity.def.json", "r", encoding="utf-8") as f:
+    ENTITY_TABLE = json.load(f)
+    ENTITY_MAP = {k: v["id"] for k, v in ENTITY_MAP.items()}
+
 
 def packParam(cmd:Instruction):
     code = bytearray()
@@ -50,11 +57,14 @@ def packParam(cmd:Instruction):
                 )
             ) if "pattern" in cmd.args else 0
             code+= struct.pack(
-                "<H H H I",
+                "<H H H H I",
+                int(ENTITY_MAP[cmd.op]),
                 int(cmd.args["x"]), int(cmd.args["y"]),
                 pattern,
                 int(cmd.args.get("duration", 5000))
             )
+        else:
+            raise SyntaxError("spawn: 未知の敵")
 
     elif (cmd.op == "call"):
         opCode = 4

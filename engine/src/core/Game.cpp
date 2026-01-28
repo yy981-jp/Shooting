@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "util.h"
+#include "../VM/commands.h"
 
 #include <rapidjson/document.h>
 #include <rapidjson/istreamwrapper.h>
@@ -14,13 +15,18 @@ Vec2 makeDir(bool up, bool down, bool left, bool right) {
 	};
 }
 
+
+void handle(const command_enemyBezier& c) {
+    
+}
+
     void Game::loadEntityTable() {
         auto j = readJson(Assets + "entity.def.json");
         
         for (auto itr = j.MemberBegin(); itr != j.MemberEnd(); ++itr) {
             const char* key = itr->name.GetString();
             const rj::Value& value = itr->value;
-            entityTable[key] = value["id"].GetInt();
+            entityTable.table[key] = value["id"].GetInt();
         }
     }
 
@@ -55,7 +61,7 @@ Vec2 makeDir(bool up, bool down, bool left, bool right) {
         loadEntityTable();
 
         renderer = new Renderer(rendererNative);
-        player = new Player(5,Vec2(width,height),renderer->getSpriteSize(entityTable["player"]));
+        player = new Player(5,Vec2(width,height),renderer->getSpriteSize(entityTable.get("player")));
         
         SDL_RenderSetLogicalSize(rendererNative, width, height);
     }
@@ -94,7 +100,7 @@ Vec2 makeDir(bool up, bool down, bool left, bool right) {
 
     void Game::draw() const {
         // SDL_RenderClear(rendererNative); (これがあると黒帯領域が発生する なんでかって? 未来の自分調べといて)
-        renderer->drawSprite(entityTable["background"], Vec2(0,0));
+        renderer->drawSprite(entityTable.get("background"), Vec2(0,0));
         player->draw(renderer);
         playerBullet_Manager.draw(renderer);
         SDL_RenderPresent(rendererNative);

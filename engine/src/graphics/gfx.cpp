@@ -27,10 +27,10 @@ SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
 /*------------------------------**
 **          Renderer            **
 **------------------------------*/
-    Renderer::Renderer(void* sdlRenderer): native(sdlRenderer), spriteTable(entityTable.size()) {
+    Renderer::Renderer(void* sdlRenderer): native(sdlRenderer), spriteTable(entityTable.table.size()) {
         auto* renderer = static_cast<SDL_Renderer*>(native);
 
-        for (const auto& [entities,id]: entityTable) {
+        for (const auto& [entities,id]: entityTable.table) {
             spriteTable[id] = loadSprite(Assets + "image/" + entities + ".png", renderer);
         }
     }

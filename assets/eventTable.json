@@ -3,13 +3,22 @@
         "testFlag1",
         "bossDead"
     ],
-    "property": {
+    "param": {
         "enemyBezier": {
             "patterns": [
                 "default",
+                "debug",
                 "spiral",
                 "zigzag"
             ]
         }
+    },
+    "BezierCurves": {
+        "debug": [
+            0,0,
+            0,600,
+            800,0,
+            800,600
+        ]
     }
 }

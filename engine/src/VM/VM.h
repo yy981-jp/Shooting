@@ -8,11 +8,13 @@
 
 #include "../core/def.h"
 #include "../core/util.h"
+#include "commands.h"
 
 
 class VM {
     using BIN = std::vector<uint8_t>;
 
+    // ファイルヘッダ構造の定義
     #pragma pack(push, 1)
     struct FileHeader {
         char magic[8];
@@ -23,6 +25,7 @@ class VM {
     #pragma pack(pop)
     static_assert(sizeof(FileHeader) == 18);
     
+    // 命令セット memo/VMInstructionTable.txtを基準とする
     enum OPCode: uint8_t {
         shutdown,
         wait,
@@ -36,12 +39,14 @@ class VM {
     };
 
 
+    // 複数tick処理用の状態保持 - 型定義
     enum class ExecState : uint8_t {
         Running,
         WaitTick,
         WaitFlag
     };
 
+    // 複数tick処理用の状態保持 - 実装
     struct ExecFrame {
         uint32_t pc;
         ExecState state;
@@ -49,14 +54,15 @@ class VM {
         uint32_t waitTick = 0;
         uint16_t waitFlag = 0;
         uint16_t loopCount = 0;
-    } frame;
+    };
 
-
+    // repeatとrepeatUntil - 型定義
     enum class LoopType : uint8_t {
         Count,		// repeat N
         Until		// repeatUntil flag
     };
-
+    
+    // repeatとrepeatUntil - 実装
     struct LoopFrame {
         LoopFrame(const LoopType& type, const uint32_t& begin_pc, const uint16_t& value)
             : type(type), begin_pc(begin_pc), value(value) {}
@@ -66,6 +72,13 @@ class VM {
 
         uint16_t value;
     };
+
+    struct OP_spawn_cache {
+        uint16_t enemyBezier = UINT16_MAX;
+    } entityRTable_Cache;
+
+    // spawn命令だけ長くなりそうなので隔離
+    void op_spawn();
 
 
     uint16_t read_u16() {
@@ -87,7 +100,6 @@ class VM {
     uint32_t pc;
     std::vector<uint32_t> callStack;
     std::vector<LoopFrame> loopStack;
-    inline static bool instanced = false; // 2つ以上インスタンス作られるとstatic変数がバグる
 
     constexpr static std::string nullStr = "VM_const-null";
 
@@ -95,104 +107,19 @@ class VM {
     std::unordered_map<uint16_t,std::string> flagsTable;
     
 public:
-    std::unordered_map<std::string,bool> flags;
+    ExecFrame frame;
+    std::unordered_map<std::string,bool> flags; // ゲームフラグ
+    GameCommand gamecommand;
 
-    VM(const std::string& stgdatPath): eventTable(readJson(Assets+"eventTable")) {
-        if (instanced) throw std::runtime_error("VM::VM(): already instansed");
-        
-        std::ifstream ifs(stgdatPath,std::ios::binary|std::ios::ate);
-        if (!ifs) throw std::runtime_error("VM::VM(): ifs");
-        auto size = ifs.tellg();
-        ifs.seekg(0);
-        BIN data(size);
-        ifs.read(reinterpret_cast<char*>(data.data()), size);
+    VM(const std::string& stgdatPath);
 
-        memcpy(&fh, data.data(),sizeof(FileHeader));
+    enum class ReturnCode: uint8_t {
+        error,              // 何らかのエラー
+        success,            // 通常終了
+        spawnRequest       // spawn命令
+    };
 
-        if (strcmp(fh.magic,"y9STGBin")) throw std::runtime_error("VM::VM(): stgdat.magic mismatch");
-
-        instr.assign(
-            data.begin() + sizeof(FileHeader),
-            data.end()
-        );
-
-        size_t i = 0;
-        for (const auto& v: eventTable["flags"].GetArray()) {
-            flagsTable[++i] = v.GetString();
-            flags[v.GetString()] = false;
-        }
-
-        instanced = true;
-    }
-
-    bool step() {
-        if (!running) return false;
-
-        // 複数tick処理
-        switch (frame.state) {
-        case ExecState::WaitTick:
-            if (--frame.waitTick == 0)
-                frame.state = ExecState::Running;
-            return true;
-
-        case ExecState::WaitFlag:
-            if (flags[flagsTable[frame.waitFlag]])
-                frame.state = ExecState::Running;
-            return true;
-
-        case ExecState::Running:
-            break;
-        }
-        
-        // bin解析
-        uint8_t opCode = instr[pc++];
-        switch (opCode) {
-            case shutdown: running = false; break;
-            case wait: {
-                frame.waitTick = read_u32();
-                frame.state = ExecState::WaitTick;
-            } break;
-            case waitUntil: {
-                frame.waitFlag = read_u16();
-                frame.state = ExecState::WaitFlag;
-            } break;
-            case spawn: {
-
-            } break;
-            case call: {
-                uint32_t jumpAddr = read_u32();
-                callStack.push_back(pc);
-                pc = jumpAddr;
-            } break;
-            case ret: {
-                uint32_t jumpAddr = callStack.back();
-                callStack.pop_back();
-                pc = jumpAddr;
-            } break;
-            case repeat: {
-                uint16_t loopCount = read_u16();
-                loopStack.push_back({LoopType::Count, pc, loopCount});
-            } break;
-            case repeatUntil: {
-                uint16_t flagID = read_u16();
-                loopStack.push_back({LoopType::Until, pc, flagID});
-            } break;
-            case end: {
-                LoopFrame& lf = loopStack.back();
-                switch (lf.type) {
-                    case LoopType::Count: {
-                        if (!--lf.value) loopStack.pop_back();
-                            else pc = lf.begin_pc;
-                    } break;
-                    case LoopType::Until: {
-                        if (flags[flagsTable[lf.value]]) loopStack.pop_back();
-                            else pc = lf.begin_pc;
-                    } break;
-                }
-            } break;
-        }
-        return true;
-    }
+    ReturnCode step();
 
     operator bool() {
         return running;
