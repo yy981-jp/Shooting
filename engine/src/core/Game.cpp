@@ -23,10 +23,8 @@ void handle(const command_enemyBezier& c) {
     void Game::loadEntityTable() {
         auto j = readJson(Assets + "entity.def.json");
         
-        for (auto itr = j.MemberBegin(); itr != j.MemberEnd(); ++itr) {
-            const char* key = itr->name.GetString();
-            const rj::Value& value = itr->value;
-            entityTable.table[key] = value["id"].GetInt();
+        for (const auto& [key,value]: j.GetObject()) {
+            entityTable.table[key.GetString()] = value["id"].GetInt();
         }
     }
 
