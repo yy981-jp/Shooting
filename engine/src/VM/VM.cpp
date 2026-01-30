@@ -1,4 +1,5 @@
 #include "VM.h"
+#include "../tables/all.h"
 
 
     VM::VM(const std::string& stgdatPath): eventTable(readJson(Assets+"eventTable.json")) {

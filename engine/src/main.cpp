@@ -38,7 +38,7 @@ int main() {
 	CheckTime ct;
 	if (SDL_Init(SDL_INIT_VIDEO)) throw std::runtime_error(std::string("SDL_Init failed: ") + SDL_GetError());
 	if (!(IMG_Init(IMG_INIT_PNG)&IMG_INIT_PNG)) throw std::runtime_error(std::string("SDL_IMG_Init failed: ") + SDL_GetError());
-    game = new Game(800,680,param::fpsDelayMS);
+    game = new Game(800,680);
 
 	std::cout << "load: " << ct.end() << "ms\n";
 

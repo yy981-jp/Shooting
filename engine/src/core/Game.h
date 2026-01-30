@@ -3,6 +3,7 @@
 
 #include "time.h"
 #include "../graphics/gfx.h"
+#include "../VM/VM.h"
 #include "../player/player.h"
 #include "../bullet/playerBullet.h"
 
@@ -18,6 +19,8 @@ class Game {
     static constexpr int
         width = 800,
         height = 600;
+    
+        const std::string stgdatpath = Assets + "main.stg.dat";
 
     struct KeyStat {
         bool
@@ -29,15 +32,14 @@ class Game {
             shift   = false;
     } keyStat;
 
+    VM* vm;
     Renderer* renderer;
     Player* player;
     PlayerBullet_Manager playerBullet_Manager;
     ElapsedTime elapsedTime;
 
-    void loadEntityTable();
-
 public:
-    Game(int windowWidth, int windowHeight, int FPSDelayMS);
+    Game(const int windowWidth, const int windowHeight);
     void update();
     void draw() const;
     void onKeyDown(const SDL_KeyboardEvent& e);

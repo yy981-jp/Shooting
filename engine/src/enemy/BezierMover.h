@@ -2,16 +2,16 @@
 
 #include <vector>
 
-#include "def.h"
+#include "../core/def.h"
 
 class BezierMover {
-	std::vector<Vec2F> controlVec2s;
+	std::vector<vec2f> controlVec2s;
 	float t = 0.0f;
 	float speedStep;
 	bool running = true;
 
-	Vec2F calculateBezierVec2(float t) {
-		std::vector<Vec2F> tmp = controlVec2s;
+	vec2f calculateBezierVec2(float t) {
+		std::vector<vec2f> tmp = controlVec2s;
 		int n = static_cast<int>(tmp.size());
 
 		for (int k = 1; k < n; ++k) {
@@ -23,9 +23,9 @@ class BezierMover {
 	}
 
 public:
-	Vec2F pos;
+	vec2f pos;
 
-	BezierMover(const std::span<const Vec2F>& controlVec2s, int duration = 5000)
+	BezierMover(const std::span<const vec2f>& controlVec2s, int duration = 5000)
 		: controlVec2s(controlVec2s.begin(), controlVec2s.end()),
 		  speedStep(1.0f / static_cast<float>(duration)) {}
 

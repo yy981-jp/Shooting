@@ -6,11 +6,11 @@
 
 
 class PlayerBullet {
-    Vec2F pos;
+    vec2f pos;
     const Renderer& renderer;
 
 public:
-    PlayerBullet(Vec2 i_pos): renderer(renderer) {
+    PlayerBullet(vec2i i_pos): renderer(renderer) {
         pos.x = i_pos.x;
         pos.y = i_pos.y;
     }
@@ -29,7 +29,7 @@ class PlayerBullet_Manager {
     std::deque<PlayerBullet> bullets;
 
 public:
-    void generate(const Vec2& pos) {
+    void generate(const vec2i& pos) {
         bullets.push_back(PlayerBullet(pos));
     }
 

@@ -37,15 +37,15 @@ SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
 
     Renderer::~Renderer() {}
 
-    Vec2 Renderer::getSpriteSize(entityID spriteID) {
+    vec2i Renderer::getSpriteSize(entityID spriteID) {
         SpriteInfo sprite = spriteTable[static_cast<size_t>(spriteID)];
-        Vec2 vec;
+        vec2i vec;
         vec.x = sprite.w;
         vec.y = sprite.h;
         return vec;
     }
 
-    void Renderer::drawSprite(entityID spriteID, const Vec2& pos) const {
+    void Renderer::drawSprite(entityID spriteID, const vec2i& pos) const {
         auto* renderer = static_cast<SDL_Renderer*>(native);
         if (!renderer) return;
 
@@ -61,8 +61,8 @@ SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
         SDL_RenderCopy(renderer, sprite.tex, nullptr, &dst);
     }
 
-    void Renderer::drawSprite(entityID spriteID, const Vec2F& posF) const {
-        Vec2 pos;
+    void Renderer::drawSprite(entityID spriteID, const vec2f& posF) const {
+        vec2i pos;
         pos.x = posF.x;
         pos.y = posF.y;
         drawSprite(spriteID,pos);

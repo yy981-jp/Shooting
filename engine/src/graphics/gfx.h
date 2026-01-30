@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "../core/def.h"
+#include "../tables/all.h"
 #include "../core/SDL_def.h"
 
 struct SpriteInfo {
@@ -26,7 +26,7 @@ public:
 	Renderer(void* sdlRenderer);
     ~Renderer();
 
-    Vec2 getSpriteSize(entityID spriteID);
-	void drawSprite(entityID spriteID, const Vec2& pos) const;
-	void drawSprite(entityID spriteID, const Vec2F& pos) const;
+    vec2i getSpriteSize(entityID spriteID);
+	void drawSprite(entityID spriteID, const vec2i& pos) const;
+	void drawSprite(entityID spriteID, const vec2f& pos) const;
 };

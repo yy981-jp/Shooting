@@ -8,20 +8,20 @@
 
 struct ShotRequest {
 	bool shouldShoot = false;
-	Vec2 spawnPos{};
+	vec2i spawnPos{};
 };
 
 class Player {
     int speed;
     float moveTable[3][3][2]; // y, x, [cos,sin]
-    Vec2F pos;
-    Vec2 border;
-    Vec2 spriteSize;
+    vec2f pos;
+    vec2i border;
+    vec2i spriteSize;
     int shootInterval = 20; // ms
     int elapsedTime = 0;
 
 public:
-    Player(int speed, Vec2 border, Vec2 spriteSize);
+    Player(int speed, vec2i border, vec2i spriteSize);
 
     ShotRequest update(int deltaTime, int dx, int dy, bool slow, bool shot);
     void draw(const Renderer* renderer) const;

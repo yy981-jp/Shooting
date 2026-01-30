@@ -1,19 +1,19 @@
 #include "../core/def.h"
 #include "../graphics/gfx.h"
 #include "BezierMover.h"
-#include "ParamTable.h"
+#include "../tables/all.h"
 
 #include <deque>
 
 
 class EnemyBezier {
-    Vec2F pos;
-    const Vec2& border;
-    Vec2 d;
+    vec2f pos;
+    const vec2i& border;
+    vec2i d;
     BezierMover bm;
 
 public:
-    EnemyBezier(const Vec2& i_pos, std::span<const Vec2F> BezierCurve, const int duration, const Vec2& border)
+    EnemyBezier(const vec2i& i_pos, std::span<const vec2f> BezierCurve, const int duration, const vec2i& border)
      : pos(i_pos), border(border), bm(BezierCurve,duration) {}
 
     bool update() { // true -> 有効,  false -> 削除
@@ -32,7 +32,7 @@ public:
 
 class enemyBezier_Manager {
     std::deque<EnemyBezier> list;
-    const Vec2& border;
+    const vec2i& border;
 
     struct Cache {
         std::string_view get(const int BezierCurveType) const {
@@ -44,9 +44,9 @@ class enemyBezier_Manager {
     } cache;
 
 public:
-    enemyBezier_Manager(const Vec2& i_border): border(i_border) {}
+    enemyBezier_Manager(const vec2i& i_border): border(i_border) {}
 
-    void generate(const Vec2& pos, const int BezierCurveType, const int duration) {
+    void generate(const vec2i& pos, const int BezierCurveType, const int duration) {
         std::string_view curveAlias = cache.get(BezierCurveType);
         auto controlVec2 = paramTable.bezierCurve.get(curveAlias);
         list.push_back(EnemyBezier(pos,controlVec2,0,border)); // borderは定数

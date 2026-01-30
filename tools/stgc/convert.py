@@ -21,10 +21,13 @@ with open("../../assets/eventTable.json", "r", encoding="utf-8") as f:
     PARAM_TABLE = EVENT_TABLE["param"]
     patterns = PARAM_TABLE["enemyBezier"]["patterns"]
     enemyBezier_patterns = {name: i for i, name in enumerate(patterns)}
+# from pprint import pprint
 
 with open("../../assets/entity.def.json", "r", encoding="utf-8") as f:
     ENTITY_TABLE = json.load(f)
-    ENTITY_MAP = {k: v["id"] for k, v in ENTITY_MAP.items()}
+    ENTITY_MAP = {k: v["id"] for k, v in ENTITY_TABLE.items()}
+    # pprint(ENTITY_TABLE)
+    # pprint(ENTITY_MAP)
 
 
 def packParam(cmd:Instruction):
@@ -58,7 +61,7 @@ def packParam(cmd:Instruction):
             ) if "pattern" in cmd.args else 0
             code+= struct.pack(
                 "<H H H H I",
-                int(ENTITY_MAP[cmd.op]),
+                int(ENTITY_MAP[entityType]),
                 int(cmd.args["x"]), int(cmd.args["y"]),
                 pattern,
                 int(cmd.args.get("duration", 5000))

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 #include <fstream>
 #include <vector>
@@ -6,7 +8,6 @@
 #include <unordered_map>
 #include <limits>
 
-#include "../core/def.h"
 #include "../core/util.h"
 #include "commands.h"
 

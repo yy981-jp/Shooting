@@ -1,14 +1,11 @@
 #include "Game.h"
 #include "util.h"
+#include "json.h"
 #include "../VM/commands.h"
 
-#include <rapidjson/document.h>
-#include <rapidjson/istreamwrapper.h>
 #include <fstream>
 
-namespace rj = rapidjson;
-
-Vec2 makeDir(bool up, bool down, bool left, bool right) {
+vec2i makeDir(bool up, bool down, bool left, bool right) {
 	return {
 		(right ? 1 : 0) - (left ? 1 : 0),
 		(down  ? 1 : 0) - (up   ? 1 : 0)
@@ -20,15 +17,8 @@ void handle(const command_enemyBezier& c) {
     
 }
 
-    void Game::loadEntityTable() {
-        auto j = readJson(Assets + "entity.def.json");
-        
-        for (const auto& [key,value]: j.GetObject()) {
-            entityTable.table[key.GetString()] = value["id"].GetInt();
-        }
-    }
-
-    Game::Game(int windowWidth, int windowHeight, int FPSDelayMS) {
+    Game::Game(const int windowWidth, const int windowHeight) {
+        // SDL init
         window = SDL_CreateWindow(
             "Shooting-SDL2",
             SDL_WINDOWPOS_CENTERED,
@@ -46,7 +36,6 @@ void handle(const command_enemyBezier& c) {
         );
         if (!rendererNative) throw std::runtime_error(std::string("SDL_CreateRenderer failed: ") + SDL_GetError());
 
-
         texture = SDL_CreateTexture(
             rendererNative,
             SDL_PIXELFORMAT_ARGB8888,
@@ -56,18 +45,20 @@ void handle(const command_enemyBezier& c) {
         );
         if (!texture) throw std::runtime_error(std::string("SDL_CreateTexture failed: ") + SDL_GetError());
 
-        loadEntityTable();
-
-        renderer = new Renderer(rendererNative);
-        player = new Player(5,Vec2(width,height),renderer->getSpriteSize(entityTable.get("player")));
-        
         SDL_RenderSetLogicalSize(rendererNative, width, height);
+        
+        // entity
+        renderer = new Renderer(rendererNative);
+        player = new Player(5,vec2i(width,height),renderer->getSpriteSize(entityTable.get("player")));
+
+        // VM
+        vm = new VM(stgdatpath);
     }
 
     void Game::update() {
         if (!elapsedTime) elapsedTime.init();
         int deltaTime = elapsedTime.get();
-        Vec2 d = makeDir(keyStat.up, keyStat.down, keyStat.left, keyStat.right);
+        vec2i d = makeDir(keyStat.up, keyStat.down, keyStat.left, keyStat.right);
         ShotRequest playerShotReq = player->update(deltaTime, d.x, d.y, keyStat.shift, keyStat.z);
         if (playerShotReq.shouldShoot) playerBullet_Manager.generate(playerShotReq.spawnPos);
         playerBullet_Manager.update();
@@ -98,7 +89,7 @@ void handle(const command_enemyBezier& c) {
 
     void Game::draw() const {
         // SDL_RenderClear(rendererNative); (これがあると黒帯領域が発生する なんでかって? 未来の自分調べといて)
-        renderer->drawSprite(entityTable.get("background"), Vec2(0,0));
+        renderer->drawSprite(entityTable.get("background"), vec2i(0,0));
         player->draw(renderer);
         playerBullet_Manager.draw(renderer);
         SDL_RenderPresent(rendererNative);

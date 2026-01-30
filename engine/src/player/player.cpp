@@ -1,4 +1,5 @@
 #include "player.h"
+#include "../tables/all.h"
 
 
 /*--------------------------*/
@@ -19,7 +20,7 @@
         if (shot && (elapsedTime > shootInterval)) {
             elapsedTime -= shootInterval;
             req.shouldShoot = true;
-            req.spawnPos = Vec2(
+            req.spawnPos = vec2i(
                 pos.x + (spriteSize.x/2),
                 pos.y
             );
@@ -31,7 +32,7 @@
         renderer->drawSprite(entityTable.get("player"), pos);
     }
 
-    Player::Player(int speed, Vec2 i_border, Vec2 spriteSize):
+    Player::Player(int speed, vec2i i_border, vec2i spriteSize):
       speed(speed), spriteSize(spriteSize), pos(400, 300) {
         border.x = i_border.x - spriteSize.x;
         border.y = i_border.y - spriteSize.y;

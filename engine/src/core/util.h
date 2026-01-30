@@ -1,11 +1,8 @@
 #pragma once
 
-#include <rapidjson/document.h>
-#include <rapidjson/istreamwrapper.h>
+#include "json.h"
 #include <fstream>
 
-
-namespace rj = rapidjson;
 
 inline rj::Document readJson(const std::string& path) {
     std::ifstream ifs(path);
