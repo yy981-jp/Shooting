@@ -89,6 +89,8 @@ class STGCompiler:
 			elif cmd == "spawn":
 				args = self._parse_kv(tokens[2:])
 				args["entityType"] = tokens[1]
+				if args["entityType"] == "enemyBezier":
+					args["duration"] = self._parse_second(args["duration"])
 				instructions.append(
 					Instruction("spawn", args)
 				)

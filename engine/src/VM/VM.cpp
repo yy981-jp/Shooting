@@ -32,7 +32,7 @@
 
 
     VM::ReturnCode VM::step() {
-        if (!running) return ReturnCode::error;
+        if (!running) return ReturnCode::finished;
 
         // 複数tick処理
         switch (frame.state) {

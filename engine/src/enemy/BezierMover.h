@@ -25,7 +25,7 @@ class BezierMover {
 public:
 	vec2f pos;
 
-	BezierMover(const std::span<const vec2f>& controlVec2s, int duration = 5000)
+	BezierMover(const std::span<const vec2f>& controlVec2s, int duration)
 		: controlVec2s(controlVec2s.begin(), controlVec2s.end()),
 		  speedStep(1.0f / static_cast<float>(duration)) {}
 

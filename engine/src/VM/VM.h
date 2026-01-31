@@ -96,12 +96,11 @@ class VM {
     }
 
 
-    bool running = true;
     BIN instr;
     uint32_t pc;
     std::vector<uint32_t> callStack;
     std::vector<LoopFrame> loopStack;
-
+    
     constexpr static std::string nullStr = "VM_const-null";
 
     constexpr static uint64_t fileMagicNumber = 0x793953544742696e;
@@ -110,6 +109,7 @@ class VM {
     std::unordered_map<uint16_t,std::string> flagsTable;
     
 public:
+    bool running = true;
     ExecFrame frame;
     std::unordered_map<std::string,bool> flags; // ゲームフラグ
     GameCommand gamecommand;
@@ -119,12 +119,9 @@ public:
     enum class ReturnCode: uint8_t {
         error,              // 何らかのエラー
         success,            // 通常終了
+        finished,           // stg終端
         spawnRequest       // spawn命令
     };
 
     ReturnCode step();
-
-    operator bool() {
-        return running;
-    }
 };

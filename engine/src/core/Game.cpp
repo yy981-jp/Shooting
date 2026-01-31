@@ -53,22 +53,39 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
     }
 
     void Game::update() {
+        SDL_SetWindowTitle(window,(std::to_string(++tick) + "tick").c_str());
+
         if (!elapsedTime) elapsedTime.init();
-        int deltaTime = elapsedTime.get();
+        int deltatime = elapsedTime.get();
         // VM step
-        auto vm_r = vm->step();
-        switch (vm_r) {
-            case VM::ReturnCode::success: break;
-            case VM::ReturnCode::error: throw std::runtime_error("VMで何らかの異常が発生しました"); break;
-            case VM::ReturnCode::spawnRequest: {
-                std::visit(Game::commandExec{*this}, vm->gamecommand);
+        if (vm->running) {
+            auto vm_r = vm->step();
+            switch (vm_r) {
+                using enum VM::ReturnCode;
+                case success: finished: break;
+                case error: throw std::runtime_error("VMで何らかの異常が発生しました"); break;
+                case spawnRequest: {
+                    std::visit(Game::commandExec{*this}, vm->gamecommand);
+                }
             }
         }
+
         // entity update
         vec2i d = makeDir(keyStat.up, keyStat.down, keyStat.left, keyStat.right);
-        ShotRequest playerShotReq = player->update(deltaTime, d.x, d.y, keyStat.shift, keyStat.z);
+        ShotRequest playerShotReq = player->update(deltatime, d.x, d.y, keyStat.shift, keyStat.z);
         if (playerShotReq.shouldShoot) playerBullet_Manager.generate(playerShotReq.spawnPos);
         playerBullet_Manager.update();
+
+        enemyBezier_Manager->update(deltatime);
+    }
+    
+    void Game::draw() const {
+        // SDL_RenderClear(rendererNative); (これがあると黒帯領域が発生する なんでかって? 未来の自分調べといて)
+        renderer->drawSprite(entityTable.get("background"), vec2i(0,0));
+        player->draw(renderer);
+        playerBullet_Manager.draw(renderer);
+        enemyBezier_Manager->draw(renderer);
+        SDL_RenderPresent(rendererNative);
     }
 
     void Game::onKeyDown(const SDL_KeyboardEvent& e) {
@@ -92,13 +109,4 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
             case SDLK_z: keyStat.z = false; break;
             case SDLK_LSHIFT: keyStat.shift = false; break;
         }
-    }
-
-    void Game::draw() const {
-        // SDL_RenderClear(rendererNative); (これがあると黒帯領域が発生する なんでかって? 未来の自分調べといて)
-        renderer->drawSprite(entityTable.get("background"), vec2i(0,0));
-        player->draw(renderer);
-        playerBullet_Manager.draw(renderer);
-        enemyBezier_Manager->draw(renderer);
-        SDL_RenderPresent(rendererNative);
     }

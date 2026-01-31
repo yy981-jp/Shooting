@@ -5,24 +5,21 @@
 #include "BezierMover.h"
 #include "../tables/all.h"
 
-#include <deque>
-
 
 class EnemyBezier {
     vec2f pos;
-    const vec2i& border;
-    vec2i d;
+    vec2i border;
     BezierMover bm;
 
 public:
     EnemyBezier(const vec2i& i_pos, std::span<const vec2f> BezierCurve, const int duration, const vec2i& border)
      : pos(i_pos), border(border), bm(BezierCurve,duration) {}
 
-    bool update() { // true -> 有効,  false -> 削除
-        pos.x += d.x;
-        pos.y += d.y;
-        if (pos.y <= 0 || pos.y >= border.y || pos.x <= 0 || pos.x <= border.x)
-            return false; else return true;
+    bool update(int deltatime) { // true -> 有効,  false -> 削除
+        if (!bm.isRunning()) return false;
+        bm.update(deltatime);
+        pos = static_cast<vec2f>(bm.pos);
+        return true;
     }
 
     void draw(const Renderer* renderer) const {
@@ -30,10 +27,10 @@ public:
     }
 };
 
-#include <iostream>
+
 
 class EnemyBezier_Manager {
-    std::deque<EnemyBezier> list;
+    std::vector<EnemyBezier> list;
     const vec2i& border;
 
     struct Cache {
@@ -59,13 +56,15 @@ public:
     void generate(const vec2i& pos, const int BezierCurveType, const int duration) {
         std::string_view curveAlias = cache.get(BezierCurveType);
         auto controlVec2 = paramTable.bezierCurve.get(curveAlias);
-        list.push_back(EnemyBezier(pos,controlVec2,0,border)); // borderは定数
+        list.push_back(EnemyBezier(pos,controlVec2,duration,border)); // borderは定数
     }
 
-    void update() {
-        if (list.size() > 50) list.pop_front();
-        for (auto& enemy: list) {
-            enemy.update();
+    void update(int deltatime) {
+        for (size_t i = 0; i < list.size(); ) {
+            if (!list[i].update(deltatime)) {
+                list[i] = std::move(list.back());
+                list.pop_back();
+            } else ++i;
         }
     }
 

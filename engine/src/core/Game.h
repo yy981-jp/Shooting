@@ -21,7 +21,9 @@ class Game {
         width = 800,
         height = 600;
     
-        const std::string stgdatpath = Assets + "main.stg.dat";
+    const std::string stgdatpath = Assets + "main.stg.dat";
+
+    uint64_t tick = 0;
 
     struct commandExec {
         Game& game;

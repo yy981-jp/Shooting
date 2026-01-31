@@ -4,6 +4,7 @@ from typing import List, Dict, Union, Any
 import json
 from pathlib import Path
 
+# from pprint import pprint
 
 opSizeTable: Dict[str,int] # op -> size(byte)
 EVENT_TABLE: Dict[str,Any] = {}
@@ -21,13 +22,10 @@ with open("../../assets/eventTable.json", "r", encoding="utf-8") as f:
     PARAM_TABLE = EVENT_TABLE["param"]
     patterns = PARAM_TABLE["enemyBezier"]["patterns"]
     enemyBezier_patterns = {name: i for i, name in enumerate(patterns)}
-# from pprint import pprint
 
 with open("../../assets/entity.def.json", "r", encoding="utf-8") as f:
     ENTITY_TABLE = json.load(f)
     ENTITY_MAP = {k: v["id"] for k, v in ENTITY_TABLE.items()}
-    # pprint(ENTITY_TABLE)
-    # pprint(ENTITY_MAP)
 
 
 def packParam(cmd:Instruction):
