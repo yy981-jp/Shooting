@@ -21,6 +21,6 @@
 
         std::span<const vec2f> ParamTable::BezierCurve::get(std::string_view name) const {
             auto it = table.find(name);
-            if (it == table.end()) throw std::runtime_error("BezierCurve not found");
+            if (it == table.end()) throw std::runtime_error("BezierCurve not found - id: " + std::string(name));
             return it->second;
         }

@@ -13,4 +13,4 @@ if __name__ == "__main__":
 	write(prog,mainAddr,endAddr,sys.argv[1])
 
 	# print(f"CompiledSize: {len(prog)}")
-	# pprint(prog)
+	pprint(prog)

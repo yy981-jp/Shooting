@@ -1,9 +1,9 @@
 :startGame
 
-	spawn enemyBezier x=100 y=50
+	// spawn enemyBezier x=100 y=50
 	wait 5s
 	repeat 3
-		spawn enemyBezier x=100 y=50 pattern=spiral duration=2
+		spawn enemyBezier x=100 y=50 pattern=debug duration=2
 		wait 50ms
 	end
 	waitUntil bossDead

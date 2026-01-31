@@ -11,3 +11,4 @@ struct command_enemyBezier {
 using GameCommand = std::variant<
     command_enemyBezier
 >;
+

@@ -2,7 +2,7 @@
 #include "../tables/all.h"
 
 
-    VM::VM(const std::string& stgdatPath): eventTable(readJson(Assets+"eventTable.json")) {
+    VM::VM(const std::string& stgdatPath): eventTable(readJson(Assets+"eventTable.json")), pc(0) {
         std::ifstream ifs(stgdatPath,std::ios::binary|std::ios::ate);
         if (!ifs) throw std::runtime_error("VM::VM(): ifs");
         auto size = ifs.tellg();
@@ -12,7 +12,7 @@
 
         memcpy(&fh, data.data(),sizeof(FileHeader));
 
-        if (strcmp(fh.magic,"y9STGBin")) throw std::runtime_error("VM::VM(): stgdat.magic mismatch");
+        if (fh.magic == fileMagicNumber) throw std::runtime_error("VM::VM(): stgdat.magic mismatch");
 
         instr.assign(
             data.begin() + sizeof(FileHeader),

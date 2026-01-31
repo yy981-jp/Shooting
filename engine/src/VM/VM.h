@@ -18,7 +18,7 @@ class VM {
     // ファイルヘッダ構造の定義
     #pragma pack(push, 1)
     struct FileHeader {
-        char magic[8];
+        uint64_t magic;
         uint16_t version;
         uint32_t entry_pc;
         uint32_t code_size;
@@ -103,6 +103,8 @@ class VM {
     std::vector<LoopFrame> loopStack;
 
     constexpr static std::string nullStr = "VM_const-null";
+
+    constexpr static uint64_t fileMagicNumber = 0x793953544742696e;
 
     const rj::Value& eventTable;
     std::unordered_map<uint16_t,std::string> flagsTable;

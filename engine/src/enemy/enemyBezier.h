@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../core/def.h"
 #include "../graphics/gfx.h"
 #include "BezierMover.h"
@@ -28,23 +30,31 @@ public:
     }
 };
 
+#include <iostream>
 
-
-class enemyBezier_Manager {
+class EnemyBezier_Manager {
     std::deque<EnemyBezier> list;
     const vec2i& border;
 
     struct Cache {
         std::string_view get(const int BezierCurveType) const {
             auto it = table.find(BezierCurveType);
-            if (it == table.end()) throw std::runtime_error("enemyBezier_Manager::Cache: not found");
+            if (it == table.end()) 
+                throw std::runtime_error("enemyBezier_Manager::Cache: not found - id: "
+                    + std::to_string(BezierCurveType));
             return it->second;
         }
         std::unordered_map<uint16_t, std::string> table; // 整数型がkeyなのでrapidString系は使わない
     } cache;
 
 public:
-    enemyBezier_Manager(const vec2i& i_border): border(i_border) {}
+    EnemyBezier_Manager(const vec2i& i_border): border(i_border) {
+        auto arr = paramTable.json["param"]["enemyBezier"]["patterns"].GetArray();
+        int index = 0;
+        for (const auto& v: arr) {
+            cache.table[index++] = v.GetString();
+        }
+    }
 
     void generate(const vec2i& pos, const int BezierCurveType, const int duration) {
         std::string_view curveAlias = cache.get(BezierCurveType);

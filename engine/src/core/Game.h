@@ -6,6 +6,7 @@
 #include "../VM/VM.h"
 #include "../player/player.h"
 #include "../bullet/playerBullet.h"
+#include "../enemy/enemyBezier.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -22,6 +23,15 @@ class Game {
     
         const std::string stgdatpath = Assets + "main.stg.dat";
 
+    struct commandExec {
+        Game& game;
+
+        void operator()(const command_enemyBezier& c) const {
+            game.enemyBezier_Manager->generate(vec2i(c.x,c.y),c.pattern,c.duration);
+        }
+        // void operator()(const Spawn& s) const { /* ... */ }
+    };
+
     struct KeyStat {
         bool
             up      = false,
@@ -34,9 +44,11 @@ class Game {
 
     VM* vm;
     Renderer* renderer;
+    ElapsedTime elapsedTime;
+
     Player* player;
     PlayerBullet_Manager playerBullet_Manager;
-    ElapsedTime elapsedTime;
+    EnemyBezier_Manager* enemyBezier_Manager;
 
 public:
     Game(const int windowWidth, const int windowHeight);

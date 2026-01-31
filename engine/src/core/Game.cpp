@@ -13,10 +13,6 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
 }
 
 
-void handle(const command_enemyBezier& c) {
-    
-}
-
     Game::Game(const int windowWidth, const int windowHeight) {
         // SDL init
         window = SDL_CreateWindow(
@@ -50,6 +46,7 @@ void handle(const command_enemyBezier& c) {
         // entity
         renderer = new Renderer(rendererNative);
         player = new Player(5,vec2i(width,height),renderer->getSpriteSize(entityTable.get("player")));
+        enemyBezier_Manager = new EnemyBezier_Manager(vec2i(width,height));
 
         // VM
         vm = new VM(stgdatpath);
@@ -58,6 +55,16 @@ void handle(const command_enemyBezier& c) {
     void Game::update() {
         if (!elapsedTime) elapsedTime.init();
         int deltaTime = elapsedTime.get();
+        // VM step
+        auto vm_r = vm->step();
+        switch (vm_r) {
+            case VM::ReturnCode::success: break;
+            case VM::ReturnCode::error: throw std::runtime_error("VMで何らかの異常が発生しました"); break;
+            case VM::ReturnCode::spawnRequest: {
+                std::visit(Game::commandExec{*this}, vm->gamecommand);
+            }
+        }
+        // entity update
         vec2i d = makeDir(keyStat.up, keyStat.down, keyStat.left, keyStat.right);
         ShotRequest playerShotReq = player->update(deltaTime, d.x, d.y, keyStat.shift, keyStat.z);
         if (playerShotReq.shouldShoot) playerBullet_Manager.generate(playerShotReq.spawnPos);
@@ -92,5 +99,6 @@ void handle(const command_enemyBezier& c) {
         renderer->drawSprite(entityTable.get("background"), vec2i(0,0));
         player->draw(renderer);
         playerBullet_Manager.draw(renderer);
+        enemyBezier_Manager->draw(renderer);
         SDL_RenderPresent(rendererNative);
     }

@@ -17,7 +17,7 @@ class Player {
     vec2f pos;
     vec2i border;
     vec2i spriteSize;
-    int shootInterval = 20; // ms
+    int shootInterval = 50; // ms
     int elapsedTime = 0;
 
 public:
