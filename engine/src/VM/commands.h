@@ -4,7 +4,8 @@
 #include <variant>
 
 struct command_enemyBezier {
-    uint16_t x, y, pattern;
+    int16_t x, y;
+    uint16_t pattern;
     uint32_t duration;
 };
 

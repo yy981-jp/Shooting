@@ -21,9 +21,10 @@ struct SpriteInfo {
 class Renderer {
 	void* native;
     std::vector<SpriteInfo> spriteTable;
+    int halfWidth, halfHeight;
 
 public:
-	Renderer(void* sdlRenderer);
+	Renderer(void* sdlRenderer, int halfWidth, int halfHeight);
     ~Renderer();
 
     vec2i getSpriteSize(entityID spriteID);

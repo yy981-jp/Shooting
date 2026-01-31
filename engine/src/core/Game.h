@@ -18,8 +18,10 @@ class Game {
     SDL_Texture* texture;
 
     static constexpr int
-        width = 800,
-        height = 600;
+        widthULB = 800,         // 画面横幅, ULB座標系(左上を原点とする)の横方向の最大値
+        heightULB = 600,        // 画面縦幅, ULB座標系の縦方向の最大値
+        width = widthULB/2,     // 論理座標系(中央を原点とする)の横方向の最大値
+        height = heightULB/2;   // 論理座標系の縦方向の最大値
     
     const std::string stgdatpath = Assets + "main.stg.dat";
 

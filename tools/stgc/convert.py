@@ -58,7 +58,7 @@ def packParam(cmd:Instruction):
                 )
             ) if "pattern" in cmd.args else 0
             code+= struct.pack(
-                "<H H H H I",
+                "<H h h H I",
                 int(ENTITY_MAP[entityType]),
                 int(cmd.args["x"]), int(cmd.args["y"]),
                 pattern,

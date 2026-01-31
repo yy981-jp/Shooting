@@ -27,7 +27,8 @@ SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
 /*------------------------------**
 **          Renderer            **
 **------------------------------*/
-    Renderer::Renderer(void* sdlRenderer): native(sdlRenderer), spriteTable(entityTable.table.size()) {
+    Renderer::Renderer(void* sdlRenderer, int halfWidth, int halfHeight)
+      : halfWidth(halfWidth), halfHeight(halfHeight), native(sdlRenderer), spriteTable(entityTable.table.size()) {
         auto* renderer = static_cast<SDL_Renderer*>(native);
 
         for (const auto& [entities,id]: entityTable.table) {
@@ -49,12 +50,11 @@ SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
         auto* renderer = static_cast<SDL_Renderer*>(native);
         if (!renderer) return;
 
-        int width, height;
         SpriteInfo sprite = spriteTable[static_cast<size_t>(spriteID)];
 
         SDL_Rect dst;
-        dst.x = static_cast<int>(pos.x);
-        dst.y = static_cast<int>(pos.y);
+        dst.x = pos.x + halfWidth;
+        dst.y = pos.y + halfHeight;
         dst.w = sprite.w;
         dst.h = sprite.h;
 
@@ -62,8 +62,5 @@ SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
     }
 
     void Renderer::drawSprite(entityID spriteID, const vec2f& posF) const {
-        vec2i pos;
-        pos.x = posF.x;
-        pos.y = posF.y;
-        drawSprite(spriteID,pos);
+        drawSprite(spriteID,vec2i(posF));
     }

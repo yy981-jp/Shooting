@@ -12,10 +12,15 @@
         float cy = v[1] * speed * (slow ? 0.5f : 1.0f);
         pos.x += cx;
         pos.y += cy;
-        if (pos.y>=border.y || pos.y<=0 || pos.x>=border.x || pos.x<=0) {
-            pos.x -= cx;
+
+        // 範囲外であれば座標の変更を取り消し
+        if (pos.y>=border.y || pos.y<=u_border.y) {
             pos.y -= cy;
         }
+        if (pos.x>=border.x || pos.x<=u_border.x) {
+            pos.x -= cx;
+        }
+
         ShotRequest req;
         if (shot && (elapsedTime > shootInterval)) {
             elapsedTime -= shootInterval;
@@ -33,9 +38,11 @@
     }
 
     Player::Player(int speed, vec2i i_border, vec2i spriteSize):
-      speed(speed), spriteSize(spriteSize), pos(400, 300) {
+      speed(speed), spriteSize(spriteSize), pos(0,0) {
         border.x = i_border.x - spriteSize.x;
         border.y = i_border.y - spriteSize.y;
+        u_border.x = -i_border.x;
+        u_border.y = -i_border.y;
 
         for (int y = -1; y <= 1; ++y) {
             for (int x = -1; x <= 1; ++x) {

@@ -15,7 +15,7 @@ class Player {
     int speed;
     float moveTable[3][3][2]; // y, x, [cos,sin]
     vec2f pos;
-    vec2i border;
+    vec2i border, u_border;
     vec2i spriteSize;
     int shootInterval = 50; // ms
     int elapsedTime = 0;

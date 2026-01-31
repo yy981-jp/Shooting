@@ -36,15 +36,15 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
             rendererNative,
             SDL_PIXELFORMAT_ARGB8888,
             SDL_TEXTUREACCESS_STREAMING,
-            width,
-            height
+            widthULB,
+            heightULB
         );
         if (!texture) throw std::runtime_error(std::string("SDL_CreateTexture failed: ") + SDL_GetError());
 
-        SDL_RenderSetLogicalSize(rendererNative, width, height);
+        SDL_RenderSetLogicalSize(rendererNative, widthULB, heightULB);
         
         // entity
-        renderer = new Renderer(rendererNative);
+        renderer = new Renderer(rendererNative, width, height);
         player = new Player(5,vec2i(width,height),renderer->getSpriteSize(entityTable.get("player")));
         enemyBezier_Manager = new EnemyBezier_Manager(vec2i(width,height));
 
@@ -81,7 +81,7 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
     
     void Game::draw() const {
         // SDL_RenderClear(rendererNative); (これがあると黒帯領域が発生する なんでかって? 未来の自分調べといて)
-        renderer->drawSprite(entityTable.get("background"), vec2i(0,0));
+        renderer->drawSprite(entityTable.get("background"), vec2i(-width,-height));
         player->draw(renderer);
         playerBullet_Manager.draw(renderer);
         enemyBezier_Manager->draw(renderer);
