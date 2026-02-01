@@ -56,7 +56,7 @@ class Game {
 
 public:
     Game(const int windowWidth, const int windowHeight);
-    void update();
+    void update(float displayFps);
     void draw() const;
     void onKeyDown(const SDL_KeyboardEvent& e);
     void onKeyUP(const SDL_KeyboardEvent& e);

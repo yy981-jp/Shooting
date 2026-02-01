@@ -8,6 +8,7 @@
 class PlayerBullet {
     vec2f pos;
     const Renderer& renderer;
+    static constexpr float speed = 600.0f; // pixels per second
 
 public:
     PlayerBullet(vec2i i_pos): renderer(renderer) {
@@ -15,8 +16,8 @@ public:
         pos.y = i_pos.y;
     }
 
-    void update() {
-        pos.y -= 10;
+    void update(int deltaTime) {
+        pos.y -= speed * (static_cast<float>(deltaTime) / 1000.0f);
     }
 
     void draw(const Renderer* renderer) const {
@@ -33,10 +34,10 @@ public:
         bullets.push_back(PlayerBullet(pos));
     }
 
-    void update() {
+    void update(int deltaTime) {
         if (bullets.size() > 50) bullets.pop_front();
         for (PlayerBullet& bullet: bullets) {
-            bullet.update();
+            bullet.update(deltaTime);
         }
     }
 

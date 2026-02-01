@@ -64,6 +64,7 @@ def packParam(cmd:Instruction):
                 pattern,
                 int(cmd.args.get("duration", 5000))
             )
+            # pprint(code)
         else:
             raise SyntaxError("spawn: 未知の敵")
 

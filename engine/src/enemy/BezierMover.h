@@ -1,13 +1,14 @@
 #pragma once
 
 #include <vector>
+#include <span>
 
 #include "../core/def.h"
 
 class BezierMover {
 	std::vector<vec2f> controlVec2s;
 	float t = 0.0f;
-	float speedStep;
+	float invDurationMs;
 	bool running = true;
 
 	vec2f calculateBezierVec2(float t) {
@@ -25,14 +26,20 @@ class BezierMover {
 public:
 	vec2f pos;
 
-	BezierMover(const std::span<const vec2f>& controlVec2s, int duration)
+	// duration is expected to be in milliseconds
+	BezierMover(const std::span<const vec2f>& controlVec2s, int durationMs)
 		: controlVec2s(controlVec2s.begin(), controlVec2s.end()),
-		  speedStep(1.0f / static_cast<float>(duration)) {}
+		  invDurationMs(durationMs > 0 ? 1.0f / static_cast<float>(durationMs) : 0.0f) {
+		if (durationMs <= 0) {
+			t = 1.0f;
+			running = false;
+		}
+	}
 
 	void update(int deltaTime) {
 		if (!running) return;
 
-		t += speedStep * static_cast<float>(deltaTime);
+		t += invDurationMs * static_cast<float>(deltaTime);
 		if (t >= 1.0f) {
 			t = 1.0f;
 			running = false;

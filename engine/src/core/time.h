@@ -21,3 +21,17 @@ private:
 	std::chrono::time_point<std::chrono::high_resolution_clock> start;
 	bool enable = false;
 };
+
+
+
+class FpsCounter {
+	using clock = std::chrono::steady_clock;
+
+	clock::time_point prev = clock::now();
+	int frameCount = 0;
+	float fps = 0.0f;
+
+public:
+	void update();
+	float getFps() const;
+};

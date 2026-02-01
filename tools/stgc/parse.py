@@ -202,9 +202,11 @@ class STGCompiler:
 			result[key] = self._parse_value(value)
 		return result
 	def _parse_second(self, value: str):
+		# tickのintにして返す
+		# tick = s * 60(FPS)
 		tick: int = 0
 		if value.endswith("ms"):
-			tick = int(value[:-2]) *FPS *1000
+			tick = int(value[:-2]) *FPS /1000
 		elif value.endswith("s"):
 			tick = int(value[:-1]) *FPS
 		else:

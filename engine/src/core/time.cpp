@@ -36,3 +36,22 @@
 	ElapsedTime::operator bool() {
 		return enable;
 	}
+
+
+
+	void FpsCounter::update() {
+		++frameCount;
+
+		auto now = clock::now();
+		std::chrono::duration<float> elapsed = now - prev;
+
+		if (elapsed.count() >= 1.0f) {
+			fps = frameCount / elapsed.count();
+			frameCount = 0;
+			prev = now;
+		}
+	}
+
+	float FpsCounter::getFps() const {
+		return fps;
+	}

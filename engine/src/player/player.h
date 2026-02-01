@@ -12,7 +12,7 @@ struct ShotRequest {
 };
 
 class Player {
-    int speed;
+    float speed; // pixels per second
     float moveTable[3][3][2]; // y, x, [cos,sin]
     vec2f pos;
     vec2i border, u_border;
@@ -21,7 +21,7 @@ class Player {
     int elapsedTime = 0;
 
 public:
-    Player(int speed, vec2i border, vec2i spriteSize);
+    Player(float speed, vec2i border, vec2i spriteSize);
 
     ShotRequest update(int deltaTime, int dx, int dy, bool slow, bool shot);
     void draw(const Renderer* renderer) const;

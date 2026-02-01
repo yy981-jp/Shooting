@@ -5,6 +5,7 @@
 
 #include <fstream>
 
+
 vec2i makeDir(bool up, bool down, bool left, bool right) {
 	return {
 		(right ? 1 : 0) - (left ? 1 : 0),
@@ -45,15 +46,15 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
         
         // entity
         renderer = new Renderer(rendererNative, width, height);
-        player = new Player(5,vec2i(width,height),renderer->getSpriteSize(entityTable.get("player")));
+        player = new Player(5.0f * 60.0f,vec2i(width,height),renderer->getSpriteSize(entityTable.get("player")));
         enemyBezier_Manager = new EnemyBezier_Manager(vec2i(width,height));
 
         // VM
         vm = new VM(stgdatpath);
     }
 
-    void Game::update() {
-        SDL_SetWindowTitle(window,(std::to_string(++tick) + "tick").c_str());
+    void Game::update(float displayFps) {
+        SDL_SetWindowTitle(window,(std::to_string(displayFps) + "fps").c_str());
 
         if (!elapsedTime) elapsedTime.init();
         int deltatime = elapsedTime.get();
@@ -74,7 +75,7 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
         vec2i d = makeDir(keyStat.up, keyStat.down, keyStat.left, keyStat.right);
         ShotRequest playerShotReq = player->update(deltatime, d.x, d.y, keyStat.shift, keyStat.z);
         if (playerShotReq.shouldShoot) playerBullet_Manager.generate(playerShotReq.spawnPos);
-        playerBullet_Manager.update();
+        playerBullet_Manager.update(deltatime);
 
         enemyBezier_Manager->update(deltatime);
     }

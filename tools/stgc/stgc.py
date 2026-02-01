@@ -12,6 +12,7 @@ if __name__ == "__main__":
 	prog, mainAddr, endAddr = compiler.compile()
 	write(prog,mainAddr,endAddr,sys.argv[1])
 
-	# print(f"CompiledSize: {len(prog)}")
-	# print(f"mainAddr: {mainAddr}")
-	# pprint(prog)
+	if len(sys.argv)==3 and sys.argv[2] == "debug":
+		print(f"CompiledSize: {len(prog)}")
+		print(f"mainAddr: {mainAddr}")
+		pprint(prog)

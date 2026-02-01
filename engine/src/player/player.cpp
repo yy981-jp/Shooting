@@ -8,8 +8,9 @@
 
     ShotRequest Player::update(int deltaTime, int dx, int dy, bool slow, bool shot) {
         auto& v = moveTable[dy + 1][dx + 1];
-        float cx = v[0] * speed * (slow ? 0.5f : 1.0f);
-        float cy = v[1] * speed * (slow ? 0.5f : 1.0f);
+        float dtSec = static_cast<float>(deltaTime) / 1000.0f;
+        float cx = v[0] * speed * (slow ? 0.5f : 1.0f) * dtSec;
+        float cy = v[1] * speed * (slow ? 0.5f : 1.0f) * dtSec;
         pos.x += cx;
         pos.y += cy;
 
@@ -37,7 +38,7 @@
         renderer->drawSprite(entityTable.get("player"), pos);
     }
 
-    Player::Player(int speed, vec2i i_border, vec2i spriteSize):
+    Player::Player(float speed, vec2i i_border, vec2i spriteSize):
       speed(speed), spriteSize(spriteSize), pos(0,0) {
         border.x = i_border.x - spriteSize.x;
         border.y = i_border.y - spriteSize.y;
