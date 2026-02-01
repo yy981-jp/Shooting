@@ -2,8 +2,7 @@ from defi import Instruction
 from typing import Dict, Union
 
 
-FPS: int = 60
-MAX_NEST: int = 16
+MAX_NEST: int = 32
 
 
 # ==========
@@ -202,13 +201,12 @@ class STGCompiler:
 			result[key] = self._parse_value(value)
 		return result
 	def _parse_second(self, value: str):
-		# tickのintにして返す
-		# tick = s * 60(FPS)
+		# msのintにして返す
 		tick: int = 0
 		if value.endswith("ms"):
-			tick = int(value[:-2]) *FPS /1000
+			tick = int(value[:-2])
 		elif value.endswith("s"):
-			tick = int(value[:-1]) *FPS
+			tick = int(value[:-1]) * 1000
 		else:
 			tick = int(value)
 		return tick
