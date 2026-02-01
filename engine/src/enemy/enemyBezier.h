@@ -7,18 +7,18 @@
 
 
 class EnemyBezier {
-    vec2f pos;
+    vec2f pos, origin;
     vec2i border;
     BezierMover bm;
 
 public:
     EnemyBezier(const vec2i& i_pos, std::span<const vec2f> BezierCurve, const int duration, const vec2i& border)
-     : pos(i_pos), border(border), bm(BezierCurve,duration) {}
+     : pos(i_pos), origin(i_pos), border(border), bm(BezierCurve,duration) {}
 
     bool update(int deltatime) { // true -> 有効,  false -> 削除
         if (!bm.isRunning()) return false;
         bm.update(deltatime);
-        pos = static_cast<vec2f>(bm.pos);
+        pos = bm.pos + origin;
         return true;
     }
 
