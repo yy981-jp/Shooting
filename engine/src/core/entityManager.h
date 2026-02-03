@@ -1,57 +1,67 @@
+#pragma once
+
 #include <vector>
 #include <cstdint>
 #include <limits>
 
-using EntityID = uint32_t;
-
-struct Slot {
-    uint32_t nextFree; // 次の空きID（linked list）
-    bool alive;
-};
-
-
+#include "def.h"
 
 
 
 class EntityManager {
+    struct Slot {
+        uint32_t nextFree; // 次の空きID（linked list）
+        EntityGen gen = 0; // 世代
+        uint64_t mask;     // component mask (bitflagでEntityが所属するcomponent達を表す)
+    };
+
 public:
     EntityManager() {
         freeHead = INVALID;
     }
 
-    EntityID create() {
+    EntityHandle create() {
         EntityID id;
 
         if (freeHead != INVALID) {
             // フリースロットを再利用
             id = freeHead;
-            freeHead = slots[id].nextFree;
-            slots[id].alive = true;
-        } 
-        else {
+            freeHead = records[id].nextFree;
+        } else {
             // 新規スロット追加
-            id = (EntityID)slots.size();
-            slots.push_back({INVALID, true});
+            id = (EntityID)records.size();
+            records.push_back({INVALID});
         }
 
-        return id;
+        return {id,records[id].gen};
     }
 
-    void destroy(EntityID id) {
-        slots[id].alive = false;
+    void destroy(EntityHandle h) {
+        ++records[h.id].gen;
 
         // フリースロット linked list に追加
-        slots[id].nextFree = freeHead;
-        freeHead = id;
+        records[h.id].nextFree = freeHead;
+        freeHead = h.id;
     }
 
-    bool isAlive(EntityID id) const {
-        return slots[id].alive;
+    bool is_alive(EntityHandle h) {
+        return records[h.id].gen == h.gen;
+    }
+
+    uint64_t getMask(EntityHandle e) const {
+        if (e.id >= records.size()) return 0;
+        const auto& r = records[e.id];
+        if (r.gen != e.gen) return 0; // dead
+        return r.mask;
+    }
+
+    bool hasComponent(EntityHandle e, uint64_t mask) const { // 少なくとも要求maskをentityが持っていればtrue
+        return (getMask(e) & mask) == mask;
     }
 
 private:
     static constexpr uint32_t INVALID = std::numeric_limits<uint32_t>::max();
 
-    std::vector<Slot> slots;
+    std::vector<Slot> records;
     uint32_t freeHead; // フリーリストの先頭
-};
+} entMgr;

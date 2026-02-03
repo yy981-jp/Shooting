@@ -25,13 +25,11 @@ class Game {
     
     const std::string stgdatpath = Assets + "main.stg.dat";
 
-    uint64_t tick = 0;
-
     struct commandExec {
         Game& game;
 
         void operator()(const command_enemyBezier& c) const {
-            game.enemyBezier_Manager->generate(vec2i(c.x,c.y),c.pattern,c.duration);
+            // game.enemyBezier_Manager->generate(vec2i(c.x,c.y),c.pattern,c.duration);
         }
         // void operator()(const Spawn& s) const { /* ... */ }
     };
@@ -50,14 +48,14 @@ class Game {
     Renderer* renderer;
     ElapsedTime elapsedTime;
 
-    Player* player;
-    PlayerBullet_Manager playerBullet_Manager;
-    EnemyBezier_Manager* enemyBezier_Manager;
+    // Player* player;
+    // PlayerBullet_Manager playerBullet_Manager;
+    // EnemyBezier_Manager* enemyBezier_Manager;
 
 public:
     Game(const int windowWidth, const int windowHeight);
     void update(float displayFps);
-    void draw() const;
+    // void draw() const;
     void onKeyDown(const SDL_KeyboardEvent& e);
     void onKeyUP(const SDL_KeyboardEvent& e);
 };

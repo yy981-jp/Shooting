@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../core/def.h"
-#include "../core/collider.h"
+// #include "../core/collider.h"
 #include "../graphics/gfx.h"
 #include "BezierMover.h"
 #include "../tables/all.h"
@@ -15,14 +15,14 @@ class EnemyBezier {
 public:
     EnemyBezier(const vec2i& i_pos, std::span<const vec2f> bezierCurve, const int duration, const vec2i& border)
      : pos(i_pos), origin(pos - bezierCurve[0]), border(border), bm(bezierCurve,duration) {
-        std::get<Circle>(collider) = {pos, 10.0f};
+        // std::get<Circle>(collider) = {pos, 10.0f};
     }
 
     bool update(int deltatime) { // true -> 有効,  false -> 削除
         if (!bm.isRunning()) return false;
         bm.update(deltatime);
         pos = bm.pos + origin;
-        std::get<Circle>(collider).center = pos;
+        // std::get<Circle>(collider).center = pos;
         return true;
     }
 
@@ -30,7 +30,7 @@ public:
         renderer->drawSprite(entityTable.get("enemyBezier"),pos);
     }
 
-    Collider collider;
+    // Collider collider;
 };
 
 
