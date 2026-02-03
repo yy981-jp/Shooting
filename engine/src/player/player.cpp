@@ -23,14 +23,23 @@
         }
 
         ShotRequest req;
-        if (shot && (elapsedTime > shootInterval)) {
-            elapsedTime -= shootInterval;
+        // まず経過時間を累積
+        elapsedTime += deltaTime;
+        int fireCount = 0;
+        if (shot) {
+            while (elapsedTime >= shootInterval) {
+                elapsedTime -= shootInterval;
+                ++fireCount;
+            }
+        }
+
+        if (fireCount > 0) {
             req.shouldShoot = true;
             req.spawnPos = vec2i(
                 pos.x + (spriteSize.x/2),
                 pos.y
             );
-        } else elapsedTime += deltaTime;
+        }
         return req;
     }
 

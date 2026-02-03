@@ -12,7 +12,7 @@ entity.def.json
 	}
 }
 
-entityID以外にも振る舞いのkvに対するID対応表が必要 定義jsonを増やす?
+entityType以外にも振る舞いのkvに対するID対応表が必要 定義jsonを増やす?
 
 enemyBezier.def.json
 {

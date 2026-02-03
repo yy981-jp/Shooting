@@ -8,7 +8,12 @@ file(GLOB_RECURSE SOURCES src/*.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-target_link_libraries(${PROJECT_NAME}
+target_link_libraries(${PROJECT_NAME} PRIVATE
     SDL2
     SDL2_image
+)
+
+target_compile_options(${PROJECT_NAME} PRIVATE
+	$<$<CONFIG:Release>:-O3>
+	$<$<CONFIG:RelWithDebInfo>:-O3 -g>
 )

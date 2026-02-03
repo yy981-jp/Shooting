@@ -23,6 +23,10 @@ struct Vec2 {
         return Vec2(x + other.x, y + other.y);
     }
 
+    Vec2 operator-(const Vec2& other) const {
+        return Vec2(x - other.x, y - other.y);
+    }
+
     Vec2& operator+=(const Vec2& other) {
         x += other.x;
         y += other.y;

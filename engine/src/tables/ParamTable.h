@@ -23,6 +23,4 @@ public:
         std::unordered_map<std::string, std::vector<vec2f>, StrHash, StrEq> table;
     } bezierCurve;
 
-
-
 };

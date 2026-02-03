@@ -27,7 +27,7 @@ public:
 	Renderer(void* sdlRenderer, int halfWidth, int halfHeight);
     ~Renderer();
 
-    vec2i getSpriteSize(entityID spriteID);
-	void drawSprite(entityID spriteID, const vec2i& pos) const;
-	void drawSprite(entityID spriteID, const vec2f& pos) const;
+    vec2i getSpriteSize(EntityType spriteID);
+	void drawSprite(EntityType spriteID, const vec2i& pos) const;
+	void drawSprite(EntityType spriteID, const vec2f& pos) const;
 };

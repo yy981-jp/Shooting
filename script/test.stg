@@ -1,2 +1,2 @@
 :main
-	spawn enemyBezier x=100 y=50 pattern=debug duration=3s
+	spawn enemyBezier x=-200 y=-200 pattern=debug duration=5s

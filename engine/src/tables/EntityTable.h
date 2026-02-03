@@ -24,4 +24,6 @@ public:
     }
 
     std::unordered_map<std::string, uint16_t, StrHash, StrEq> table;
+
+    std::unordered_map<EntityType,void*> pointerTable; // インスタンスのポインタのmap staticcastして使用
 };
