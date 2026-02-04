@@ -13,10 +13,10 @@ template<typename T>
 class ComponentStorage: public IStorage {
 public:
     // entity id -> dense index
-    std::vector<uint32_t> sparse;
+    std::vector<EntityID> sparse;
 
     // dense storage
-    std::vector<uint32_t> denseEntities;
+    std::vector<EntityID> denseEntities;
     std::vector<T> denseData;
 
 public:
@@ -40,7 +40,7 @@ public:
 
     void add(EntityHandle e, const T& value = T{}) {
         assert(!has(e));
-        uint32_t index = (uint32_t)denseData.size();
+        EntityID index = (EntityID)denseData.size();
         denseData.push_back(value);
         denseEntities.push_back(e.id);
         sparse[e.id] = index;
@@ -48,8 +48,8 @@ public:
 
     void remove(EntityHandle e) override {
         assert(has(e));
-        uint32_t index = sparse[e.id];
-        uint32_t last = (uint32_t)denseData.size() - 1;
+        EntityID index = sparse[e.id];
+        EntityID last = (EntityID)denseData.size() - 1;
 
         // swap with last
         denseData[index] = denseData[last];
@@ -70,8 +70,10 @@ public:
     // iteration
     T& operator[](size_t i) { return denseData[i]; }
     const T& operator[](size_t i) const { return denseData[i]; }
-
+/*
     EntityHandle entityAt(size_t i) const {
-        return EntityHandle{ denseEntities[i], 0 };
+        return EntityHandle{ denseEntities[i], 0 }; gen=0固定は良くないのでは? 
+                                                    意味を持たないことを表す数値を追加するとか
     }
+*/
 };

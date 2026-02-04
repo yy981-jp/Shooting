@@ -7,6 +7,7 @@
 #include "../player/player.h"
 #include "../bullet/playerBullet.h"
 #include "../enemy/enemyBezier.h"
+#include "../core/world.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>

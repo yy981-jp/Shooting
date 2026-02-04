@@ -1,7 +1,11 @@
 #pragma once
 #include "../graphics/gfx.h"
 
-struct Transform { float x,y; };
+struct Transform { vec2f pos, area; }; // pos = x,y | area = w,h
 struct Velocity { float vx, vy; };
-struct Sprite { EntityType tex; };
+struct Sprite { EntityType spriteID; };
 struct Bullet { float damage; };
+
+class Player {
+    
+};
