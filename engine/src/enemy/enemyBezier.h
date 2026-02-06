@@ -14,29 +14,24 @@ class EnemyBezier {
     
 public:
     EnemyBezier(const vec2i& i_pos, std::span<const vec2f> bezierCurve, const int duration, const vec2i& border)
-     : pos(i_pos), origin(pos - bezierCurve[0]), border(border), bm(bezierCurve,duration) {
-        std::get<Circle>(collider) = {pos, 10.0f};
-    }
+     : pos(i_pos), origin(pos - bezierCurve[0]), border(border), bm(bezierCurve,duration) {}
 
     bool update(int deltatime) { // true -> 有効,  false -> 削除
         if (!bm.isRunning()) return false;
         bm.update(deltatime);
         pos = bm.pos + origin;
-        std::get<Circle>(collider).center = pos;
         return true;
     }
 
     void draw(const Renderer* renderer) const {
         renderer->drawSprite(entityTable.get("enemyBezier"),pos);
     }
-
-    Collider collider;
 };
 
 
 
-class EnemyBezier_Manager {
-    std::vector<EnemyBezier> list;
+class EnemyBezier_Manager: public ICollidable {
+    std::deque<EnemyBezier> list;
     const vec2i& border;
 
     struct Cache {
@@ -78,5 +73,9 @@ public:
         for (const auto& bullet: list) {
             bullet.draw(renderer);
         }
+    }
+
+    void onHit(const CollisionInfo& info) {
+        // いろいろ
     }
 };
