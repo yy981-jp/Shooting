@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "util.h"
 #include "json.h"
+#include "collider.h"
 #include "../VM/commands.h"
 
 #include <fstream>
@@ -77,6 +78,8 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
         if (playerShotReq.shouldShoot) playerBullet_Manager.generate(playerShotReq.spawnPos);
         playerBullet_Manager.update(deltatime);
         enemyBezier_Manager->update(deltatime);
+
+        physWorld.step(); // 当たり判定
     }
     
     void Game::draw() const {

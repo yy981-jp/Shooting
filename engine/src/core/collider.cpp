@@ -72,11 +72,13 @@
 
         // ===== free slot reuse =====
         if (freeHead != INVALID) {
+            // reuse
             id = freeHead;
             freeHead = records[id].nextFree;
         } else {
+            // new slot
             id = (ColliderID)records.size();
-            records.push_back({INVALID, 0});
+            records.push_back({ INVALID, 0 });
 
             type.push_back({});
             owner.push_back({});
@@ -92,6 +94,13 @@
             aabbMin.push_back({});
             aabbMax.push_back({});
         }
+
+        // ===== alive 登録（共通）=====
+        if (aliveIndex.size() < records.size())
+            aliveIndex.resize(records.size());
+
+        aliveIndex[id] = alive.size();
+        alive.push_back(id);
 
         ColliderGen gen = records[id].gen;
 
@@ -130,38 +139,48 @@
     void PhysicsWorld::step() {
         HitEvents events;
 
-        const EntityID N = pos.size();
+        const size_t N = alive.size();
 
         // AABB更新
-        for (EntityID i = 0; i < N; ++i)
-            updateAABB(i);
+        for (size_t ai = 0; ai < N; ++ai) {
+            ColliderID id = alive[ai];
+            updateAABB(id);
+        }
 
         // 衝突判定
-        for (EntityID i = 0; i < N; ++i) {
-            for (EntityID j = i + 1; j < N; ++j) {
+        for (size_t ai = 0; ai < N; ++ai) {
+            ColliderID i = alive[ai];
+            for (size_t bi = ai + 1; bi < N; ++bi) {
+                ColliderID j = alive[bi];
                 if (!shouldCollide(i, j)) continue;
+                if (!aabbOverlap(i, j)) continue;
 
-                // ===== broad phase (AABB) =====
-                if (!aabbOverlap(i, j))
-                    continue;
-
-                // ===== narrow phase =====
                 const auto at = static_cast<size_t>(type[i]);
                 const auto bt = static_cast<size_t>(type[j]);
 
-                if ((this->*hitTable[at][bt])(i,j)) events.emplace_back(genHitInfo(i,j));
+                if ((this->*hitTable[at][bt])(i,j))
+                    events.emplace_back(genHitInfo(i,j));
             }
         }
 
-        // 衝突処理実行
+        // 衝突処理
         for (const auto& ev: events) {
-            if (auto* a_ptr = entMgr.getPtr<ICollidable>(ev.a_handle)) a_ptr->onHit(ev.a_info);
-            if (auto* b_ptr = entMgr.getPtr<ICollidable>(ev.b_handle)) b_ptr->onHit(ev.a_info);
+            if (auto* a = entMgr.getPtr<ICollidable>(ev.a_handle))
+                a->onHit(ev.a_info);
+            if (auto* b = entMgr.getPtr<ICollidable>(ev.b_handle))
+                b->onHit(ev.b_info);
         }
     }
 
     void PhysicsWorld::destroy(ColliderHandle h) {
         if (!isAlive(h)) return;
+
+        uint32_t idx  = aliveIndex[h.id];
+        ColliderID last = alive.back();
+
+        alive[idx] = last;
+        aliveIndex[last] = idx;
+        alive.pop_back();
 
         ++records[h.id].gen;
         records[h.id].nextFree = freeHead;
@@ -177,8 +196,8 @@
         return {
             .a_handle = owner[a],
             .b_handle = owner[b],
-            .a_info = CollisionInfo{owner[b]},
-            .b_info = CollisionInfo{owner[a]}
+            .a_info = CollisionInfo{.layer = layer[b]},
+            .b_info = CollisionInfo{.layer = layer[a]}
         };
     }
 

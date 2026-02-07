@@ -32,7 +32,7 @@ class Game {
         Game& game;
 
         void operator()(const command_enemyBezier& c) const {
-            game.enemyBezier_Manager->generate(vec2i(c.x,c.y),c.pattern,c.duration);
+            game.enemyBezier_Manager->generate(vec2f(c.x,c.y),c.pattern,c.duration);
         }
         // void operator()(const Spawn& s) const { /* ... */ }
     };

@@ -8,23 +8,23 @@
 #include "../tables/all.h"
 
 
-class EnemyBezier: public ICollidable {
-    vec2f pos, origin;
+struct EnemyBezier: public ICollidable {
+    vec2f pos;
+    vec2f origin;
     vec2i border;
     BezierMover bm;
     EntityHandle ent;
-    ColliderHandle col;
+    ColliderHandle col_h;
     bool wasShot = false;
     
-public:
-    EnemyBezier(const EntityHandle& e, const vec2i& i_pos,
-      std::span<const vec2f> bezierCurve, const int duration, const vec2i& border, const ColliderHandle& col_h)
-      : pos(i_pos), origin(pos - bezierCurve[0]), border(border), bm(bezierCurve,duration), ent(e), col(col_h) {}
+    EnemyBezier(const EntityHandle& e, const vec2f& i_pos,
+      std::span<const vec2f> bezierCurve, int duration, const vec2i& border, const ColliderHandle& col_h)
+      : pos(i_pos), origin(pos - bezierCurve[0]), border(border), bm(bezierCurve,duration), ent(e), col_h(col_h) {}
 
     bool update(int deltatime) { // true -> 有効,  false -> 削除
         if (!bm.isRunning() || wasShot) return false;
-        bm.update(deltatime);
-        pos = bm.pos + origin;
+        // bm.update(deltatime);
+        // pos = bm.pos + origin;
         return true;
     }
 
@@ -33,7 +33,7 @@ public:
     }
 
     void onHit(const CollisionInfo& info) {
-        wasShot = true;
+        if (info.layer == CollisionLayer::playerBullet) wasShot = true;
     }
 };
 
@@ -63,7 +63,7 @@ public:
         }
     }
 
-    void generate(const vec2i& pos, const int BezierCurveType, const int duration) {
+    void generate(const vec2f& pos, const int BezierCurveType, const int duration) {
         std::string_view curveAlias = cache.get(BezierCurveType);
         auto controlVec2 = paramTable.bezierCurve.get(curveAlias);
 
@@ -79,7 +79,7 @@ public:
             static_cast<uint8_t>(CollisionLayer::player) |
             static_cast<uint8_t>(CollisionLayer::playerBullet);
 
-        col.circle.center = vec2f{(float)pos.x, (float)pos.y};
+        col.circle.center = pos;
         col.circle.r = 12.0f; // 敵の当たり判定半径（仮）
 
         // ===== Physics登録 =====
@@ -90,15 +90,19 @@ public:
         EnemyBezier& enemy = list.back();
 
         // EntityManagerにポインタ登録（OOP方式）
-        entMgr.setPtr(e, &enemy);
+        entMgr.setPtr(e,&enemy);
     }
 
     void update(int deltatime) {
         for (size_t i = 0; i < list.size(); ) {
-            if (!list[i].update(deltatime)) {
+            if (!list[i].update(deltatime)) { // 削除されていた場合
+                physWorld.destroy(list[i].col_h);
                 list[i] = std::move(list.back());
                 list.pop_back();
-            } else ++i;
+            } else {
+                physWorld.setPos(list[i].col_h,list[i].pos);
+                ++i;
+            }
         }
     }
 

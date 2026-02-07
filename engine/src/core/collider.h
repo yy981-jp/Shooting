@@ -15,8 +15,9 @@ enum class CollisionLayer: uint8_t {
 };
 
 // CollisionSystemが衝突処理関数に情報を渡すのに使う構造体
+// 衝突相手についての情報を持つ
 struct CollisionInfo {
-    EntityHandle handle;
+    CollisionLayer layer;
 };
 
 // 当たり判定があるentityはこれを継承する
@@ -94,6 +95,8 @@ private:
     
     std::vector<EntityHandle> owner;
 
+    std::vector<ColliderID> alive;
+    std::vector<uint32_t> aliveIndex;
     std::vector<Entry> records;
     ColliderID freeHead = INVALID;
 
@@ -118,6 +121,10 @@ public:
 
     // 判定ループ（circle only broadphase）
     void step();
+
+    void setPos(ColliderHandle h, vec2f p) {
+        pos[h.id] = p;
+    }
 
     void destroy(ColliderHandle h);
     bool isAlive(ColliderHandle h) const;
