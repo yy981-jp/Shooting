@@ -20,6 +20,7 @@ public:
     EntityHandle create();
     void destroy(EntityHandle h);
     bool is_alive(EntityHandle h);
+    void setPtr(EntityHandle e, void* ptr);
 
     template<typename T>
     T* getPtr(const EntityHandle& h) {

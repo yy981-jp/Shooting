@@ -1,41 +1,40 @@
+#pragma once
+
 #include "def.h"
-#include "entityManager.h"
-#include "../tables/entityTable.h"
 
-#include <variant>
 #include <vector>
-#include <span>
-#include <concepts>
-#include <array>
-#include <unordered_map>
 
 
+// 衝突層
 enum class CollisionLayer: uint8_t {
-    player,
-    playerBullet,
-    enemy,
-    enemyBullet,
-
-    max
+    wall            = 1 << 0,
+    player          = 1 << 1,
+    playerBullet    = 1 << 2,
+    enemy           = 1 << 3,
+    enemyBullet     = 1 << 4
 };
 
+// CollisionSystemが衝突処理関数に情報を渡すのに使う構造体
 struct CollisionInfo {
     EntityHandle handle;
 };
 
+// 当たり判定があるentityはこれを継承する
 struct ICollidable {
 	virtual void onHit(const CollisionInfo& info) = 0;
 };
 
-
+// 下の構造体のためのenumclass
 enum class ColliderType : uint8_t {
 	Circle,
 	Rect
 };
-
+// 当たり判定の形状とEntityHandle
 struct Collider {
 	ColliderType type;
     EntityHandle handle;
+    CollisionLayer layer; // 自分の所属
+    uint8_t mask;         // 当たりたい相手
 
 	union {
 		struct {
@@ -50,106 +49,78 @@ struct Collider {
 	};
 };
 
+// 衝突に関する情報全部
 struct HitEvent {
     EntityHandle a_handle, b_handle;
     CollisionInfo a_info, b_info;
 };
-
 using HitEvents = std::vector<HitEvent>;
 
-// 2つのCollisionLayer同士を見て衝突判定
-class CollisionManager {
-    static bool hitCircleCircle(const Collider& a, const Collider& b) {
-        // TODO: 円同士の判定
-        return false;
-    }
 
-    static bool hitCircleRect(const Collider& a, const Collider& b) {
-        // TODO: 円 vs 矩形
-        return false;
-    }
+// 基本情報
+using ColliderID = uint32_t;
+using ColliderGen = uint32_t;
+struct ColliderHandle {
+    ColliderID id;
+    ColliderGen gen;
+};
 
-    static bool hitRectRect(const Collider& a, const Collider& b) {
-        // TODO: 矩形同士
-        return false;
-    }
 
-    // Rect vs Circle は Circle vs Rect を使い回す
-    static bool hitRectCircle(const Collider& a, const Collider& b) {
-        return hitCircleRect(b, a);
-    }
-
-    using HitFunc = bool(*)(const Collider&, const Collider&);
-
-    static constexpr HitFunc hitTable[2][2] = {
-        // a = Circle
-        { hitCircleCircle, hitCircleRect },
-        // a = Rect
-        { hitRectCircle,   hitRectRect }
+class PhysicsWorld {
+public:
+    struct Entry {
+        uint32_t nextFree;
+        EntityGen gen;
     };
 
+private:
+    static constexpr ColliderID INVALID = UINT32_MAX;
+
+    // SoA（データを分離）
+    // 共通
+    std::vector<ColliderType> type;
+    std::vector<vec2f> pos;        // center (circle) / center (rect)
+    std::vector<CollisionLayer> layer;
+    std::vector<uint8_t> mask;
+
+    // Circle専用
+    std::vector<float> radius;
+
+    // Rect専用
+    std::vector<vec2f> rectMin, rectMax;
+
+    // AABB (broadcheck用 大雑把な当たり判定)
+    std::vector<vec2f> aabbMin, aabbMax;
+    
+    std::vector<EntityHandle> owner;
+
+    std::vector<Entry> records;
+    ColliderID freeHead = INVALID;
+
+
+    bool hitCircleCircle(EntityID a, EntityID b);
+    bool hitRectCircle(EntityID r, EntityID c);
+    bool hitCircleRect(EntityID c, EntityID r);
+    bool hitRectRect(EntityID a, EntityID b);
+    using HitFunc = bool (PhysicsWorld::*)(EntityID, EntityID);
+    HitFunc hitTable[2][2] = {
+        { &PhysicsWorld::hitCircleCircle, &PhysicsWorld::hitCircleRect },
+        { &PhysicsWorld::hitRectCircle,   &PhysicsWorld::hitRectRect }
+    };
+
+    void updateAABB(EntityID id);
+    bool aabbOverlap(EntityID a, EntityID b);
+    bool shouldCollide(EntityID a, EntityID b);
+    HitEvent genHitInfo(EntityID a, EntityID b);
+
 public:
-    bool hit(const Collider& a, const Collider& b) {
-        const auto at = static_cast<size_t>(a.type);
-        const auto bt = static_cast<size_t>(b.type);
+    ColliderHandle add(const Collider& c);
 
-        return hitTable[at][bt](a, b);
-    }
+    // 判定ループ（circle only broadphase）
+    void step();
 
-    HitEvents check(std::span<std::span<Collider>> a, std::span<std::span<Collider>> b) {
-        HitEvents ev;
-        for (const auto& colliders_a: a) for (const auto& colliders_b: b)
-        for (const auto& collider_a: colliders_a) {
-            for (const auto& collider_b: colliders_b) {
-                // ここにAABBを使った大雑把な事前衝突判定処理を置きたい
-                if (hit(collider_a,collider_b)) {
-                    HitEvent h_ev{
-                        .a_handle = collider_a.handle,
-                        .b_handle = collider_b.handle,
-                        .a_info = CollisionInfo{collider_b.handle},
-                        .b_info = CollisionInfo{collider_a.handle}
-                    };
-                    ev.emplace_back(h_ev);
-                }
-            }
-        }
-        return ev;
-    }
+    void destroy(ColliderHandle h);
+    bool isAlive(ColliderHandle h) const;
 };
 
-
-// データの流れを制御
-class CollisionSystem {
-    CollisionManager cm;
-
-    std::array<std::vector<std::span<Collider>>,static_cast<size_t>(CollisionLayer::max)> layers;
-
-    void set(std::span<Collider> colliders, CollisionLayer layer) {
-        layers[static_cast<size_t>(layer)].emplace_back(colliders);
-    }
-
-    void check() {
-        std::array<HitEvents,3/*衝突組み合わせ数*/> res;
-
-        res[0] = cm.check(
-            layers[static_cast<size_t>(CollisionLayer::enemy)],
-            layers[static_cast<size_t>(CollisionLayer::playerBullet)]
-        );
-        res[1] = cm.check(
-            layers[static_cast<size_t>(CollisionLayer::enemy)],
-            layers[static_cast<size_t>(CollisionLayer::player)]
-        );
-        res[2] = cm.check(
-            layers[static_cast<size_t>(CollisionLayer::enemyBullet)],
-            layers[static_cast<size_t>(CollisionLayer::player)]
-        );
-
-        // 衝突処理実行
-        for (const auto& res_c: res) for (const auto& ev: res_c) {
-            if (auto* a_ptr = entMgr.getPtr<ICollidable>(ev.a_handle)) a_ptr->onHit(ev.a_info);
-            if (auto* b_ptr = entMgr.getPtr<ICollidable>(ev.b_handle)) b_ptr->onHit(ev.a_info);
-        }
-
-        for (auto& layer: layers) layer.clear(); // layers初期化
-    }
-};
+extern PhysicsWorld physWorld;

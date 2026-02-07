@@ -2,22 +2,27 @@
 
 #include "../core/def.h"
 #include "../core/collider.h"
+#include "../core/entityManager.h"
 #include "../graphics/gfx.h"
 #include "BezierMover.h"
 #include "../tables/all.h"
 
 
-class EnemyBezier {
+class EnemyBezier: public ICollidable {
     vec2f pos, origin;
     vec2i border;
     BezierMover bm;
+    EntityHandle ent;
+    ColliderHandle col;
+    bool wasShot = false;
     
 public:
-    EnemyBezier(const vec2i& i_pos, std::span<const vec2f> bezierCurve, const int duration, const vec2i& border)
-     : pos(i_pos), origin(pos - bezierCurve[0]), border(border), bm(bezierCurve,duration) {}
+    EnemyBezier(const EntityHandle& e, const vec2i& i_pos,
+      std::span<const vec2f> bezierCurve, const int duration, const vec2i& border, const ColliderHandle& col_h)
+      : pos(i_pos), origin(pos - bezierCurve[0]), border(border), bm(bezierCurve,duration), ent(e), col(col_h) {}
 
     bool update(int deltatime) { // true -> 有効,  false -> 削除
-        if (!bm.isRunning()) return false;
+        if (!bm.isRunning() || wasShot) return false;
         bm.update(deltatime);
         pos = bm.pos + origin;
         return true;
@@ -26,11 +31,15 @@ public:
     void draw(const Renderer* renderer) const {
         renderer->drawSprite(entityTable.get("enemyBezier"),pos);
     }
+
+    void onHit(const CollisionInfo& info) {
+        wasShot = true;
+    }
 };
 
 
 
-class EnemyBezier_Manager: public ICollidable {
+class EnemyBezier_Manager {
     std::deque<EnemyBezier> list;
     const vec2i& border;
 
@@ -57,7 +66,31 @@ public:
     void generate(const vec2i& pos, const int BezierCurveType, const int duration) {
         std::string_view curveAlias = cache.get(BezierCurveType);
         auto controlVec2 = paramTable.bezierCurve.get(curveAlias);
-        list.push_back(EnemyBezier(pos,controlVec2,duration,border)); // borderは定数
+
+        // ===== Entity生成 =====
+        EntityHandle e = entMgr.create();
+
+        // ===== Collider作成 =====
+        Collider col{};
+        col.type   = ColliderType::Circle;
+        col.handle = e;
+        col.layer  = CollisionLayer::enemy;
+        col.mask   =
+            static_cast<uint8_t>(CollisionLayer::player) |
+            static_cast<uint8_t>(CollisionLayer::playerBullet);
+
+        col.circle.center = vec2f{(float)pos.x, (float)pos.y};
+        col.circle.r = 12.0f; // 敵の当たり判定半径（仮）
+
+        // ===== Physics登録 =====
+        auto col_handle = physWorld.add(col);
+
+        // ===== EnemyBezier生成 =====
+        list.emplace_back(e, pos, controlVec2, duration, border, col_handle);
+        EnemyBezier& enemy = list.back();
+
+        // EntityManagerにポインタ登録（OOP方式）
+        entMgr.setPtr(e, &enemy);
     }
 
     void update(int deltatime) {
@@ -73,9 +106,5 @@ public:
         for (const auto& bullet: list) {
             bullet.draw(renderer);
         }
-    }
-
-    void onHit(const CollisionInfo& info) {
-        // いろいろ
     }
 };

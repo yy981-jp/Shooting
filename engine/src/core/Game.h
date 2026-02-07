@@ -2,6 +2,7 @@
 #include <stdexcept>
 
 #include "time.h"
+#include "collider.h"
 #include "../graphics/gfx.h"
 #include "../VM/VM.h"
 #include "../player/player.h"

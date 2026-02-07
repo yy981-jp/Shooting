@@ -76,7 +76,6 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
         ShotRequest playerShotReq = player->update(deltatime, d.x, d.y, keyStat.shift, keyStat.z);
         if (playerShotReq.shouldShoot) playerBullet_Manager.generate(playerShotReq.spawnPos);
         playerBullet_Manager.update(deltatime);
-
         enemyBezier_Manager->update(deltatime);
     }
     
