@@ -52,7 +52,7 @@ class Game {
     ElapsedTime elapsedTime;
 
     Player* player;
-    PlayerBullet_Manager playerBullet_Manager;
+    PlayerBullet_Manager* playerBullet_Manager;
     EnemyBezier_Manager* enemyBezier_Manager;
 
 public:

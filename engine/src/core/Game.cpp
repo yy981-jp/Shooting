@@ -47,8 +47,9 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
         
         // entity
         renderer = new Renderer(rendererNative, width, height);
-        player = new Player(5.0f * 60.0f,vec2i(width,height),renderer->getSpriteSize(entityTable.get("player")));
-        enemyBezier_Manager = new EnemyBezier_Manager(vec2i(width,height));
+        player = new Player(renderer, 5.0f*60.0f, vec2f(width,height));
+        playerBullet_Manager = new PlayerBullet_Manager(renderer);
+        enemyBezier_Manager = new EnemyBezier_Manager(renderer,vec2i(width,height));
 
         // VM
         vm = new VM(stgdatpath);
@@ -75,8 +76,8 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
         // entity update
         vec2i d = makeDir(keyStat.up, keyStat.down, keyStat.left, keyStat.right);
         ShotRequest playerShotReq = player->update(deltatime, d.x, d.y, keyStat.shift, keyStat.z);
-        if (playerShotReq.shouldShoot) playerBullet_Manager.generate(playerShotReq.spawnPos);
-        playerBullet_Manager.update(deltatime);
+        if (playerShotReq.shouldShoot) playerBullet_Manager->generate(playerShotReq.spawnPos);
+        playerBullet_Manager->update(deltatime);
         enemyBezier_Manager->update(deltatime);
 
         physWorld.step(); // 当たり判定
@@ -86,8 +87,12 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
         // SDL_RenderClear(rendererNative); (これがあると黒帯領域が発生する なんでかって? 未来の自分調べといて)
         renderer->drawSprite(entityTable.get("background"), vec2i(-width,-height));
         player->draw(renderer);
-        playerBullet_Manager.draw(renderer);
+        playerBullet_Manager->draw(renderer);
         enemyBezier_Manager->draw(renderer);
+
+        // DEBUG
+        physWorld.draw(renderer);
+
         SDL_RenderPresent(rendererNative);
     }
 

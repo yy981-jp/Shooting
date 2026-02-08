@@ -14,8 +14,9 @@ class PlayerBullet: public ICollidable {
 public:
     vec2f pos;
     ColliderHandle col_h; 
+    vec2f spriteHalf;
 
-    PlayerBullet(vec2i i_pos, ColliderHandle col_h): renderer(renderer), col_h(col_h) {
+    PlayerBullet(vec2i i_pos, ColliderHandle col_h, const vec2f& spriteHalf): renderer(renderer), col_h(col_h), spriteHalf(spriteHalf) {
         pos.x = i_pos.x;
         pos.y = i_pos.y;
     }
@@ -25,7 +26,7 @@ public:
     }
 
     void draw(const Renderer* renderer) const {
-        renderer->drawSprite(entityTable.get("playerBullet"),pos);
+        renderer->drawSprite(entityTable.get("playerBullet"), pos - spriteHalf);
     }
 
     void onHit(const CollisionInfo& info) {
@@ -36,8 +37,12 @@ public:
 
 class PlayerBullet_Manager {
     std::deque<PlayerBullet> bullets;
+    vec2f spriteHalf;
 
 public:
+    PlayerBullet_Manager(const Renderer* r):
+     spriteHalf(r->getSpriteSize(entityTable.get("playerBullet"))/2) {}
+
     void generate(const vec2i& pos) {
         EntityHandle e = entMgr.create();
         Collider col{};
@@ -46,10 +51,10 @@ public:
         col.layer = CollisionLayer::playerBullet;
         col.mask = static_cast<uint8_t>(CollisionLayer::enemy);
         col.circle.center = pos;
-        col.circle.r = 12.0f;
+        col.circle.r = 3.0f;
         auto col_handle = physWorld.add(col);
         
-        bullets.emplace_back(pos,col_handle);
+        bullets.emplace_back(pos,col_handle,spriteHalf);
         auto& bullet = bullets.back();
 
         entMgr.setPtr(e,&bullet);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "def.h"
+#include "../graphics/gfx.h"
 
 #include <vector>
 
@@ -117,6 +118,13 @@ private:
     HitEvent genHitInfo(EntityID a, EntityID b);
 
 public:
+    void draw(const Renderer* r) {
+        r->setColor(255,255,255,255);
+        for (const auto& e: alive) {
+            r->drawFilledCircle(pos[e], radius[e]);
+        }
+    }
+
     ColliderHandle add(const Collider& c);
 
     // 判定ループ（circle only broadphase）

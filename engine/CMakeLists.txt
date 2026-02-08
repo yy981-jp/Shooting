@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20...4.1)
 project(ST) # Shooting
-add_compile_options(-fdiagnostics-color=always)
+add_compile_options(-fdiagnostics-color=always -fconcepts-diagnostics-depth=2)
 
 set(CMAKE_CXX_STANDARD 23)
 

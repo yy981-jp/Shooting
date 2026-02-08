@@ -1,4 +1,5 @@
 #include "player.h"
+#include "../core/entityManager.h"
 #include "../tables/all.h"
 
 
@@ -15,10 +16,10 @@
         pos.y += cy;
 
         // 範囲外であれば座標の変更を取り消し
-        if (pos.y>=border.y || pos.y<=u_border.y) {
+        if (pos.y+spriteHalf.y >= border.y || pos.y-spriteHalf.y <= -border.y) {
             pos.y -= cy;
         }
-        if (pos.x>=border.x || pos.x<=u_border.x) {
+        if (pos.x+spriteHalf.x >= border.x || pos.x-spriteHalf.x <= -border.x) {
             pos.x -= cx;
         }
 
@@ -36,23 +37,23 @@
         if (fireCount > 0) {
             req.shouldShoot = true;
             req.spawnPos = vec2i(
-                pos.x + (spriteSize.x/2),
+                pos.x + (spriteHalf.x/2),
                 pos.y
             );
         }
+
+        physWorld.setPos(h,pos);
+
         return req;
     }
 
     void Player::draw(const Renderer* renderer) const {
-        renderer->drawSprite(entityTable.get("player"), pos);
+        renderer->drawSprite(entityTable.get("player"), pos-spriteHalf);
     }
 
-    Player::Player(float speed, vec2i i_border, vec2i spriteSize):
-      speed(speed), spriteSize(spriteSize), pos(0,0) {
-        border.x = i_border.x - spriteSize.x;
-        border.y = i_border.y - spriteSize.y;
-        u_border.x = -i_border.x;
-        u_border.y = -i_border.y;
+    Player::Player(const Renderer* r, float speed, vec2f i_border):
+      speed(speed), spriteHalf(r->getSpriteSize(entityTable.get("player"))/2), pos(0,0) {
+        border = i_border;
 
         for (int y = -1; y <= 1; ++y) {
             for (int x = -1; x <= 1; ++x) {
@@ -69,4 +70,20 @@
                 cy = y / len;
             }
         }
+
+        EntityHandle e = entMgr.create();
+
+        Collider col{};
+        col.type = ColliderType::Circle;
+        col.handle = e;
+        col.layer = CollisionLayer::player;
+        col.mask =
+            static_cast<uint8_t>(CollisionLayer::enemy) |
+            static_cast<uint8_t>(CollisionLayer::enemyBullet);
+        col.circle.center = pos;
+        col.circle.r = 2.0f;
+
+        h = physWorld.add(col);
+
+        entMgr.setPtr(e,this);
     }

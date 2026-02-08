@@ -34,7 +34,6 @@ void eventloop() {
 	}
 }
 
-
 int main() {
 	CheckTime ct;
 	if (SDL_Init(SDL_INIT_VIDEO)) throw std::runtime_error(std::string("SDL_Init failed: ") + SDL_GetError());
