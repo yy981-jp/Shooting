@@ -7,6 +7,7 @@
 #include "../VM/VM.h"
 #include "../player/player.h"
 #include "../bullet/playerBullet.h"
+#include "../bullet/simpleBullet.h"
 #include "../enemy/enemyBezier.h"
 
 #include <SDL2/SDL.h>
@@ -50,10 +51,12 @@ class Game {
     VM* vm;
     Renderer* renderer;
     ElapsedTime elapsedTime;
+    Cache* cache;
 
     Player* player;
     PlayerBullet_Manager* playerBullet_Manager;
     EnemyBezier_Manager* enemyBezier_Manager;
+    SimpleBullet_Manager* simpleBullet_Manager;
 
 public:
     Game(const int windowWidth, const int windowHeight);

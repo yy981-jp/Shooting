@@ -1,5 +1,5 @@
 #include "Game.h"
-#include "util.h"
+#include "fsutil.h"
 #include "json.h"
 #include "collider.h"
 #include "../VM/commands.h"
@@ -45,11 +45,13 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
 
         SDL_RenderSetLogicalSize(rendererNative, widthULB, heightULB);
         
+        cache = new Cache;
         // entity
         renderer = new Renderer(rendererNative, width, height);
-        player = new Player(renderer, 5.0f*60.0f, vec2f(width,height));
+        player = new Player(renderer, 5.0f*60.0f);
         playerBullet_Manager = new PlayerBullet_Manager(renderer);
-        enemyBezier_Manager = new EnemyBezier_Manager(renderer,vec2i(width,height));
+        enemyBezier_Manager = new EnemyBezier_Manager(renderer);
+        simpleBullet_Manager = new SimpleBullet_Manager(renderer, *cache);
 
         // VM
         vm = new VM(stgdatpath);
@@ -89,6 +91,7 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
         player->draw(renderer);
         playerBullet_Manager->draw(renderer);
         enemyBezier_Manager->draw(renderer);
+        simpleBullet_Manager->draw(renderer);
 
         // DEBUG
         physWorld.draw(renderer);

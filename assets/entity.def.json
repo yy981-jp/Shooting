@@ -10,5 +10,8 @@
     },
     "enemyBezier": {
         "id": 3
+    },
+    "simpleBullet": {
+        "id": 4
     }
 }

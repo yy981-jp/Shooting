@@ -63,3 +63,12 @@ enemyBezierをまずは実装 そしてmanagerも作成
 //	-> jsonにおいてオブジェクトの順序は保証されないため、順序保持用に別で配列を準備する必要あり 無駄が多すぎる
 
 描画システムの座標系は左上を原点に, 論理部分の座標系は中央を原点に
+
+entity.def.jsonを廃止したい
+	stgcをcppに移行すれば可能 #系で.defをenumclassに展開することは可能 では、id->aliasは?
+						    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ gitbranch-ecsのcomponent系参照
+	stgcをpyに保つ場合、.defを解析する機構が必要
+	(例) .def =
+		X(player)
+		X(playerBullet)
+		X(enemyBezier)

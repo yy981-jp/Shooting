@@ -16,7 +16,6 @@ class Player: public ICollidable {
     float speed; // pixels per second
     float moveTable[3][3][2]; // y, x, [cos,sin]
     vec2f pos;
-    vec2i border, u_border;
     vec2f spriteHalf;
     int shootInterval = 50; // ms
     int elapsedTime = 0;
@@ -27,7 +26,7 @@ class Player: public ICollidable {
     }
 
 public:
-    Player(const Renderer* r, float speed, vec2f i_border);
+    Player(const Renderer* r, float speed);
 
     ShotRequest update(int deltaTime, int dx, int dy, bool slow, bool shot);
     void draw(const Renderer* renderer) const;

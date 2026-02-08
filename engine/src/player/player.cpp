@@ -16,10 +16,10 @@
         pos.y += cy;
 
         // 範囲外であれば座標の変更を取り消し
-        if (pos.y+spriteHalf.y >= border.y || pos.y-spriteHalf.y <= -border.y) {
+        if (pos.y+spriteHalf.y >= SCREEN.x || pos.y-spriteHalf.y <= -SCREEN.y) {
             pos.y -= cy;
         }
-        if (pos.x+spriteHalf.x >= border.x || pos.x-spriteHalf.x <= -border.x) {
+        if (pos.x+spriteHalf.x >= SCREEN.x || pos.x-spriteHalf.x <= -SCREEN.x) {
             pos.x -= cx;
         }
 
@@ -51,9 +51,8 @@
         renderer->drawSprite(entityTable.get("player"), pos-spriteHalf);
     }
 
-    Player::Player(const Renderer* r, float speed, vec2f i_border):
+    Player::Player(const Renderer* r, float speed):
       speed(speed), spriteHalf(r->getSpriteSize(entityTable.get("player"))/2), pos(0,0) {
-        border = i_border;
 
         for (int y = -1; y <= 1; ++y) {
             for (int x = -1; x <= 1; ++x) {
@@ -81,7 +80,7 @@
             static_cast<uint8_t>(CollisionLayer::enemy) |
             static_cast<uint8_t>(CollisionLayer::enemyBullet);
         col.circle.center = pos;
-        col.circle.r = 2.0f;
+        col.circle.r = 3.0f;
 
         h = physWorld.add(col);
 

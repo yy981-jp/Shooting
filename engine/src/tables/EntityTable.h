@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include "../core/rapidString.h"
 #include "../core/def.h"
-#include "../core/util.h"
+#include "../core/fsutil.h"
 
 
 class EntityTable {

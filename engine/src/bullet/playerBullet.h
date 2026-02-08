@@ -13,10 +13,12 @@ class PlayerBullet: public ICollidable {
     
 public:
     vec2f pos;
-    ColliderHandle col_h; 
+    EntityHandle ent_h;
+    ColliderHandle col_h;
     vec2f spriteHalf;
 
-    PlayerBullet(vec2i i_pos, ColliderHandle col_h, const vec2f& spriteHalf): renderer(renderer), col_h(col_h), spriteHalf(spriteHalf) {
+    PlayerBullet(vec2i i_pos, ColliderHandle col_h, EntityHandle ent_h, const vec2f& spriteHalf)
+      : renderer(renderer), col_h(col_h), ent_h(ent_h), spriteHalf(spriteHalf) {
         pos.x = i_pos.x;
         pos.y = i_pos.y;
     }
@@ -54,7 +56,7 @@ public:
         col.circle.r = 3.0f;
         auto col_handle = physWorld.add(col);
         
-        bullets.emplace_back(pos,col_handle,spriteHalf);
+        bullets.emplace_back(pos,col_handle,e,spriteHalf);
         auto& bullet = bullets.back();
 
         entMgr.setPtr(e,&bullet);
@@ -63,6 +65,7 @@ public:
     void update(int deltaTime) {
         if (bullets.size() > 50) {
             physWorld.destroy(bullets.front().col_h);
+            entMgr.destroy(bullets.front().ent_h);
             bullets.pop_front();
         }
         for (PlayerBullet& bullet: bullets) {

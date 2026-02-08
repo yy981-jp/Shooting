@@ -1,6 +1,6 @@
 #include "ParamTable.h"
 
-#include "../core/util.h"
+#include "../core/fsutil.h"
 
     ParamTable::ParamTable() {
         // 各種tableを初期化
