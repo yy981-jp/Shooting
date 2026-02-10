@@ -106,9 +106,9 @@
     void VM::op_spawn() {
         uint16_t entityType = read_u16();
         if (entityType == entityRTable_Cache.enemyBezier) {
-            command_enemyBezier c;
-            c.x = read_u16();
-            c.y = read_u16();
+            cmd::enemyBezier c;
+            c.x = read_s16();
+            c.y = read_s16();
             c.pattern = read_u16();
             c.duration = read_u32();
             gamecommand = std::move(c);

@@ -9,7 +9,7 @@
 #include <limits>
 
 #include "../core/fsutil.h"
-#include "commands.h"
+#include "../core/commands.h"
 
 
 class VM {
@@ -94,6 +94,9 @@ class VM {
         pc += sizeof(uint32_t);
         return v;
     }
+
+    int16_t read_s16() { return static_cast<int16_t>(read_u16()); }
+    int32_t read_s32() { return static_cast<int32_t>(read_u32()); }
 
 
     BIN instr;

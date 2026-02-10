@@ -8,7 +8,7 @@
 
 struct SimpleBullet: public ICollidable {
     vec2f pos, vel;
-    const vec2f spriteHalf;
+    vec2f spriteHalf;
     EntityHandle eh;
     ColliderHandle ch;
     bool alive = true;
@@ -21,6 +21,7 @@ struct SimpleBullet: public ICollidable {
     bool update() {
         if (!alive) return false;
         pos += vel;
+        return true;
     }
 
     void draw(const Renderer* r) const {
@@ -61,13 +62,17 @@ public:
         entMgr.setPtr(eh, &list.back());
     }
 
-    void update() {
-        for (auto& entity: list) {
-            if (entity.update()) {
-                physWorld.setPos(entity.ch,entity.pos);
+    void update(int deltatime) {
+        for (size_t i = 0; i < list.size(); ) {
+            if (!list[i].update()) { // 削除されていた場合
+                physWorld.destroy(list[i].ch);
+                entMgr.destroy(list[i].eh);
+                list[i] = std::move(list.back());
+                entMgr.setPtr(list[i].eh, &list[i]); // moveされたentityのptrを更新
+                list.pop_back();
             } else {
-                physWorld.destroy(entity.ch);
-                entMgr.destroy(entity.eh);
+                physWorld.setPos(list[i].ch,list[i].pos);
+                ++i;
             }
         }
     }

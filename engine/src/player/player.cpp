@@ -2,6 +2,7 @@
 #include "../core/entityManager.h"
 #include "../tables/all.h"
 
+#include <cmath>
 
 /*--------------------------*/
 /*          Player          */
@@ -16,7 +17,7 @@
         pos.y += cy;
 
         // 範囲外であれば座標の変更を取り消し
-        if (pos.y+spriteHalf.y >= SCREEN.x || pos.y-spriteHalf.y <= -SCREEN.y) {
+        if (pos.y+spriteHalf.y >= SCREEN.y || pos.y-spriteHalf.y <= -SCREEN.y) {
             pos.y -= cy;
         }
         if (pos.x+spriteHalf.x >= SCREEN.x || pos.x-spriteHalf.x <= -SCREEN.x) {
@@ -85,4 +86,8 @@
         h = physWorld.add(col);
 
         entMgr.setPtr(e,this);
+    }
+
+    void Player::onHit(const CollisionInfo& info) {
+        exit(200); // 一旦プログラム終了
     }

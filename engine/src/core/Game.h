@@ -29,13 +29,11 @@ class Game {
 
     uint64_t tick = 0;
 
-    struct commandExec {
+    struct commandExec_core {
         Game& game;
 
-        void operator()(const command_enemyBezier& c) const {
-            game.enemyBezier_Manager->generate(vec2f(c.x,c.y),c.pattern,c.duration);
-        }
-        // void operator()(const Spawn& s) const { /* ... */ }
+        void operator()(const cmd::enemyBezier& c) const { game.enemyBezier_Manager->generate(vec2f(c.x,c.y),c.pattern,c.duration); }
+        void operator()(const cmd::simpleBullet& c) const { game.simpleBullet_Manager->generate(c.pos,c.rotate,c.speed); }
     };
 
     struct KeyStat {
@@ -58,10 +56,15 @@ class Game {
     EnemyBezier_Manager* enemyBezier_Manager;
     SimpleBullet_Manager* simpleBullet_Manager;
 
-public:
-    Game(const int windowWidth, const int windowHeight);
     void update(float displayFps);
     void draw() const;
     void onKeyDown(const SDL_KeyboardEvent& e);
     void onKeyUP(const SDL_KeyboardEvent& e);
+    void commandExec(const GameCommand& c);
+    void commandExec(const std::vector<GameCommand>& c);
+
+public:
+    Game(const int windowWidth, const int windowHeight);
+    ~Game();
+    void exec();
 };

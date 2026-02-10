@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cmath>
-
 #include "../core/def.h"
 #include "../core/collider.h"
 #include "../graphics/gfx.h"
@@ -20,10 +18,7 @@ class Player: public ICollidable {
     int shootInterval = 50; // ms
     int elapsedTime = 0;
     ColliderHandle h;
-
-    void onHit(const CollisionInfo& info) {
-        exit(200); // 一旦プログラム終了
-    }
+    void onHit(const CollisionInfo& info) override;
 
 public:
     Player(const Renderer* r, float speed);

@@ -3,6 +3,7 @@
 #include "../core/def.h"
 #include "../core/collider.h"
 #include "../core/entityManager.h"
+#include "../core/commands.h"
 #include "../graphics/gfx.h"
 #include "BezierMover.h"
 #include "../tables/all.h"
@@ -16,6 +17,7 @@ struct EnemyBezier: public ICollidable {
     ColliderHandle col_h;
     vec2f spriteHalf;
     bool wasShot = false;
+    GameCommand req;
     
     EnemyBezier(const EntityHandle& e, const vec2f& i_pos,
       std::span<const vec2f> bezierCurve, int duration,
@@ -26,6 +28,13 @@ struct EnemyBezier: public ICollidable {
         if (!bm.isRunning() || wasShot) return false;
         bm.update(deltatime);
         pos = bm.pos + origin;
+
+        cmd::simpleBullet c;
+        c.pos = pos;
+        c.rotate = 0;
+        c.speed = 10;
+        req = std::move(c);
+
         return true;
     }
 
@@ -97,18 +106,22 @@ public:
         entMgr.setPtr(e,&enemy);
     }
 
-    void update(int deltatime) {
+    std::vector<GameCommand> update(int deltatime) {
+        std::vector<GameCommand> cmds;
         for (size_t i = 0; i < list.size(); ) {
             if (!list[i].update(deltatime)) { // 削除されていた場合
                 physWorld.destroy(list[i].col_h);
                 entMgr.destroy(list[i].ent);
                 list[i] = std::move(list.back());
+                entMgr.setPtr(list[i].ent, &list[i]); // moveされたentityのptrを更新
                 list.pop_back();
             } else {
+                cmds.emplace_back(list[i].req);
                 physWorld.setPos(list[i].col_h,list[i].pos);
                 ++i;
             }
         }
+        return cmds;
     }
 
     void draw(const Renderer* renderer) const {

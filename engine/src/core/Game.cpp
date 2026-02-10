@@ -2,9 +2,7 @@
 #include "fsutil.h"
 #include "json.h"
 #include "collider.h"
-#include "../VM/commands.h"
-
-#include <fstream>
+#include "commands.h"
 
 
 vec2i makeDir(bool up, bool down, bool left, bool right) {
@@ -17,6 +15,9 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
 
     Game::Game(const int windowWidth, const int windowHeight) {
         // SDL init
+        if (SDL_Init(SDL_INIT_VIDEO)) throw std::runtime_error(std::string("SDL_Init failed: ") + SDL_GetError());
+        if (!(IMG_Init(IMG_INIT_PNG)&IMG_INIT_PNG)) throw std::runtime_error(std::string("SDL_IMG_Init failed: ") + SDL_GetError());
+
         window = SDL_CreateWindow(
             "Shooting-SDL2",
             SDL_WINDOWPOS_CENTERED,
@@ -57,6 +58,18 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
         vm = new VM(stgdatpath);
     }
 
+    Game::~Game() {
+        SDL_Quit();
+    	IMG_Quit();
+    }
+
+    void Game::commandExec(const GameCommand& c) {
+        std::visit(commandExec_core{*this}, c.c);
+    }
+    void Game::commandExec(const std::vector<GameCommand>& cs) {
+        for (auto& c: cs) commandExec(c);
+    }
+
     void Game::update(float displayFps) {
         SDL_SetWindowTitle(window,(std::to_string(displayFps) + "fps").c_str());
 
@@ -69,9 +82,7 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
                 using enum VM::ReturnCode;
                 case success: finished: break;
                 case error: throw std::runtime_error("VMで何らかの異常が発生しました"); break;
-                case spawnRequest: {
-                    std::visit(Game::commandExec{*this}, vm->gamecommand);
-                }
+                case spawnRequest: commandExec(vm->gamecommand); break;
             }
         }
 
@@ -80,7 +91,8 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
         ShotRequest playerShotReq = player->update(deltatime, d.x, d.y, keyStat.shift, keyStat.z);
         if (playerShotReq.shouldShoot) playerBullet_Manager->generate(playerShotReq.spawnPos);
         playerBullet_Manager->update(deltatime);
-        enemyBezier_Manager->update(deltatime);
+        commandExec(enemyBezier_Manager->update(deltatime));
+        simpleBullet_Manager->update(deltatime);
 
         physWorld.step(); // 当たり判定
     }
@@ -119,5 +131,28 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
             case SDLK_RIGHT: keyStat.right = false; break;
             case SDLK_z: keyStat.z = false; break;
             case SDLK_LSHIFT: keyStat.shift = false; break;
+        }
+    }
+
+    void Game::exec() {
+        SDL_Event event;
+        bool quit = false;
+        FpsCounter fpsc;
+        float displayFps = 0;
+        while (!quit) {
+            fpsc.update();
+            update(displayFps);
+            draw();
+            while (SDL_PollEvent(&event)) {
+                switch (event.type) {
+                    case SDL_QUIT: quit = true; break;
+                    case SDL_KEYDOWN: onKeyDown(event.key); break;
+                    case SDL_KEYUP: onKeyUP(event.key); break;
+                }
+            }
+            displayFps = fpsc.getFps();
+
+            // minimal delay to avoid 100% CPU usage; timing is driven by deltaTime in Game
+            SDL_Delay(1);
         }
     }
