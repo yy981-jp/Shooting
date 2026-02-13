@@ -1,0 +1,9 @@
+0:shutdown      None
+1:WAIT		    sleepTick
+2:WAITUNTIL		flagID
+3:SPAWN         spriteID x y ...(enemyの種類によりパラメータの種類も数も変わる)
+4:CALL          labelAddr
+5:RET       	None
+6:REPEAT    	count
+7:REPATUNTIL    flagID
+8:END	        None

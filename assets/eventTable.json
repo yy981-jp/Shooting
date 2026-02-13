@@ -1,0 +1,31 @@
+{
+    "flags": [
+        "testFlag1",
+        "bossDead"
+    ],
+    "param": {
+        "enemyBezier": {
+            "patterns": [
+                "default",
+                "debug",
+                "debug2",
+                "spiral",
+                "zigzag"
+            ]
+        }
+    },
+    "BezierCurves": {
+        "debug": [
+            [-200, -150],
+            [-200, 150],
+            [200, -150],
+            [200, 150]
+        ],
+        "debug2": [
+            [-400, -300],
+            [-400, 300],
+            [400, -300],
+            [400, 300]
+        ]
+    }
+}
