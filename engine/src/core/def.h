@@ -12,6 +12,6 @@ struct EntityHandle {
     EntityID id;
     EntityGen gen;
 };
-inline constexpr std::string Assets = "../../assets/";
+const std::string Assets = "../../assets/";
 constexpr vec2f WINDOW{800,600};
 constexpr vec2f SCREEN = WINDOW / 2;

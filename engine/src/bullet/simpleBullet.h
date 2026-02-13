@@ -1,5 +1,5 @@
 #include "../core/cache.h"
-#include "../core/EntityManager.h"
+#include "../core/entityManager.h"
 #include "../core/collider.h"
 #include "../core/def.h"
 

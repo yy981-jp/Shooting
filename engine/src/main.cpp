@@ -2,7 +2,27 @@
 
 #include "core/Game.h"
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
+
+Game* game = nullptr;
+
+void main_loop() {
+    game->tick();
+}
+
+
 int main() {
-    Game game(800,600);
-    game.exec();
+    game = new Game(800,600);
+
+#ifdef __EMSCRIPTEN__
+    emscripten_set_main_loop(main_loop, 0, 1);
+#else
+    while (!game->shouldQuit()) {
+        game->tick();
+        SDL_Delay(1);
+    }
+#endif
 }

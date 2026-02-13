@@ -104,10 +104,11 @@ class VM {
     std::vector<uint32_t> callStack;
     std::vector<LoopFrame> loopStack;
     
-    constexpr static std::string nullStr = "VM_const-null";
+    inline const static std::string nullStr = "VM_const-null";
 
     constexpr static uint64_t fileMagicNumber = 0x793953544742696e;
 
+    rj::Document eventTableDoc;
     const rj::Value& eventTable;
     std::unordered_map<uint16_t,std::string> flagsTable;
     

@@ -1,4 +1,4 @@
-build/
+build*/
 /docs/
 *.pyc
 *.stg.dat

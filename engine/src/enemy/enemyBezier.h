@@ -31,7 +31,7 @@ struct EnemyBezier: public ICollidable {
 
         cmd::simpleBullet c;
         c.pos = pos;
-        c.rotate = 0;
+        c.rotate = 270;
         c.speed = 10;
         req = std::move(c);
 

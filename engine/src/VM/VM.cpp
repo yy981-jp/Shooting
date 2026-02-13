@@ -2,7 +2,7 @@
 #include "../tables/all.h"
 
 
-    VM::VM(const std::string& stgdatPath): eventTable(readJson(Assets+"eventTable.json")), pc(0) {
+    VM::VM(const std::string& stgdatPath): eventTableDoc(readJson(Assets+"eventTable.json")), eventTable(eventTableDoc), pc(0) {
         std::ifstream ifs(stgdatPath,std::ios::binary|std::ios::ate);
         if (!ifs) throw std::runtime_error("VM::VM(): ifs");
         auto size = ifs.tellg();

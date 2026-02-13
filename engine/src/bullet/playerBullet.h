@@ -8,7 +8,6 @@
 
 
 class PlayerBullet: public ICollidable {
-    const Renderer& renderer;
     static constexpr float speed = 600.0f; // pixels per second
     
 public:
@@ -18,7 +17,7 @@ public:
     vec2f spriteHalf;
 
     PlayerBullet(vec2i i_pos, ColliderHandle col_h, EntityHandle ent_h, const vec2f& spriteHalf)
-      : renderer(renderer), col_h(col_h), ent_h(ent_h), spriteHalf(spriteHalf) {
+      : col_h(col_h), ent_h(ent_h), spriteHalf(spriteHalf) {
         pos.x = i_pos.x;
         pos.y = i_pos.y;
     }

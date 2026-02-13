@@ -10,8 +10,8 @@
 #include "../bullet/simpleBullet.h"
 #include "../enemy/enemyBezier.h"
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#include <SDL.h>
+#include <SDL_image.h>
 
 
 class Game {
@@ -26,8 +26,8 @@ class Game {
         height = heightULB/2;   // 論理座標系の縦方向の最大値
     
     const std::string stgdatpath = Assets + "main.stg.dat";
-
-    uint64_t tick = 0;
+    bool running = true;
+    float displayFps = 0;
 
     struct commandExec_core {
         Game& game;
@@ -50,6 +50,7 @@ class Game {
     Renderer* renderer;
     ElapsedTime elapsedTime;
     Cache* cache;
+    FpsCounter fpsc;
 
     Player* player;
     PlayerBullet_Manager* playerBullet_Manager;
@@ -66,5 +67,6 @@ class Game {
 public:
     Game(const int windowWidth, const int windowHeight);
     ~Game();
-    void exec();
+    void tick();
+    bool shouldQuit() {return !running;}
 };

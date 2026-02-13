@@ -22,9 +22,8 @@ using GameCommand_core = std::variant<
 >;
 
 
-class GameCommand {
+struct GameCommand {
     bool enable;
-public:
     operator bool() { return enable; }
     GameCommand_core c;
     GameCommand& operator=(const GameCommand_core& i_c) {

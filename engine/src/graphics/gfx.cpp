@@ -1,8 +1,9 @@
 #include "gfx.h"
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#include <SDL.h>
+#include <SDL_image.h>
 #include <stdexcept>
+#include <cmath>
 
 
 SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {

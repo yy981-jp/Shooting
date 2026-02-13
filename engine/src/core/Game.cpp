@@ -64,6 +64,7 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
     }
 
     void Game::commandExec(const GameCommand& c) {
+        if (!c.enable) return; // 有効ではないコマンドは弾く
         std::visit(commandExec_core{*this}, c.c);
     }
     void Game::commandExec(const std::vector<GameCommand>& cs) {
@@ -82,6 +83,7 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
                 using enum VM::ReturnCode;
                 case success: finished: break;
                 case error: throw std::runtime_error("VMで何らかの異常が発生しました"); break;
+                case finished: break; // 現状何もする必要はない
                 case spawnRequest: commandExec(vm->gamecommand); break;
             }
         }
@@ -134,25 +136,21 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
         }
     }
 
-    void Game::exec() {
-        SDL_Event event;
-        bool quit = false;
-        FpsCounter fpsc;
-        float displayFps = 0;
-        while (!quit) {
-            fpsc.update();
-            update(displayFps);
-            draw();
-            while (SDL_PollEvent(&event)) {
-                switch (event.type) {
-                    case SDL_QUIT: quit = true; break;
-                    case SDL_KEYDOWN: onKeyDown(event.key); break;
-                    case SDL_KEYUP: onKeyUP(event.key); break;
-                }
-            }
-            displayFps = fpsc.getFps();
+    void Game::tick() {
+        fpsc.update();
+        update(displayFps);
+        draw();
 
-            // minimal delay to avoid 100% CPU usage; timing is driven by deltaTime in Game
-            SDL_Delay(1);
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+            switch (event.type) {
+                case SDL_QUIT: running = false; break;
+                case SDL_KEYDOWN: onKeyDown(event.key); break;
+                case SDL_KEYUP: onKeyUP(event.key); break;
+            }
         }
+
+        displayFps = fpsc.getFps();
     }
+
+    
