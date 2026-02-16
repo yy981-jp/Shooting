@@ -8,7 +8,7 @@
 /*          Player          */
 /*--------------------------*/
 
-    ShotRequest Player::update(int deltaTime, int dx, int dy, bool slow, bool shot) {
+    GameCommands Player::update(int deltaTime, int dx, int dy, bool slow, bool shot) {
         auto& v = moveTable[dy + 1][dx + 1];
         float dtSec = static_cast<float>(deltaTime) / 1000.0f;
         float cx = v[0] * speed * (slow ? 0.5f : 1.0f) * dtSec;
@@ -24,7 +24,6 @@
             pos.x -= cx;
         }
 
-        ShotRequest req;
         // まず経過時間を累積
         elapsedTime += deltaTime;
         int fireCount = 0;
@@ -35,12 +34,11 @@
             }
         }
 
-        if (fireCount > 0) {
-            req.shouldShoot = true;
-            req.spawnPos = vec2i(
-                pos.x + (spriteHalf.x/2),
-                pos.y
-            );
+        GameCommands req;
+        for (; fireCount > 0; --fireCount) {
+            cmd::playerBullet rec_c;
+            rec_c.pos = vec2f( pos.x + (spriteHalf.x/2), pos.y );
+            req.emplace_back(rec_c);
         }
 
         physWorld.setPos(h,pos);
@@ -52,7 +50,7 @@
         renderer->drawSprite(entityTable.get("player"), pos-spriteHalf);
     }
 
-    Player::Player(const Renderer* r, float speed):
+    Player::Player(const Renderer* r, float speed, int remainingLives):
       speed(speed), spriteHalf(r->getSpriteSize(entityTable.get("player"))/2), pos(0,0) {
 
         for (int y = -1; y <= 1; ++y) {
@@ -89,5 +87,9 @@
     }
 
     void Player::onHit(const CollisionInfo& info) {
-        exit(200); // 一旦プログラム終了
+        if (!--remainingLives) {
+            // 残機0
+        } else {
+            pos = vec2f(0,0);
+        }
     }

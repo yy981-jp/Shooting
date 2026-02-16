@@ -34,6 +34,7 @@ class Game {
 
         void operator()(const cmd::enemyBezier& c) const { game.enemyBezier_Manager->generate(vec2f(c.x,c.y),c.pattern,c.duration); }
         void operator()(const cmd::simpleBullet& c) const { game.simpleBullet_Manager->generate(c.pos,c.rotate,c.speed); }
+        void operator()(const cmd::playerBullet& c) const { game.playerBullet_Manager->generate(c.pos); }
     };
 
     struct KeyStat {
@@ -57,12 +58,12 @@ class Game {
     EnemyBezier_Manager* enemyBezier_Manager;
     SimpleBullet_Manager* simpleBullet_Manager;
 
-    void update(float displayFps);
+    void update();
     void draw() const;
     void onKeyDown(const SDL_KeyboardEvent& e);
     void onKeyUP(const SDL_KeyboardEvent& e);
     void commandExec(const GameCommand& c);
-    void commandExec(const std::vector<GameCommand>& c);
+    void commandExec(const GameCommands& cs);
 
 public:
     Game(const int windowWidth, const int windowHeight);

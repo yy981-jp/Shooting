@@ -13,12 +13,14 @@ namespace cmd {
         int rotate;
         float speed;
     };
+    struct playerBullet { vec2f pos; };
 }
 
 
 using GameCommand_core = std::variant<
     cmd::enemyBezier,
-    cmd::simpleBullet
+    cmd::simpleBullet,
+    cmd::playerBullet
 >;
 
 
@@ -34,3 +36,5 @@ struct GameCommand {
     GameCommand(): enable(false) {}
     GameCommand(const GameCommand_core& c): enable(true), c(c) {}
 };
+
+using GameCommands = std::vector<GameCommand>;

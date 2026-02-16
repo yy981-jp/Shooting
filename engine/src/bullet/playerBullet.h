@@ -16,7 +16,7 @@ public:
     ColliderHandle col_h;
     vec2f spriteHalf;
 
-    PlayerBullet(vec2i i_pos, ColliderHandle col_h, EntityHandle ent_h, const vec2f& spriteHalf)
+    PlayerBullet(vec2f i_pos, ColliderHandle col_h, EntityHandle ent_h, const vec2f& spriteHalf)
       : col_h(col_h), ent_h(ent_h), spriteHalf(spriteHalf) {
         pos.x = i_pos.x;
         pos.y = i_pos.y;
@@ -44,7 +44,7 @@ public:
     PlayerBullet_Manager(const Renderer* r):
      spriteHalf(r->getSpriteSize(entityTable.get("playerBullet"))/2) {}
 
-    void generate(const vec2i& pos) {
+    void generate(const vec2f& pos) {
         EntityHandle e = entMgr.create();
         Collider col{};
         col.type = ColliderType::Circle;

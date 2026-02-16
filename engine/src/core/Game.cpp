@@ -67,13 +67,11 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
         if (!c.enable) return; // 有効ではないコマンドは弾く
         std::visit(commandExec_core{*this}, c.c);
     }
-    void Game::commandExec(const std::vector<GameCommand>& cs) {
+    void Game::commandExec(const GameCommands& cs) {
         for (auto& c: cs) commandExec(c);
     }
 
-    void Game::update(float displayFps) {
-        SDL_SetWindowTitle(window,(std::to_string(displayFps) + "fps").c_str());
-
+    void Game::update() {
         if (!elapsedTime) elapsedTime.init();
         int deltatime = elapsedTime.get();
         // VM step
@@ -90,17 +88,16 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
 
         // entity update
         vec2i d = makeDir(keyStat.up, keyStat.down, keyStat.left, keyStat.right);
-        ShotRequest playerShotReq = player->update(deltatime, d.x, d.y, keyStat.shift, keyStat.z);
-        if (playerShotReq.shouldShoot) playerBullet_Manager->generate(playerShotReq.spawnPos);
+        commandExec( player->update(deltatime, d.x, d.y, keyStat.shift, keyStat.z) );
+        if (!player->isAllive()) running = false;
         playerBullet_Manager->update(deltatime);
-        commandExec(enemyBezier_Manager->update(deltatime));
+        commandExec( enemyBezier_Manager->update(deltatime) );
         simpleBullet_Manager->update(deltatime);
 
         physWorld.step(); // 当たり判定
     }
     
     void Game::draw() const {
-        // SDL_RenderClear(rendererNative); (これがあると黒帯領域が発生する なんでかって? 未来の自分調べといて)
         renderer->drawSprite(entityTable.get("background"), vec2i(-width,-height));
         player->draw(renderer);
         playerBullet_Manager->draw(renderer);
@@ -137,9 +134,12 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
     }
 
     void Game::tick() {
-        fpsc.update();
-        update(displayFps);
-        draw();
+        if (running) {
+            fpsc.update();
+            SDL_SetWindowTitle(window,(std::to_string(displayFps) + "fps").c_str());
+            update();
+            draw();
+        }
 
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -150,7 +150,7 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
             }
         }
 
-        displayFps = fpsc.getFps();
+        if (running) displayFps = fpsc.getFps();
     }
 
     
