@@ -87,9 +87,11 @@
     }
 
     void Player::onHit(const CollisionInfo& info) {
-        if (!--remainingLives) {
-            // 残機0
-        } else {
-            pos = vec2f(0,0);
-        }
+        // TODO
+        // if (!--remainingLives) {
+        //     // 残機0
+        // } else {
+        //     pos = vec2f(0,0);
+        // }
+        exit(200);
     }

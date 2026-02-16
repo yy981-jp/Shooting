@@ -40,7 +40,7 @@ class SimpleBullet_Manager {
 
 public:
     SimpleBullet_Manager(const Renderer* r, const Cache& cache): cache(cache), 
-      spriteHalf(r->getSpriteSize(entityTable.get("simpleBullet"))) {}
+      spriteHalf(r->getSpriteSize(entityTable.get("simpleBullet"))/2) {}
 
     void generate(const vec2f& pos, int rotate, float speed) {
         EntityHandle eh = entMgr.create();

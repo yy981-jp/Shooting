@@ -89,7 +89,7 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
         // entity update
         vec2i d = makeDir(keyStat.up, keyStat.down, keyStat.left, keyStat.right);
         commandExec( player->update(deltatime, d.x, d.y, keyStat.shift, keyStat.z) );
-        if (!player->isAllive()) running = false;
+        // if (!player->isAllive()) running = false;
         playerBullet_Manager->update(deltatime);
         commandExec( enemyBezier_Manager->update(deltatime) );
         simpleBullet_Manager->update(deltatime);
@@ -134,12 +134,10 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
     }
 
     void Game::tick() {
-        if (running) {
-            fpsc.update();
-            SDL_SetWindowTitle(window,(std::to_string(displayFps) + "fps").c_str());
-            update();
-            draw();
-        }
+        fpsc.update();
+        SDL_SetWindowTitle(window,(std::to_string(displayFps) + "fps").c_str());
+        update();
+        draw();
 
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -150,7 +148,7 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
             }
         }
 
-        if (running) displayFps = fpsc.getFps();
+        displayFps = fpsc.getFps();
     }
 
     
