@@ -1,29 +1,18 @@
 #pragma once
-#include <cstdint>
-#include <stdexcept>
+#include <array>
 #include <string_view>
-#include <unordered_map>
-#include "../core/rapidString.h"
-#include "../core/def.h"
-#include "../core/fsutil.h"
+#include <cstddef>
 
+enum class EntityType : size_t {
+#define X(name) name,
+#include "../../../assets/entityTable.def"
+#undef X
+    Count
+};
 
-class EntityTable {
-public:
-    EntityTable() {
-        auto j = readJson(Assets + "entity.def.json");
-        
-        for (const auto& [key,value]: j.GetObject()) {
-            table[key.GetString()] = value["id"].GetInt();
-        }
-    }
-    uint16_t get(std::string_view name) const {
-        auto it = table.find(name);
-        if (it == table.end()) throw std::runtime_error("EntityTable: not found");
-        return it->second;
-    }
-
-    std::unordered_map<std::string, uint16_t, StrHash, StrEq> table;
-
-    std::unordered_map<EntityType,void*> pointerTable; // インスタンスのポインタのmap staticcastして使用
+constexpr std::array<std::string_view,
+    static_cast<size_t>(EntityType::Count)> entityNames = {
+#define X(name) #name,
+#include "../../../assets/entityTable.def"
+#undef X
 };

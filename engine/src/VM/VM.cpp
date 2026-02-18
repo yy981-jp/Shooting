@@ -24,9 +24,6 @@
             flagsTable[++i] = v.GetString();
             flags[v.GetString()] = false;
         }
-
-        // load cache
-        entityRTable_Cache.enemyBezier = entityTable.get("enemyBezier");
     }
 
 
@@ -105,12 +102,16 @@
 
     void VM::op_spawn() {
         uint16_t entityType = read_u16();
-        if (entityType == entityRTable_Cache.enemyBezier) {
-            cmd::enemyBezier c;
-            c.x = read_s16();
-            c.y = read_s16();
-            c.pattern = read_u16();
-            c.duration = read_u32();
-            gamecommand = std::move(c);
-        } else throw std::runtime_error("VM::op_spawn(): entityType");
+        switch (static_cast<EntityType>(entityType)) {
+            using enum EntityType;
+            case enemyBezier: {
+                cmd::enemyBezier c;
+                c.x = read_s16();
+                c.y = read_s16();
+                c.pattern = read_u16();
+                c.duration = read_u32();
+                gamecommand = std::move(c);
+            } break;
+            default: throw std::runtime_error("VM::op_spawn(): entityType");
+        }
     }

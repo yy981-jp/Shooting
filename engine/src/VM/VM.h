@@ -74,10 +74,6 @@ class VM {
         uint16_t value;
     };
 
-    struct OP_spawn_cache {
-        uint16_t enemyBezier = UINT16_MAX;
-    } entityRTable_Cache;
-
     // spawn命令だけ長くなりそうなので隔離
     void op_spawn();
 

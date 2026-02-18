@@ -47,7 +47,7 @@ struct EnemyBezier: public ICollidable {
     }
 
     void draw(const Renderer* renderer) const {
-        renderer->drawSprite(entityTable.get("enemyBezier"),pos-spriteHalf);
+        renderer->drawSprite(EntityType::enemyBezier, pos-spriteHalf);
     }
 
     void onHit(const CollisionInfo& info) {
@@ -74,7 +74,7 @@ class EnemyBezier_Manager {
     } cache;
 
 public:
-    EnemyBezier_Manager(const Renderer* r): type(entityTable.get("enemyBezier")) {
+    EnemyBezier_Manager(const Renderer* r): type(EntityType::enemyBezier) {
         auto arr = paramTable.json["param"]["enemyBezier"]["patterns"].GetArray();
         int index = 0;
         for (const auto& v: arr) {

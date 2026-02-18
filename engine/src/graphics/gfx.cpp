@@ -6,6 +6,16 @@
 #include <cmath>
 
 
+struct SpriteInfo {
+    SpriteInfo(): tex(nullptr), w(0), h(0) {}
+    SpriteInfo(SDL_Texture* tex, int width, int height):
+      tex(tex), w(width), h(height) {}
+    SDL_Texture* tex;
+    int w;
+    int h;
+};
+
+
 SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
     SDL_Surface* s = IMG_Load(path.c_str());
     if (!s) {
@@ -29,11 +39,16 @@ SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
 **          Renderer            **
 **------------------------------*/
     Renderer::Renderer(void* sdlRenderer, int halfWidth, int halfHeight)
-      : halfWidth(halfWidth), halfHeight(halfHeight), native(sdlRenderer), spriteTable(entityTable.table.size()) {
+      : halfWidth(halfWidth), halfHeight(halfHeight), native(sdlRenderer), spriteTable(static_cast<size_t>(EntityType::Count)) {
         auto* renderer = static_cast<SDL_Renderer*>(native);
 
-        for (const auto& [entities,id]: entityTable.table) {
-            spriteTable[id] = loadSprite(Assets + "image/" + entities + ".png", renderer);
+        for (size_t i = 0; i < entityNames.size(); ++i) {
+            auto name = entityNames[i];
+
+            spriteTable[i] = loadSprite(
+                Assets + "image/" + std::string(name) + ".png",
+                renderer
+            );
         }
     }
 

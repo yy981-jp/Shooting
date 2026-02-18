@@ -98,7 +98,7 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
     }
     
     void Game::draw() const {
-        renderer->drawSprite(entityTable.get("background"), vec2i(-width,-height));
+        renderer->drawSprite(EntityType::background, vec2i(-width,-height));
         player->draw(renderer);
         playerBullet_Manager->draw(renderer);
         enemyBezier_Manager->draw(renderer);

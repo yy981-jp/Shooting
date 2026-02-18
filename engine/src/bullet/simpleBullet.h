@@ -25,7 +25,7 @@ struct SimpleBullet: public ICollidable {
     }
 
     void draw(const Renderer* r) const {
-        r->drawSprite(entityTable.get("simpleBullet"),pos-spriteHalf);
+        r->drawSprite(EntityType::simpleBullet, pos-spriteHalf);
     }
 
     void onHit(const CollisionInfo& info) override {
@@ -40,7 +40,7 @@ class SimpleBullet_Manager {
 
 public:
     SimpleBullet_Manager(const Renderer* r, const Cache& cache): cache(cache), 
-      spriteHalf(r->getSpriteSize(entityTable.get("simpleBullet"))/2) {}
+      spriteHalf(r->getSpriteSize(EntityType::simpleBullet)/2) {}
 
     void generate(const vec2f& pos, int rotate, float speed) {
         EntityHandle eh = entMgr.create();

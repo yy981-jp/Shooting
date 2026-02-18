@@ -24,7 +24,7 @@ public:
     }
 
     void draw(const Renderer* renderer) const {
-        renderer->drawSprite(entityTable.get("playerBullet"), pos - spriteHalf);
+        renderer->drawSprite(EntityType::playerBullet, pos - spriteHalf);
     }
 
     void onHit(const CollisionInfo& info) {
@@ -39,7 +39,7 @@ class PlayerBullet_Manager {
 
 public:
     PlayerBullet_Manager(const Renderer* r):
-     spriteHalf(r->getSpriteSize(entityTable.get("playerBullet"))/2) {}
+     spriteHalf(r->getSpriteSize(EntityType::playerBullet)/2) {}
 
     void generate(const vec2f& pos) {
         EntityHandle e = entMgr.create();
