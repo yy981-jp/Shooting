@@ -9,13 +9,13 @@
 struct vec2s { int x, y; };
 
 void onMouseButton(const SDL_MouseButtonEvent& e, vec2s windowHalf) {
-    std::cout << e.x-windowHalf.x << " " << e.y-windowHalf.y << "\n";
+    std::cout << "[" << e.x-windowHalf.x << "," << e.y-windowHalf.y << "],\n";
 }
 
 int main(int argc, char* argv[]) {
     vec2s windowSize;
     if (argc != 3)
-         windowSize = {800,600};
+         windowSize = {800,800};
     else windowSize = {std::stoi(argv[1]), std::stoi(argv[2])};
 
     vec2s windowHalf = { windowSize.x/2, windowSize.y/2};

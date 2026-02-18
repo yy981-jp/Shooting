@@ -21,7 +21,7 @@ class Game {
 
     static constexpr int
         widthULB = 800,         // 画面横幅, ULB座標系(左上を原点とする)の横方向の最大値
-        heightULB = 600,        // 画面縦幅, ULB座標系の縦方向の最大値
+        heightULB = 800,        // 画面縦幅, ULB座標系の縦方向の最大値
         width = widthULB/2,     // 論理座標系(中央を原点とする)の横方向の最大値
         height = heightULB/2;   // 論理座標系の縦方向の最大値
     

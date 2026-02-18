@@ -3,6 +3,7 @@
 #include "../core/def.h"
 #include "../core/collider.h"
 #include "../core/commands.h"
+#include "../core/spawnManager.h"
 #include "../graphics/gfx.h"
 
 
@@ -12,8 +13,7 @@ class Player: public ICollidable {
     vec2f pos;
     vec2f spriteHalf;
     int remainingLives;
-    int shootInterval = 50; // ms
-    int elapsedTime = 0;
+    spawnManager spm;
     ColliderHandle h;
     void onHit(const CollisionInfo& info) override;
 

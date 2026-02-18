@@ -15,7 +15,7 @@ void main_loop() {
 
 
 int main() {
-    game = new Game(800,600);
+    game = new Game(800,800);
 
 #ifdef __EMSCRIPTEN__
     emscripten_set_main_loop(main_loop, 0, 1);

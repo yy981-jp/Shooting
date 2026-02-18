@@ -4,7 +4,7 @@
 
 
 class Cache { 
-    float move[3600][2];
+    float move[3800][2];
 public:
     vec2f getDir(int rotate) const;
     Cache();

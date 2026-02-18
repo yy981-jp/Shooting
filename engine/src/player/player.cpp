@@ -8,38 +8,30 @@
 /*          Player          */
 /*--------------------------*/
 
-    GameCommands Player::update(int deltaTime, int dx, int dy, bool slow, bool shot) {
+    GameCommands Player::update(int deltatime, int dx, int dy, bool slow, bool shot) {
         auto& v = moveTable[dy + 1][dx + 1];
-        float dtSec = static_cast<float>(deltaTime) / 1000.0f;
+        float dtSec = static_cast<float>(deltatime) / 1000.0f;
         float cx = v[0] * speed * (slow ? 0.5f : 1.0f) * dtSec;
         float cy = v[1] * speed * (slow ? 0.5f : 1.0f) * dtSec;
         pos.x += cx;
         pos.y += cy;
 
         // 範囲外であれば座標の変更を取り消し
-        if (pos.y+spriteHalf.y >= SCREEN.y || pos.y-spriteHalf.y <= -SCREEN.y) {
+        if (pos.y+spriteHalf.y >= SCREEN.y || pos.y-spriteHalf.y <= -SCREEN.y)
             pos.y -= cy;
-        }
-        if (pos.x+spriteHalf.x >= SCREEN.x || pos.x-spriteHalf.x <= -SCREEN.x) {
+        if (pos.x+spriteHalf.x >= SCREEN.x || pos.x-spriteHalf.x <= -SCREEN.x)
             pos.x -= cx;
-        }
 
         // まず経過時間を累積
-        elapsedTime += deltaTime;
-        int fireCount = 0;
-        if (shot) {
-            while (elapsedTime >= shootInterval) {
-                elapsedTime -= shootInterval;
-                ++fireCount;
-            }
-        }
+        spm.update(deltatime);
 
         GameCommands req;
-        for (; fireCount > 0; --fireCount) {
-            cmd::playerBullet rec_c;
-            rec_c.pos = vec2f( pos.x + (spriteHalf.x/2), pos.y );
-            req.emplace_back(rec_c);
-        }
+        if (shot)
+            for (int i = 0; i < spm.get(); ++i) {
+                cmd::playerBullet rec_c;
+                rec_c.pos = pos;
+                req.emplace_back(rec_c);
+            }
 
         physWorld.setPos(h,pos);
 
@@ -51,7 +43,7 @@
     }
 
     Player::Player(const Renderer* r, float speed, int remainingLives):
-      speed(speed), spriteHalf(r->getSpriteSize(entityTable.get("player"))/2), pos(0,0) {
+      speed(speed), spriteHalf(r->getSpriteSize(entityTable.get("player"))/2), pos(0,0), spm(50) {
 
         for (int y = -1; y <= 1; ++y) {
             for (int x = -1; x <= 1; ++x) {

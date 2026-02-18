@@ -8,7 +8,7 @@
 
 
 class PlayerBullet: public ICollidable {
-    static constexpr float speed = 600.0f; // pixels per second
+    static constexpr float speed = 800.0f; // pixels per second
     
 public:
     vec2f pos;
