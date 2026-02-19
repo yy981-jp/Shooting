@@ -21,6 +21,6 @@ public:
     Player(const Renderer* r, float speed, int remainingLives = 5);
     bool isAllive() { return !remainingLives; }
 
-    void update(int deltaTime, GCMS& gcm, int dx, int dy, bool slow, bool shot);
+    void update(float deltaTime, GCMS& gcm, int dx, int dy, bool slow, bool shot);
     void draw(const Renderer* renderer) const;
 };

@@ -27,7 +27,7 @@ struct EnemyBezier: public ICollidable {
       : pos(i_pos), origin(pos - bezierCurve[0]), bm(bezierCurve,duration),
         ent(e), col_h(col_h), spriteHalf(spriteHalf), spm(300) {}
 
-    bool update(int deltatime, GCMS& gcm) { // true -> 有効,  false -> 削除
+    bool update(float deltatime, GCMS& gcm) { // true -> 有効,  false -> 削除
         if (!bm.isRunning() || wasShot) return false;
         bm.update(deltatime);
         pos = bm.pos + origin;
@@ -112,7 +112,7 @@ public:
         entMgr.setPtr(e,&enemy);
     }
 
-    void update(int deltatime, GCMS& gcm) {
+    void update(float deltatime, GCMS& gcm) {
         for (size_t i = 0; i < list.size(); ) {
             if (!list[i].update(deltatime,gcm)) { // 削除されていた場合
                 physWorld.destroy(list[i].col_h);

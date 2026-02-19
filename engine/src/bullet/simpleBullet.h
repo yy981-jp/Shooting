@@ -62,7 +62,7 @@ public:
         entMgr.setPtr(eh, &list.back());
     }
 
-    void update(int deltatime) {
+    void update(float deltatime) {
         for (size_t i = 0; i < list.size(); ) {
             if (!list[i].update()) { // 削除されていた場合
                 physWorld.destroy(list[i].ch);

@@ -3,19 +3,19 @@
 
 class spawnManager {
     int shootInterval; // ms
-    int elapsedTime = 0;
+    float elapsedTime = 0.0f;
 
 public:
     spawnManager(int shootInterval): shootInterval(shootInterval) {}
 
-    void update(int deltatime) {
+    void update(float deltatime) {
         elapsedTime += deltatime;
     }
     
     /// @return spawn回数
     int get() {
-        int spawnCount = elapsedTime / shootInterval;
-        elapsedTime %= shootInterval;
+        int spawnCount = static_cast<int>(elapsedTime / shootInterval);
+        elapsedTime -= spawnCount * shootInterval;
         return spawnCount;
     }
 };

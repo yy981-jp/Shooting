@@ -65,13 +65,12 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
 
     void Game::commandExec() {
         for (auto& c: gcm.get()) std::visit(commandExec_core{*this}, c);
+        gcm.clear();
     }
 
     void Game::update() {
         if (!elapsedTime) elapsedTime.init();
-        int deltatime = elapsedTime.get();
-
-        gcm.clear();
+        float deltatime = elapsedTime.get();
 
         // VM step
         if (vm->running) {
@@ -117,6 +116,8 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
             case SDLK_RIGHT: keyStat.right = true; break;
             case SDLK_z: keyStat.z = true; break;
             case SDLK_LSHIFT: keyStat.shift = true; break;
+
+            case SDLK_ESCAPE: exit(111);
         }
     }
 

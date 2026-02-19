@@ -13,18 +13,17 @@
 	}
 
 	BezierMover::BezierMover(const std::span<const vec2f>& controlVec2s, int durationMs)
-		: controlVec2s(controlVec2s.begin(), controlVec2s.end()),
-		  invDurationMs(durationMs > 0 ? 1.0f / static_cast<float>(durationMs) : 0.0f) {
+	 :controlVec2s(controlVec2s.begin(), controlVec2s.end()),
+	  invDurationMs(durationMs > 0 ? 1.0f / static_cast<float>(durationMs) : 0.0f) {
 		if (durationMs <= 0) {
 			t = 1.0f;
-			running = false;
 		}
 	}
 
-	void BezierMover::update(int deltaTime) {
+	void BezierMover::update(float deltaTime) {
 		if (!running) return;
 
-		t += invDurationMs * static_cast<float>(deltaTime);
+		t += invDurationMs * deltaTime;
 		if (t >= 1.0f) {
 			t = 1.0f;
 			running = false;

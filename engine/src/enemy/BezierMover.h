@@ -18,7 +18,7 @@ public:
 
 	// duration is expected to be in milliseconds
 	BezierMover(const std::span<const vec2f>& controlVec2s, int durationMs);
-	void update(int deltaTime);
+	void update(float deltaTime);
 	bool isRunning() const {
 		return running;
 	}

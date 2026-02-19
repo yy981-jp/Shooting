@@ -19,8 +19,8 @@ public:
     PlayerBullet(vec2f i_pos, ColliderHandle col_h, EntityHandle ent_h, const vec2f& spriteHalf)
       : col_h(col_h), ent_h(ent_h), spriteHalf(spriteHalf), pos(i_pos) {}
 
-    void update(int deltaTime) {
-        pos.y -= speed * (static_cast<float>(deltaTime) / 1000.0f);
+    void update(float deltaTime) {
+        pos.y -= speed * (deltaTime / 1000.0f);
     }
 
     void draw(const Renderer* renderer) const {
