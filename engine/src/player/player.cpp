@@ -8,7 +8,7 @@
 /*          Player          */
 /*--------------------------*/
 
-    GameCommands Player::update(int deltatime, int dx, int dy, bool slow, bool shot) {
+    void Player::update(int deltatime, GCMS& gcm, int dx, int dy, bool slow, bool shot) {
         auto& v = moveTable[dy + 1][dx + 1];
         float dtSec = static_cast<float>(deltatime) / 1000.0f;
         float cx = v[0] * speed * (slow ? 0.5f : 1.0f) * dtSec;
@@ -25,17 +25,14 @@
         // まず経過時間を累積
         spm.update(deltatime);
 
-        GameCommands req;
         if (shot)
             for (int i = 0; i < spm.get(); ++i) {
                 cmd::playerBullet rec_c;
                 rec_c.pos = pos;
-                req.emplace_back(rec_c);
+                gcm(rec_c);
             }
 
         physWorld.setPos(h,pos);
-
-        return req;
     }
 
     void Player::draw(const Renderer* renderer) const {

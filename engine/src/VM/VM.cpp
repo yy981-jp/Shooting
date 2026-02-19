@@ -28,7 +28,7 @@
 
 
 
-    VM::ReturnCode VM::step() {
+    VM::ReturnCode VM::step(GCMS& gcm) {
         if (!running) return ReturnCode::finished;
 
         // 複数tick処理
@@ -60,8 +60,8 @@
                 frame.state = ExecState::WaitFlag;
             } break;
             case spawn: {
-                op_spawn();
-                return ReturnCode::spawnRequest;
+                op_spawn(gcm);
+                return ReturnCode::success;
             } break;
             case call: {
                 uint32_t jumpAddr = read_u32();
@@ -100,7 +100,7 @@
 
 
 
-    void VM::op_spawn() {
+    void VM::op_spawn(GCMS& gcm) {
         uint16_t entityType = read_u16();
         switch (static_cast<EntityType>(entityType)) {
             using enum EntityType;
@@ -110,7 +110,7 @@
                 c.y = read_s16();
                 c.pattern = read_u16();
                 c.duration = read_u32();
-                gamecommand = std::move(c);
+                gcm(c);
             } break;
             default: throw std::runtime_error("VM::op_spawn(): entityType");
         }

@@ -52,6 +52,7 @@ class Game {
     ElapsedTime elapsedTime;
     Cache* cache;
     FpsCounter fpsc;
+    GCMS gcm;
 
     Player* player;
     PlayerBullet_Manager* playerBullet_Manager;
@@ -62,8 +63,7 @@ class Game {
     void draw() const;
     void onKeyDown(const SDL_KeyboardEvent& e);
     void onKeyUP(const SDL_KeyboardEvent& e);
-    void commandExec(const GameCommand& c);
-    void commandExec(const GameCommands& cs);
+    void commandExec();
 
 public:
     Game(const int windowWidth, const int windowHeight);

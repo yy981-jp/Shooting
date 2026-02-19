@@ -17,24 +17,26 @@ namespace cmd {
 }
 
 
-using GameCommand_core = std::variant<
+using GameCommand = std::variant<
     cmd::enemyBezier,
     cmd::simpleBullet,
     cmd::playerBullet
 >;
 
 
-struct GameCommand {
-    bool enable;
-    operator bool() { return enable; }
-    GameCommand_core c;
-    GameCommand& operator=(const GameCommand_core& i_c) {
-        c = i_c;
-        enable = true;
-        return *this;
-    }
-    GameCommand(): enable(false) {}
-    GameCommand(const GameCommand_core& c): enable(true), c(c) {}
-};
+class GCMS {
+    std::vector<GameCommand> data;
 
-using GameCommands = std::vector<GameCommand>;
+public:
+    void operator()(GameCommand c) {
+        data.push_back(std::move(c));
+    }
+
+    const std::vector<GameCommand>& get() const {
+        return data;
+    }
+
+    void clear() {
+        data.clear();
+    }
+};

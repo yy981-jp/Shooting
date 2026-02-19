@@ -63,38 +63,36 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
     	IMG_Quit();
     }
 
-    void Game::commandExec(const GameCommand& c) {
-        if (!c.enable) return; // 有効ではないコマンドは弾く
-        std::visit(commandExec_core{*this}, c.c);
-    }
-    void Game::commandExec(const GameCommands& cs) {
-        for (auto& c: cs) commandExec(c);
+    void Game::commandExec() {
+        for (auto& c: gcm.get()) std::visit(commandExec_core{*this}, c);
     }
 
     void Game::update() {
         if (!elapsedTime) elapsedTime.init();
         int deltatime = elapsedTime.get();
+
+        gcm.clear();
+
         // VM step
         if (vm->running) {
-            auto vm_r = vm->step();
-            switch (vm_r) {
+            switch (vm->step(gcm)) {
                 using enum VM::ReturnCode;
-                case success: finished: break;
+                case success: break;
                 case error: throw std::runtime_error("VMで何らかの異常が発生しました"); break;
-                case finished: break; // 現状何もする必要はない
-                case spawnRequest: commandExec(vm->gamecommand); break;
             }
         }
 
         // entity update
         vec2i d = makeDir(keyStat.up, keyStat.down, keyStat.left, keyStat.right);
-        commandExec( player->update(deltatime, d.x, d.y, keyStat.shift, keyStat.z) );
+        player->update(deltatime, gcm, d.x, d.y, keyStat.shift, keyStat.z);
         // if (!player->isAllive()) running = false;
         playerBullet_Manager->update(deltatime);
-        commandExec( enemyBezier_Manager->update(deltatime) );
+        enemyBezier_Manager->update(deltatime,gcm);
         simpleBullet_Manager->update(deltatime);
 
         physWorld.step(); // 当たり判定
+
+        commandExec();
     }
     
     void Game::draw() const {
