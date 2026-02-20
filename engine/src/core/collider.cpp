@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <algorithm>
 
-#include "mathUtil.h"
+#include "mathutil.h"
 #include "entityManager.h"
 
 

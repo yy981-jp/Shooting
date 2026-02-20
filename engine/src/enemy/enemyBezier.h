@@ -34,12 +34,13 @@ struct EnemyBezier: public ICollidable {
 
         spm.update(deltatime);
         for (int i = 0; i < spm.get(); ++i) {
-            cmd::simpleBullet c;
-            c.pos = pos;
-            c.rotate = 270;
-            c.speed = 3;
-            gcm(c);
-            req_enable = true;
+            for (int rotate = 0; rotate < 360; rotate += 10) {
+                cmd::simpleBullet c;
+                c.pos = pos;
+                c.rotate = rotate;
+                c.speed = 3;
+                gcm(c);
+            }
         }
 
         return true;

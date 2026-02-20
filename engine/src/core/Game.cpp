@@ -134,7 +134,7 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
 
     void Game::tick() {
         fpsc.update();
-        SDL_SetWindowTitle(window,(std::to_string(displayFps) + "fps").c_str());
+        SDL_SetWindowTitle(window,(std::to_string(displayFps) + "fps   " + std::to_string(entMgr.size()) + "ents").c_str());
         update();
         draw();
 

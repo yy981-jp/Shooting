@@ -2,6 +2,7 @@
 #include "../core/cache.h"
 #include "../core/entityManager.h"
 #include "../core/collider.h"
+#include "../core/util.h"
 
 #include <deque>
 
@@ -21,6 +22,7 @@ struct SimpleBullet: public ICollidable {
     bool update() {
         if (!alive) return false;
         pos += vel;
+        if (isOffScreen(pos,spriteHalf)) alive = false;
         return true;
     }
 

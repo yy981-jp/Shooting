@@ -5,6 +5,7 @@
     }
 
     EntityHandle EntityManager::create() {
+        ++aliveCount;
         EntityID id;
 
         if (freeHead != INVALID) {
@@ -24,6 +25,8 @@
     }
 
     void EntityManager::destroy(EntityHandle h) {
+        --aliveCount;
+
         ++records[h.id].gen;
 
         // フリースロット linked list に追加
@@ -31,8 +34,12 @@
         freeHead = h.id;
     }
 
-    bool EntityManager::is_alive(EntityHandle h) {
+    bool EntityManager::is_alive(EntityHandle h) const {
         return records[h.id].gen == h.gen;
+    }
+
+    uint32_t EntityManager::size() const {
+        return aliveCount;
     }
 
 
