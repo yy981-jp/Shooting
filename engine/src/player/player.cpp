@@ -39,8 +39,8 @@
         renderer->drawSprite(EntityType::player, pos-spriteHalf);
     }
 
-    Player::Player(const Renderer* r, float speed, int remainingLives):
-      speed(speed), spriteHalf(r->getSpriteSize(EntityType::player)/2), pos(0,0), spm(50) {
+    Player::Player(const vec2f& spriteHalf, float speed, int remainingLives):
+      speed(speed), spriteHalf(spriteHalf), pos(0,0), spm(50) {
 
         for (int y = -1; y <= 1; ++y) {
             for (int x = -1; x <= 1; ++x) {

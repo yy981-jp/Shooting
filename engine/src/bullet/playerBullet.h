@@ -38,8 +38,7 @@ class PlayerBullet_Manager {
     vec2f spriteHalf;
 
 public:
-    PlayerBullet_Manager(const Renderer* r):
-     spriteHalf(r->getSpriteSize(EntityType::playerBullet)/2) {}
+    PlayerBullet_Manager(const vec2f& spriteHalf): spriteHalf(spriteHalf) {}
 
     void generate(const vec2f& pos) {
         EntityHandle e = entMgr.create();

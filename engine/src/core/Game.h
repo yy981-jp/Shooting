@@ -50,7 +50,6 @@ class Game {
     VM* vm;
     Renderer* renderer;
     ElapsedTime elapsedTime;
-    Cache* cache;
     FpsCounter fpsc;
     GCMS gcm;
 

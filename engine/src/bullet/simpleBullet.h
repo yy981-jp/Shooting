@@ -36,13 +36,11 @@ struct SimpleBullet: public ICollidable {
 };
 
 class SimpleBullet_Manager {
-    const Cache& cache;
     std::deque<SimpleBullet> list;
     vec2f spriteHalf;
 
 public:
-    SimpleBullet_Manager(const Renderer* r, const Cache& cache): cache(cache), 
-      spriteHalf(r->getSpriteSize(EntityType::simpleBullet)/2) {}
+    SimpleBullet_Manager(const vec2f& spriteHalf): spriteHalf(spriteHalf) {}
 
     void generate(const vec2f& pos, int rotate, float speed) {
         EntityHandle eh = entMgr.create();
@@ -57,7 +55,7 @@ public:
         col.circle.r = 3.0f;
 
         ColliderHandle ch = physWorld.add(col);
-        vec2f dir = cache.getDir(rotate);
+        vec2f dir = cachesv.getDir(rotate);
         
         list.emplace_back(pos, speed, dir, eh, ch, spriteHalf);
 

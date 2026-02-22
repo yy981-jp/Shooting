@@ -46,13 +46,12 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
 
         SDL_RenderSetLogicalSize(rendererNative, widthULB, heightULB);
         
-        cache = new Cache;
         // entity
         renderer = new Renderer(rendererNative, width, height);
-        player = new Player(renderer, 5.0f*60.0f);
-        playerBullet_Manager = new PlayerBullet_Manager(renderer);
-        enemyBezier_Manager = new EnemyBezier_Manager(renderer);
-        simpleBullet_Manager = new SimpleBullet_Manager(renderer, *cache);
+        player = new Player(static_cast<vec2f>(renderer->getSpriteSize(EntityType::player)/2), 5.0f*60.0f);
+        playerBullet_Manager = new PlayerBullet_Manager(static_cast<vec2f>(renderer->getSpriteSize(EntityType::playerBullet)/2));
+        enemyBezier_Manager = new EnemyBezier_Manager(static_cast<vec2f>(renderer->getSpriteSize(EntityType::enemyBezier)/2));
+        simpleBullet_Manager = new SimpleBullet_Manager(static_cast<vec2f>(renderer->getSpriteSize(EntityType::simpleBullet)/2));
 
         // VM
         vm = new VM(stgdatpath);

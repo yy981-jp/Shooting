@@ -6,31 +6,37 @@
 #include "../core/entityManager.h"
 #include "../core/spawnManager.h"
 #include "../graphics/gfx.h"
-#include "BezierMover.h"
+#include "../controller/all.h"
 #include "../tables/all.h"
+#include "../controller/all.h"
 
 
 struct EnemyBezier: public ICollidable {
-    vec2f pos;
-    vec2f origin;
-    BezierMover bm;
+    vec2f pos, vel;
     EntityHandle ent;
     ColliderHandle col_h;
     vec2f spriteHalf;
     bool wasShot = false;
     bool req_enable = false;
     spawnManager spm;
+
+    MotionPipeline mp;
     
     EnemyBezier(const EntityHandle& e, const vec2f& i_pos,
       std::span<const vec2f> bezierCurve, int duration,
-      const ColliderHandle& col_h, const vec2f& spriteHalf)
-      : pos(i_pos), origin(pos - bezierCurve[0]), bm(bezierCurve,duration),
-        ent(e), col_h(col_h), spriteHalf(spriteHalf), spm(300) {}
+      const ColliderHandle& col_h, const vec2f& spriteHalf,
+      float wave_amp, float wave_freq)
+      : pos(i_pos), mp(BezierController(bezierCurve,duration,i_pos)),
+        ent(e), col_h(col_h), spriteHalf(spriteHalf), spm(300) {
+            // WaveDecorator WaveDecorator(wave_amp,wave_freq);
+            // mp.addMover(WaveDecorator);
+        }
 
     bool update(float deltatime, GCMS& gcm) { // true -> 有効,  false -> 削除
-        if (!bm.isRunning() || wasShot) return false;
-        bm.update(deltatime);
-        pos = bm.pos + origin;
+        if (mp.isRunning() || wasShot) return false;
+        mp.update(deltatime, pos, vel);
+
+        pos += vel;
 
         spm.update(deltatime);
         for (int i = 0; i < spm.get(); ++i) {
@@ -61,30 +67,28 @@ class EnemyBezier_Manager {
     std::deque<EnemyBezier> list;
     vec2f spriteHalf;
 
-    struct Cache {
+    struct BMCache {
         std::string_view get(const int BezierCurveType) const {
             auto it = table.find(BezierCurveType);
             if (it == table.end()) 
-                throw std::runtime_error("enemyBezier_Manager::Cache: not found - id: "
+                throw std::runtime_error("enemyBezier_Manager::CacheSV: not found - id: "
                     + std::to_string(BezierCurveType));
             return it->second;
         }
         std::unordered_map<uint16_t, std::string> table; // 整数型がkeyなのでrapidString系は使わない
-    } cache;
+    } bmcache;
 
 public:
-    EnemyBezier_Manager(const Renderer* r) {
+    EnemyBezier_Manager(const vec2f& spriteHalf): spriteHalf(spriteHalf) {
         auto arr = paramTable.json["param"]["enemyBezier"]["patterns"].GetArray();
         int index = 0;
         for (const auto& v: arr) {
-            cache.table[index++] = v.GetString();
+            bmcache.table[index++] = v.GetString();
         }
-
-        spriteHalf = r->getSpriteSize(EntityType::enemyBezier) / 2;
     }
 
     void generate(const vec2f& pos, const int BezierCurveType, const int duration) {
-        std::string_view curveAlias = cache.get(BezierCurveType);
+        std::string_view curveAlias = bmcache.get(BezierCurveType);
         auto controlVec2 = paramTable.bezierCurve.get(curveAlias);
 
         // ===== Entity生成 =====
@@ -106,7 +110,7 @@ public:
         auto col_handle = physWorld.add(col);
 
         // ===== EnemyBezier生成 =====
-        list.emplace_back(e, pos, controlVec2, duration, col_handle, spriteHalf);
+        list.emplace_back(e, pos, controlVec2, duration, col_handle, spriteHalf, 50.0f, 3.0f);
         EnemyBezier& enemy = list.back();
 
         // EntityManagerにポインタ登録（OOP方式）

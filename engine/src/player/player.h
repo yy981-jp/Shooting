@@ -18,7 +18,7 @@ class Player: public ICollidable {
     void onHit(const CollisionInfo& info) override;
 
 public:
-    Player(const Renderer* r, float speed, int remainingLives = 5);
+    Player(const vec2f& spriteHalf, float speed, int remainingLives = 5);
     bool isAllive() { return !remainingLives; }
 
     void update(float deltaTime, GCMS& gcm, int dx, int dy, bool slow, bool shot);
