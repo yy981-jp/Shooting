@@ -33,7 +33,7 @@ struct EnemyBezier: public ICollidable {
         }
 
     bool update(float deltatime, GCMS& gcm) { // true -> 有効,  false -> 削除
-        if (mp.isRunning() || wasShot) return false;
+        if (!mp.isRunning() || wasShot) return false;
         mp.update(deltatime, pos, vel);
 
         pos += vel;

@@ -30,6 +30,12 @@ public:
 	void update(float dt, vec2f& pos, vec2f& vel) {
 		// Base
 		std::visit([&](auto& b){
+            if constexpr (requires { b.isRunning(); }) {
+                if (running) {
+                    running = false;
+                    if (b.isRunning()) running = true;
+                }
+            }
 			b.update(dt, pos, vel);
 		}, base);
 
