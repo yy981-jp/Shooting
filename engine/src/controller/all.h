@@ -52,6 +52,10 @@ public:
 				mod.update(dt, ms);
 			}, m);
 		}
+
+        vec2f dir = cachesv.getDir(ms.angle);
+        vec2f vel = dir * ms.speed;
+        return vel;
 	};
 
     bool isRunning() {

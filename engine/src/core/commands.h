@@ -10,7 +10,7 @@ namespace cmd {
     struct enemyBezier { int x, y, pattern, duration; };
     struct simpleBullet {
         vec2f pos;
-        int rotate;
+        int degree;
         float speed;
     };
     struct playerBullet { vec2f pos; };

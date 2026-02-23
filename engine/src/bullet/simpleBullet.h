@@ -3,6 +3,7 @@
 #include "../core/entityManager.h"
 #include "../core/collider.h"
 #include "../core/util.h"
+#include "../core/mathutil.h"
 
 #include <deque>
 
@@ -42,7 +43,7 @@ class SimpleBullet_Manager {
 public:
     SimpleBullet_Manager(const vec2f& spriteHalf): spriteHalf(spriteHalf) {}
 
-    void generate(const vec2f& pos, int angle, float speed) {
+    void generate(const vec2f& pos, int degree, float speed) {
         EntityHandle eh = entMgr.create();
 
         Collider col{};
@@ -55,7 +56,7 @@ public:
         col.circle.r = 3.0f;
 
         ColliderHandle ch = physWorld.add(col);
-        vec2f dir = cachesv.getDir(angle);
+        vec2f dir = cachesv.getDir(deg2rad(degree));
         
         list.emplace_back(pos, speed, dir, eh, ch, spriteHalf);
 

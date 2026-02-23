@@ -30,6 +30,7 @@ void BezierController::update(float deltatime, MotionState& ms) {
 	}
 
 	vec2f target = calculateBezierVec2(t) + origin;
-	// vel = target - pos;
+	ms.speed = 0;
+	ms.angle = 0;
 	ms.pos = target;
 }

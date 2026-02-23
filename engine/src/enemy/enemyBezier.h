@@ -22,10 +22,10 @@ struct EnemyBezier: public ICollidable {
     MotionState ms;
     MotionPipeline mp;
     
-    EnemyBezier(const EntityHandle& e, const MotionState& i_ms,
+    EnemyBezier(const EntityHandle& e, const vec2f& pos,
       std::span<const vec2f> bezierCurve, int duration,
       const ColliderHandle& col_h, const vec2f& spriteHalf)
-      : ms(i_ms), mp(BezierController(bezierCurve,duration,i_ms.pos)),
+      : ms(pos), mp(BezierController(bezierCurve,duration,pos)),
         ent(e), col_h(col_h), spriteHalf(spriteHalf), spm(300) {
             // WaveDecorator WaveDecorator(wave_amp,wave_freq);
             // mp.addMover(WaveDecorator);
@@ -40,7 +40,7 @@ struct EnemyBezier: public ICollidable {
             for (int rotate = 0; rotate < 360; rotate += 10) {
                 cmd::simpleBullet c;
                 c.pos = ms.pos;
-                c.rotate = rotate;
+                c.degree = rotate;
                 c.speed = 3;
                 gcm(c);
             }
@@ -107,7 +107,7 @@ public:
         auto col_handle = physWorld.add(col);
 
         // ===== EnemyBezier生成 =====
-        list.emplace_back(e, MotionState{pos}, controlVec2, duration, col_handle, spriteHalf);
+        list.emplace_back(e, pos, controlVec2, duration, col_handle, spriteHalf);
         EnemyBezier& enemy = list.back();
 
         // EntityManagerにポインタ登録（OOP方式）

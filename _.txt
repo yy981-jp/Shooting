@@ -41,3 +41,6 @@ float angle;
 float speed;
 
 MotionPipeline mp;
+
+angle = rad
+degree = deg
