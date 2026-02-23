@@ -55,7 +55,7 @@ SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
     Renderer::~Renderer() {}
 
     vec2i Renderer::getSpriteSize(EntityType spriteID) const {
-        SpriteInfo sprite = spriteTable[static_cast<size_t>(spriteID)];
+        const SpriteInfo& sprite = spriteTable[static_cast<size_t>(spriteID)];
         vec2i vec;
         vec.x = sprite.w;
         vec.y = sprite.h;

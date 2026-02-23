@@ -101,7 +101,7 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
         simpleBullet_Manager->draw(renderer);
 
         // DEBUG
-        physWorld.draw(renderer);
+        // physWorld.draw(renderer);
 
         SDL_RenderPresent(rendererNative);
     }

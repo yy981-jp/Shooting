@@ -2,10 +2,12 @@
 
 #include "../core/vec2.h"
 
+#include <numbers>
+
 class CacheSV {
 	static constexpr int TABLE_SIZE = 4096;
 	static constexpr int TABLE_MASK = TABLE_SIZE - 1;
-	static constexpr float TWO_PI = 6.28318530717958647692f;
+	static constexpr float TWO_PI = std::numbers::pi * 2;
 	static constexpr float INV_STEP = TABLE_SIZE / TWO_PI;
 
 	float table[TABLE_SIZE][2];
