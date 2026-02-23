@@ -13,17 +13,17 @@ vec2f BezierController::calculateBezierVec2(float t) {
 
 BezierController::BezierController(std::span<const vec2f> controlVec2s, int durationMs, vec2f startPos)
 	: controlVec2s(controlVec2s.begin(), controlVec2s.end()),
-	  invDurationMs(durationMs > 0 ? 1.0f / static_cast<float>(durationMs) : 0.0f),
+	  invDurationMs(durationMs > 0 ? 1000.0f / static_cast<float>(durationMs) : 0.0f),
 	  origin(startPos - controlVec2s[0]) {
 	if (durationMs <= 0)
 		t = 1.0f;
 	work.resize(controlVec2s.size());
 }
 
-void BezierController::update(float deltaTime, vec2f& pos, vec2f& vel) {
+void BezierController::update(float deltatime, vec2f& pos, vec2f& vel) {
 	if (!running) return;
 
-	t += invDurationMs * deltaTime;
+	t += invDurationMs * deltatime;
 	if (t >= 1.0f) {
 		t = 1.0f;
 		running = false;

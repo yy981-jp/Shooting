@@ -16,6 +16,6 @@ class BezierController {
 public:
 	BezierController(std::span<const vec2f> controlVec2s, int durationMs, vec2f startPos);
 
-	void update(float deltaTime, vec2f& pos, vec2f& vel);
+	void update(float deltatime, vec2f& pos, vec2f& vel);
 	bool isRunning() const { return running; }
 };

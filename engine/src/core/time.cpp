@@ -28,7 +28,7 @@
 
     float ElapsedTime::get() {
 		std::chrono::time_point<std::chrono::high_resolution_clock> e = std::chrono::high_resolution_clock::now();
-		std::chrono::duration<float, std::milli> duration = std::chrono::duration_cast<std::chrono::duration<float, std::milli>>(e - start);
+		std::chrono::duration<float> duration = std::chrono::duration_cast<std::chrono::duration<float>>(e - start);
 		start = std::move(e);
 		return duration.count();
 	}

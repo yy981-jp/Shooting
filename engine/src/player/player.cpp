@@ -10,9 +10,8 @@
 
     void Player::update(float deltatime, GCMS& gcm, int dx, int dy, bool slow, bool shot) {
         auto& v = moveTable[dy + 1][dx + 1];
-        float dtSec = deltatime / 1000.0f;
-        float cx = v[0] * speed * (slow ? 0.5f : 1.0f) * dtSec;
-        float cy = v[1] * speed * (slow ? 0.5f : 1.0f) * dtSec;
+        float cx = v[0] * speed * (slow ? 0.5f : 1.0f) * deltatime;
+        float cy = v[1] * speed * (slow ? 0.5f : 1.0f) * deltatime;
         pos.x += cx;
         pos.y += cy;
 

@@ -2,11 +2,11 @@
 
 
 class spawnManager {
-    int shootInterval; // ms
+    float shootInterval; // seconds
     float elapsedTime = 0.0f;
 
 public:
-    spawnManager(int shootInterval): shootInterval(shootInterval) {}
+    spawnManager(int shootIntervalMs): shootInterval(shootIntervalMs / 1000.0f) {}
 
     void update(float deltatime) {
         elapsedTime += deltatime;

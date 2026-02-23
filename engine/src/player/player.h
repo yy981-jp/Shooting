@@ -21,6 +21,6 @@ public:
     Player(const vec2f& spriteHalf, float speed, int remainingLives = 5);
     bool isAllive() { return !remainingLives; }
 
-    void update(float deltaTime, GCMS& gcm, int dx, int dy, bool slow, bool shot);
+    void update(float deltatime, GCMS& gcm, int dx, int dy, bool slow, bool shot);
     void draw(const Renderer* renderer) const;
 };
