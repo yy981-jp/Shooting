@@ -2,31 +2,7 @@ bossはenemyの一種
 stgはリンクする　<- 基盤が完成すれば
 
 IRでrepeat,callは展開しない
-spriteIDはenumclassを廃止 imageTableも廃止 すべて中央テーブルで管理する jsonでも使う?
-	enummclassはintで表現
-
-entity.def.json
-{
-	"background": { // imgはentity名と一致させる
-		"id": 0
-	}
-}
-
-entityType以外にも振る舞いのkvに対するID対応表が必要 定義jsonを増やす?
-
-enemyBezier.def.json
-{
-	Bezier
-}
-
-Assets/
-	entity.def.json
-	eventTable.json
-	entity/
-		enemyBezier.def.json
-
-
-
+spriteID = EntityType
 
 call,None:	call,ret 	- callStack
 repeat,end:	repeat,end 	- loopStack
@@ -45,9 +21,7 @@ pc = uint32_t
 vec2 = uint16_t
 entityType = uint16_t
 
-enemyBezierをまずは実装 そしてmanagerも作成
-
-内部表現はVec2Fで 描画はVec2で
+内部表現はvec2fで 描画はvec2iで
 
 
 現状:
@@ -56,19 +30,13 @@ enemyBezierをまずは実装 そしてmanagerも作成
 	各オブジェクトから制御点を参照するには、IDが統一されていないため、aliasを経由する必要がある 効率に問題あり?
 		-> 現状その状態で進めて問題ないが、構造は変えずもっと効率よく参照するシステムを作れると良い cache方式の現行paramTableを活用した上で効率の良いものを
 
-// 	改善予定(廃止):
-// 		宣言: 変更なし
-// 		実装: 変更なし
-// 		patternIDはstgcによるコンパイル時に、BezierCurvesを参照し、BezierCurves...
-//	-> jsonにおいてオブジェクトの順序は保証されないため、順序保持用に別で配列を準備する必要あり 無駄が多すぎる
 
 描画システムの座標系は左上を原点に, 論理部分の座標系は中央を原点に
 
-entity.def.jsonを廃止したい
-	stgcをcppに移行すれば可能 #系で.defをenumclassに展開することは可能 では、id->aliasは?
-						    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ gitbranch-ecsのcomponent系参照
-	stgcをpyに保つ場合、.defを解析する機構が必要
-	(例) .def =
-		X(player)
-		X(playerBullet)
-		X(enemyBezier)
+entity.def.jsonを廃止 entityTable.defに移行 imgはentity名と一致させる
+
+角度管理型: 各Entityに
+vec2f pos;
+float angle;
+float speed;
+MotionPipeline mp;
