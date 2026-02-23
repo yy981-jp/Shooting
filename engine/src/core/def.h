@@ -14,3 +14,9 @@ struct EntityHandle {
 const std::string Assets = "../assets/";
 constexpr vec2f WINDOW{800,800};
 constexpr vec2f SCREEN = WINDOW / 2;
+
+struct MotionState {
+    vec2f pos = {0,0};
+    float angle = 0; // rad
+    float speed = 0;
+};

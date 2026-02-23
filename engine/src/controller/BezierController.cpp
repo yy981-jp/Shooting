@@ -20,7 +20,7 @@ BezierController::BezierController(std::span<const vec2f> controlVec2s, int dura
 	work.resize(controlVec2s.size());
 }
 
-void BezierController::update(float deltatime, vec2f& pos, vec2f& vel) {
+void BezierController::update(float deltatime, MotionState& ms) {
 	if (!running) return;
 
 	t += invDurationMs * deltatime;
@@ -31,5 +31,5 @@ void BezierController::update(float deltatime, vec2f& pos, vec2f& vel) {
 
 	vec2f target = calculateBezierVec2(t) + origin;
 	// vel = target - pos;
-	pos = target;
+	ms.pos = target;
 }

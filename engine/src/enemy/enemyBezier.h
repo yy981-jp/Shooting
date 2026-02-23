@@ -12,7 +12,6 @@
 
 
 struct EnemyBezier: public ICollidable {
-    vec2f pos, vel;
     EntityHandle ent;
     ColliderHandle col_h;
     vec2f spriteHalf;
@@ -20,13 +19,13 @@ struct EnemyBezier: public ICollidable {
     bool req_enable = false;
     spawnManager spm;
 
+    MotionState ms;
     MotionPipeline mp;
     
-    EnemyBezier(const EntityHandle& e, const vec2f& i_pos,
+    EnemyBezier(const EntityHandle& e, const MotionState& i_ms,
       std::span<const vec2f> bezierCurve, int duration,
-      const ColliderHandle& col_h, const vec2f& spriteHalf,
-      float wave_amp, float wave_freq)
-      : pos(i_pos), mp(BezierController(bezierCurve,duration,i_pos)),
+      const ColliderHandle& col_h, const vec2f& spriteHalf)
+      : ms(i_ms), mp(BezierController(bezierCurve,duration,i_ms.pos)),
         ent(e), col_h(col_h), spriteHalf(spriteHalf), spm(300) {
             // WaveDecorator WaveDecorator(wave_amp,wave_freq);
             // mp.addMover(WaveDecorator);
@@ -34,15 +33,13 @@ struct EnemyBezier: public ICollidable {
 
     bool update(float deltatime, GCMS& gcm) { // true -> 有効,  false -> 削除
         if (!mp.isRunning() || wasShot) return false;
-        mp.update(deltatime, pos, vel);
-
-        pos += vel;
+        mp.update(deltatime, ms);
 
         spm.update(deltatime);
         for (int i = 0; i < spm.get(); ++i) {
             for (int rotate = 0; rotate < 360; rotate += 10) {
                 cmd::simpleBullet c;
-                c.pos = pos;
+                c.pos = ms.pos;
                 c.rotate = rotate;
                 c.speed = 3;
                 gcm(c);
@@ -53,7 +50,7 @@ struct EnemyBezier: public ICollidable {
     }
 
     void draw(const Renderer* renderer) const {
-        renderer->drawSprite(EntityType::enemyBezier, pos-spriteHalf);
+        renderer->drawSprite(EntityType::enemyBezier, ms.pos-spriteHalf);
     }
 
     void onHit(const CollisionInfo& info) {
@@ -110,7 +107,7 @@ public:
         auto col_handle = physWorld.add(col);
 
         // ===== EnemyBezier生成 =====
-        list.emplace_back(e, pos, controlVec2, duration, col_handle, spriteHalf, 50.0f, 3.0f);
+        list.emplace_back(e, MotionState{pos}, controlVec2, duration, col_handle, spriteHalf);
         EnemyBezier& enemy = list.back();
 
         // EntityManagerにポインタ登録（OOP方式）
@@ -126,7 +123,7 @@ public:
                 entMgr.setPtr(list[i].ent, &list[i]); // moveされたentityのptrを更新
                 list.pop_back();
             } else {
-                physWorld.setPos(list[i].col_h,list[i].pos);
+                physWorld.setPos(list[i].col_h,list[i].ms.pos);
                 ++i;
             }
         }

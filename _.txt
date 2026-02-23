@@ -35,8 +35,9 @@ entityType = uint16_t
 
 entity.def.jsonを廃止 entityTable.defに移行 imgはentity名と一致させる
 
-角度管理型: 各Entityに
+角度管理型: 各Entityに MotionState structure
 vec2f pos;
 float angle;
 float speed;
+
 MotionPipeline mp;

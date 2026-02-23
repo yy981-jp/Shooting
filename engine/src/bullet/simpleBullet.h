@@ -42,7 +42,7 @@ class SimpleBullet_Manager {
 public:
     SimpleBullet_Manager(const vec2f& spriteHalf): spriteHalf(spriteHalf) {}
 
-    void generate(const vec2f& pos, int rotate, float speed) {
+    void generate(const vec2f& pos, int angle, float speed) {
         EntityHandle eh = entMgr.create();
 
         Collider col{};
@@ -55,7 +55,7 @@ public:
         col.circle.r = 3.0f;
 
         ColliderHandle ch = physWorld.add(col);
-        vec2f dir = cachesv.getDir(rotate);
+        vec2f dir = cachesv.getDir(angle);
         
         list.emplace_back(pos, speed, dir, eh, ch, spriteHalf);
 

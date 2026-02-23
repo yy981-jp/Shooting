@@ -27,7 +27,8 @@ public:
         modifiers.push_back(modi);
     }
 
-	void update(float dt, vec2f& pos, vec2f& vel) {
+    /// @return vel
+	vec2f update(float dt, MotionState& ms) {
 		// Base
 		std::visit([&](auto& b){
             if constexpr (requires { b.isRunning(); }) {
@@ -36,7 +37,7 @@ public:
                     if (b.isRunning()) running = true;
                 }
             }
-			b.update(dt, pos, vel);
+			b.update(dt, ms);
 		}, base);
 
 		// Modifier
@@ -48,7 +49,7 @@ public:
                         if (mod.isRunning()) running = true;
                     }
                 }
-				mod.update(dt, pos, vel);
+				mod.update(dt, ms);
 			}, m);
 		}
 	};

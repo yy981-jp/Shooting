@@ -13,7 +13,7 @@ public:
     WaveDecorator(float amp,float freq)
       :amplitude(amp), frequency(freq) {}
 
-    void update(float dt, vec2f& pos, vec2f& vel) {
+    void update(float dt, MotionState& ms) {
         time += dt;
         vel.x += amplitude * cachesv.getSin(frequency * time);
     }

@@ -4,8 +4,8 @@
 
 class LineController {
 public:
-    LineController(float amp,float freq) {}
+    LineController(float degree) {}
 
-    void update(float dt, vec2f& pos, vec2f& vel) {
+    void update(float dt, MotionState& ms) {
     }
 };
