@@ -46,13 +46,12 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
 
         SDL_RenderSetLogicalSize(rendererNative, widthULB, heightULB);
         
-        cache = new Cache;
         // entity
         renderer = new Renderer(rendererNative, width, height);
-        player = new Player(renderer, 5.0f*60.0f);
-        playerBullet_Manager = new PlayerBullet_Manager(renderer);
-        enemyBezier_Manager = new EnemyBezier_Manager(renderer);
-        simpleBullet_Manager = new SimpleBullet_Manager(renderer, *cache);
+        player = new Player(static_cast<vec2f>(renderer->getSpriteSize(EntityType::player)/2), 5.0f*60.0f);
+        playerBullet_Manager = new PlayerBullet_Manager(static_cast<vec2f>(renderer->getSpriteSize(EntityType::playerBullet)/2));
+        enemyBezier_Manager = new EnemyBezier_Manager(static_cast<vec2f>(renderer->getSpriteSize(EntityType::enemyBezier)/2));
+        simpleBullet_Manager = new SimpleBullet_Manager(static_cast<vec2f>(renderer->getSpriteSize(EntityType::simpleBullet)/2));
 
         // VM
         vm = new VM(stgdatpath);
@@ -63,52 +62,46 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
     	IMG_Quit();
     }
 
-    void Game::commandExec(const GameCommand& c) {
-        if (!c.enable) return; // 有効ではないコマンドは弾く
-        std::visit(commandExec_core{*this}, c.c);
-    }
-    void Game::commandExec(const std::vector<GameCommand>& cs) {
-        for (auto& c: cs) commandExec(c);
+    void Game::commandExec() {
+        for (auto& c: gcm.get()) std::visit(commandExec_core{*this}, c);
+        gcm.clear();
     }
 
-    void Game::update(float displayFps) {
-        SDL_SetWindowTitle(window,(std::to_string(displayFps) + "fps").c_str());
-
+    void Game::update() {
         if (!elapsedTime) elapsedTime.init();
-        int deltatime = elapsedTime.get();
+        float deltatime = elapsedTime.get();
+
         // VM step
         if (vm->running) {
-            auto vm_r = vm->step();
-            switch (vm_r) {
+            switch (vm->step(gcm)) {
                 using enum VM::ReturnCode;
-                case success: finished: break;
+                case success: break;
                 case error: throw std::runtime_error("VMで何らかの異常が発生しました"); break;
-                case finished: break; // 現状何もする必要はない
-                case spawnRequest: commandExec(vm->gamecommand); break;
             }
         }
 
         // entity update
         vec2i d = makeDir(keyStat.up, keyStat.down, keyStat.left, keyStat.right);
-        ShotRequest playerShotReq = player->update(deltatime, d.x, d.y, keyStat.shift, keyStat.z);
-        if (playerShotReq.shouldShoot) playerBullet_Manager->generate(playerShotReq.spawnPos);
+        player->update(deltatime, gcm, d.x, d.y, keyStat.shift, keyStat.z);
+        // if (!player->isAllive()) running = false;
         playerBullet_Manager->update(deltatime);
-        commandExec(enemyBezier_Manager->update(deltatime));
+        enemyBezier_Manager->update(deltatime,gcm);
         simpleBullet_Manager->update(deltatime);
 
         physWorld.step(); // 当たり判定
+
+        commandExec();
     }
     
     void Game::draw() const {
-        // SDL_RenderClear(rendererNative); (これがあると黒帯領域が発生する なんでかって? 未来の自分調べといて)
-        renderer->drawSprite(entityTable.get("background"), vec2i(-width,-height));
+        renderer->drawSprite(EntityType::background, vec2i(-width,-height));
         player->draw(renderer);
         playerBullet_Manager->draw(renderer);
         enemyBezier_Manager->draw(renderer);
         simpleBullet_Manager->draw(renderer);
 
         // DEBUG
-        physWorld.draw(renderer);
+        // physWorld.draw(renderer);
 
         SDL_RenderPresent(rendererNative);
     }
@@ -122,6 +115,8 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
             case SDLK_RIGHT: keyStat.right = true; break;
             case SDLK_z: keyStat.z = true; break;
             case SDLK_LSHIFT: keyStat.shift = true; break;
+
+            case SDLK_ESCAPE: exit(111);
         }
     }
 
@@ -138,7 +133,8 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
 
     void Game::tick() {
         fpsc.update();
-        update(displayFps);
+        SDL_SetWindowTitle(window,(std::to_string(displayFps) + "fps   " + std::to_string(entMgr.size()) + "ents").c_str());
+        update();
         draw();
 
         SDL_Event event;

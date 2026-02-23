@@ -10,27 +10,33 @@ namespace cmd {
     struct enemyBezier { int x, y, pattern, duration; };
     struct simpleBullet {
         vec2f pos;
-        int rotate;
+        int degree;
         float speed;
     };
+    struct playerBullet { vec2f pos; };
 }
 
 
-using GameCommand_core = std::variant<
+using GameCommand = std::variant<
     cmd::enemyBezier,
-    cmd::simpleBullet
+    cmd::simpleBullet,
+    cmd::playerBullet
 >;
 
 
-struct GameCommand {
-    bool enable;
-    operator bool() { return enable; }
-    GameCommand_core c;
-    GameCommand& operator=(const GameCommand_core& i_c) {
-        c = i_c;
-        enable = true;
-        return *this;
+class GCMS {
+    std::vector<GameCommand> data;
+
+public:
+    void operator()(GameCommand c) {
+        data.push_back(std::move(c));
     }
-    GameCommand(): enable(false) {}
-    GameCommand(const GameCommand_core& c): enable(true), c(c) {}
+
+    const std::vector<GameCommand>& get() const {
+        return data;
+    }
+
+    void clear() {
+        data.clear();
+    }
 };

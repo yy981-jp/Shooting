@@ -8,7 +8,7 @@
 
 
 class PlayerBullet: public ICollidable {
-    static constexpr float speed = 600.0f; // pixels per second
+    static constexpr float speed = 800.0f; // pixels per second
     
 public:
     vec2f pos;
@@ -16,18 +16,15 @@ public:
     ColliderHandle col_h;
     vec2f spriteHalf;
 
-    PlayerBullet(vec2i i_pos, ColliderHandle col_h, EntityHandle ent_h, const vec2f& spriteHalf)
-      : col_h(col_h), ent_h(ent_h), spriteHalf(spriteHalf) {
-        pos.x = i_pos.x;
-        pos.y = i_pos.y;
-    }
+    PlayerBullet(vec2f i_pos, ColliderHandle col_h, EntityHandle ent_h, const vec2f& spriteHalf)
+      : col_h(col_h), ent_h(ent_h), spriteHalf(spriteHalf), pos(i_pos) {}
 
-    void update(int deltaTime) {
-        pos.y -= speed * (static_cast<float>(deltaTime) / 1000.0f);
+    void update(float deltatime) {
+        pos.y -= speed * deltatime;
     }
 
     void draw(const Renderer* renderer) const {
-        renderer->drawSprite(entityTable.get("playerBullet"), pos - spriteHalf);
+        renderer->drawSprite(EntityType::playerBullet, pos - spriteHalf);
     }
 
     void onHit(const CollisionInfo& info) {
@@ -41,10 +38,9 @@ class PlayerBullet_Manager {
     vec2f spriteHalf;
 
 public:
-    PlayerBullet_Manager(const Renderer* r):
-     spriteHalf(r->getSpriteSize(entityTable.get("playerBullet"))/2) {}
+    PlayerBullet_Manager(const vec2f& spriteHalf): spriteHalf(spriteHalf) {}
 
-    void generate(const vec2i& pos) {
+    void generate(const vec2f& pos) {
         EntityHandle e = entMgr.create();
         Collider col{};
         col.type = ColliderType::Circle;
@@ -61,14 +57,14 @@ public:
         entMgr.setPtr(e,&bullet);
     }
 
-    void update(int deltaTime) {
+    void update(float deltatime) {
         if (bullets.size() > 50) {
             physWorld.destroy(bullets.front().col_h);
             entMgr.destroy(bullets.front().ent_h);
             bullets.pop_front();
         }
         for (PlayerBullet& bullet: bullets) {
-            bullet.update(deltaTime);
+            bullet.update(deltatime);
             physWorld.setPos(bullet.col_h,bullet.pos);
         }
     }

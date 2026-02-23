@@ -74,12 +74,8 @@ class VM {
         uint16_t value;
     };
 
-    struct OP_spawn_cache {
-        uint16_t enemyBezier = UINT16_MAX;
-    } entityRTable_Cache;
-
     // spawn命令だけ長くなりそうなので隔離
-    void op_spawn();
+    void op_spawn(GCMS& gcm);
 
 
     uint16_t read_u16() {
@@ -116,16 +112,14 @@ public:
     bool running = true;
     ExecFrame frame;
     std::unordered_map<std::string,bool> flags; // ゲームフラグ
-    GameCommand gamecommand;
 
     VM(const std::string& stgdatPath);
 
     enum class ReturnCode: uint8_t {
         error,              // 何らかのエラー
         success,            // 通常終了
-        finished,           // stg終端
-        spawnRequest       // spawn命令
+        finished            // stg終端
     };
 
-    ReturnCode step();
+    ReturnCode step(GCMS& gcm);
 };

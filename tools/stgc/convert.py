@@ -3,15 +3,15 @@ from defi import Instruction
 from typing import List, Dict, Union, Any
 import json
 from pathlib import Path
+import re
 
-# from pprint import pprint
+from pprint import pprint
 
 opSizeTable: Dict[str,int] # op -> size(byte)
 EVENT_TABLE: Dict[str,Any] = {}
 FLAGS_TABLE: Dict[str,int] = {}
 PARAM_TABLE: Dict[str,Any] ={}
-ENTITY_TABLE: Dict[str,Any] ={}
-ENTITY_MAP: Dict[str,int] ={}
+ENTITY_TABLE: Dict[str,int] ={}
 enemyBezier_patterns: Dict[str,int] = {}
 
 # loadJson
@@ -23,10 +23,20 @@ with open("../../assets/eventTable.json", "r", encoding="utf-8") as f:
     patterns = PARAM_TABLE["enemyBezier"]["patterns"]
     enemyBezier_patterns = {name: i for i, name in enumerate(patterns)}
 
-with open("../../assets/entity.def.json", "r", encoding="utf-8") as f:
-    ENTITY_TABLE = json.load(f)
-    ENTITY_MAP = {k: v["id"] for k, v in ENTITY_TABLE.items()}
+with open("../../assets/entityTable.def", "r", encoding="utf-8") as f:
+    index = 0
+    for line in f:
+        # コメント除去
+        line = line.split("//")[0].strip()
+        if not line:
+            continue
 
+        m = re.match(r"X\((\w+)\)", line)
+        if m:
+            name = m.group(1)
+            ENTITY_TABLE[name] = index
+            index += 1
+    # pprint(ENTITY_TABLE)
 
 def packParam(cmd:Instruction):
     code = bytearray()
@@ -57,9 +67,10 @@ def packParam(cmd:Instruction):
                     enemyBezier_patterns["default"]
                 )
             ) if "pattern" in cmd.args else 0
+            # pprint(ENTITY_TABLE[entityType])
             code+= struct.pack(
                 "<H h h H I",
-                int(ENTITY_MAP[entityType]),
+                int(ENTITY_TABLE[entityType]),
                 int(cmd.args["x"]), int(cmd.args["y"]),
                 pattern,
                 int(cmd.args.get("duration", 5000))

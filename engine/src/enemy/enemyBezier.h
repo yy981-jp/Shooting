@@ -2,44 +2,55 @@
 
 #include "../core/def.h"
 #include "../core/collider.h"
-#include "../core/entityManager.h"
 #include "../core/commands.h"
+#include "../core/entityManager.h"
+#include "../core/spawnManager.h"
 #include "../graphics/gfx.h"
-#include "BezierMover.h"
+#include "../controller/all.h"
 #include "../tables/all.h"
+#include "../controller/all.h"
 
 
 struct EnemyBezier: public ICollidable {
-    vec2f pos;
-    vec2f origin;
-    BezierMover bm;
     EntityHandle ent;
     ColliderHandle col_h;
     vec2f spriteHalf;
     bool wasShot = false;
-    GameCommand req;
+    bool req_enable = false;
+    spawnManager spm;
+
+    MotionState ms;
+    MotionPipeline mp;
     
-    EnemyBezier(const EntityHandle& e, const vec2f& i_pos,
+    EnemyBezier(const EntityHandle& e, const vec2f& pos,
       std::span<const vec2f> bezierCurve, int duration,
       const ColliderHandle& col_h, const vec2f& spriteHalf)
-      : pos(i_pos), origin(pos - bezierCurve[0]), bm(bezierCurve,duration), ent(e), col_h(col_h), spriteHalf(spriteHalf) {}
+      : ms(pos), mp(BezierController(bezierCurve,duration,pos)),
+        ent(e), col_h(col_h), spriteHalf(spriteHalf), spm(300) {
+            // WaveDecorator WaveDecorator(wave_amp,wave_freq);
+            // mp.addMover(WaveDecorator);
+        }
 
-    bool update(int deltatime) { // true -> 有効,  false -> 削除
-        if (!bm.isRunning() || wasShot) return false;
-        bm.update(deltatime);
-        pos = bm.pos + origin;
+    bool update(float deltatime, GCMS& gcm) { // true -> 有効,  false -> 削除
+        if (!mp.isRunning() || wasShot) return false;
+        mp.update(deltatime, ms);
 
-        cmd::simpleBullet c;
-        c.pos = pos;
-        c.rotate = 270;
-        c.speed = 10;
-        req = std::move(c);
+        spm.update(deltatime);
+        for (int i = 0; i < spm.get(); ++i) {
+            for (int rotate = 0; rotate < 360; rotate += 10) {
+                cmd::simpleBullet c;
+                c.pos = ms.pos;
+                c.degree = rotate;
+                c.speed = 3;
+                gcm(c);
+            }
+        }
 
         return true;
     }
 
     void draw(const Renderer* renderer) const {
-        renderer->drawSprite(entityTable.get("enemyBezier"),pos-spriteHalf);
+        renderer->drawSprite(EntityType::enemyBezier, ms.pos-spriteHalf);
     }
 
     void onHit(const CollisionInfo& info) {
@@ -51,33 +62,30 @@ struct EnemyBezier: public ICollidable {
 
 class EnemyBezier_Manager {
     std::deque<EnemyBezier> list;
-    const EntityType type;
     vec2f spriteHalf;
 
-    struct Cache {
+    struct BMCache {
         std::string_view get(const int BezierCurveType) const {
             auto it = table.find(BezierCurveType);
             if (it == table.end()) 
-                throw std::runtime_error("enemyBezier_Manager::Cache: not found - id: "
+                throw std::runtime_error("enemyBezier_Manager::CacheSV: not found - id: "
                     + std::to_string(BezierCurveType));
             return it->second;
         }
         std::unordered_map<uint16_t, std::string> table; // 整数型がkeyなのでrapidString系は使わない
-    } cache;
+    } bmcache;
 
 public:
-    EnemyBezier_Manager(const Renderer* r): type(entityTable.get("enemyBezier")) {
+    EnemyBezier_Manager(const vec2f& spriteHalf): spriteHalf(spriteHalf) {
         auto arr = paramTable.json["param"]["enemyBezier"]["patterns"].GetArray();
         int index = 0;
         for (const auto& v: arr) {
-            cache.table[index++] = v.GetString();
+            bmcache.table[index++] = v.GetString();
         }
-
-        spriteHalf = r->getSpriteSize(type) / 2;
     }
 
     void generate(const vec2f& pos, const int BezierCurveType, const int duration) {
-        std::string_view curveAlias = cache.get(BezierCurveType);
+        std::string_view curveAlias = bmcache.get(BezierCurveType);
         auto controlVec2 = paramTable.bezierCurve.get(curveAlias);
 
         // ===== Entity生成 =====
@@ -106,22 +114,19 @@ public:
         entMgr.setPtr(e,&enemy);
     }
 
-    std::vector<GameCommand> update(int deltatime) {
-        std::vector<GameCommand> cmds;
+    void update(float deltatime, GCMS& gcm) {
         for (size_t i = 0; i < list.size(); ) {
-            if (!list[i].update(deltatime)) { // 削除されていた場合
+            if (!list[i].update(deltatime,gcm)) { // 削除されていた場合
                 physWorld.destroy(list[i].col_h);
                 entMgr.destroy(list[i].ent);
                 list[i] = std::move(list.back());
                 entMgr.setPtr(list[i].ent, &list[i]); // moveされたentityのptrを更新
                 list.pop_back();
             } else {
-                cmds.emplace_back(list[i].req);
-                physWorld.setPos(list[i].col_h,list[i].pos);
+                physWorld.setPos(list[i].col_h,list[i].ms.pos);
                 ++i;
             }
         }
-        return cmds;
     }
 
     void draw(const Renderer* renderer) const {

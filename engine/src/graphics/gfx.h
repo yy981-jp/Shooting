@@ -1,22 +1,13 @@
 #pragma once
 
 #include <cstdint>
-#include <string>
-#include <unordered_map>
 #include <vector>
 
+#include "../core/def.h"
 #include "../tables/all.h"
-#include "../core/SDL_def.h"
 
-struct SpriteInfo {
-    SpriteInfo(): tex(nullptr), w(0), h(0) {}
-    SpriteInfo(SDL_Texture* tex, int width, int height):
-      tex(tex), w(width), h(height) {}
-    SDL_Texture* tex;
-    int w;
-    int h;
-};
 
+struct SpriteInfo;
 
 class Renderer {
 	void* native;
@@ -32,5 +23,5 @@ public:
 	void drawSprite(EntityType spriteID, const vec2f& pos) const;
 
     void drawFilledCircle(const vec2f pos, float rad) const;
-    void setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a) const ;
+    void setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a) const;
 };

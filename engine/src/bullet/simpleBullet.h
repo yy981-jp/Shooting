@@ -1,7 +1,9 @@
+#include "../core/def.h"
 #include "../core/cache.h"
 #include "../core/entityManager.h"
 #include "../core/collider.h"
-#include "../core/def.h"
+#include "../core/util.h"
+#include "../core/mathutil.h"
 
 #include <deque>
 
@@ -21,11 +23,12 @@ struct SimpleBullet: public ICollidable {
     bool update() {
         if (!alive) return false;
         pos += vel;
+        if (isOffScreen(pos,spriteHalf)) alive = false;
         return true;
     }
 
     void draw(const Renderer* r) const {
-        r->drawSprite(entityTable.get("simpleBullet"),pos-spriteHalf);
+        r->drawSprite(EntityType::simpleBullet, pos-spriteHalf);
     }
 
     void onHit(const CollisionInfo& info) override {
@@ -34,15 +37,13 @@ struct SimpleBullet: public ICollidable {
 };
 
 class SimpleBullet_Manager {
-    const Cache& cache;
     std::deque<SimpleBullet> list;
     vec2f spriteHalf;
 
 public:
-    SimpleBullet_Manager(const Renderer* r, const Cache& cache): cache(cache), 
-      spriteHalf(r->getSpriteSize(entityTable.get("simpleBullet"))) {}
+    SimpleBullet_Manager(const vec2f& spriteHalf): spriteHalf(spriteHalf) {}
 
-    void generate(const vec2f& pos, int rotate, float speed) {
+    void generate(const vec2f& pos, int degree, float speed) {
         EntityHandle eh = entMgr.create();
 
         Collider col{};
@@ -55,14 +56,14 @@ public:
         col.circle.r = 3.0f;
 
         ColliderHandle ch = physWorld.add(col);
-        vec2f dir = cache.getDir(rotate);
+        vec2f dir = cachesv.getDir(deg2rad(degree));
         
         list.emplace_back(pos, speed, dir, eh, ch, spriteHalf);
 
         entMgr.setPtr(eh, &list.back());
     }
 
-    void update(int deltatime) {
+    void update(float deltatime) {
         for (size_t i = 0; i < list.size(); ) {
             if (!list[i].update()) { // 削除されていた場合
                 physWorld.destroy(list[i].ch);
