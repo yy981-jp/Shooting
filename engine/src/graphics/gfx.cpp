@@ -26,9 +26,8 @@ SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
     int height = s->h;
 
     SDL_Texture* t = SDL_CreateTextureFromSurface(renderer, s);
-    if (!t) {
-        throw std::runtime_error(std::string("SDL_CreateTextureFromSurface") + IMG_GetError());
-    }
+    if (!t) throw std::runtime_error(std::string("SDL_CreateTextureFromSurface") + IMG_GetError());
+
     SDL_FreeSurface(s);
 
     return SpriteInfo{t, width, height};
@@ -52,7 +51,10 @@ SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
         }
     }
 
-    Renderer::~Renderer() {}
+    Renderer::~Renderer() {
+        for (size_t i = 0; i < entityNames.size(); ++i)
+            SDL_DestroyTexture(spriteTable[i]);
+    }
 
     vec2i Renderer::getSpriteSize(EntityType spriteID) const {
         const SpriteInfo& sprite = spriteTable[static_cast<size_t>(spriteID)];

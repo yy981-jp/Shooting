@@ -35,15 +35,6 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
         );
         if (!rendererNative) throw std::runtime_error(std::string("SDL_CreateRenderer failed: ") + SDL_GetError());
 
-        texture = SDL_CreateTexture(
-            rendererNative,
-            SDL_PIXELFORMAT_ARGB8888,
-            SDL_TEXTUREACCESS_STREAMING,
-            widthULB,
-            heightULB
-        );
-        if (!texture) throw std::runtime_error(std::string("SDL_CreateTexture failed: ") + SDL_GetError());
-
         SDL_RenderSetLogicalSize(rendererNative, widthULB, heightULB);
         
         // entity
@@ -60,6 +51,8 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
     Game::~Game() {
         SDL_Quit();
     	IMG_Quit();
+        SDL_DestroyWindow(window);
+        SDL_DestroyRenderer(rendererNative);
     }
 
     void Game::commandExec() {

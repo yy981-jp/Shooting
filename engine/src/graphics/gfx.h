@@ -11,7 +11,7 @@ struct SpriteInfo;
 
 class Renderer {
 	void* native;
-    std::vector<SpriteInfo> spriteTable;
+    SpriteInfo spriteTable[static_cast<size_t>(EntityType::Count)];
     int halfWidth, halfHeight;
 
 public:
