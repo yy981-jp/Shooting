@@ -4,6 +4,7 @@
 #include "time.h"
 #include "collider.h"
 #include "../graphics/gfx.h"
+#include "../audio/sfx.h"
 #include "../VM/VM.h"
 #include "../player/player.h"
 #include "../bullet/playerBullet.h"
@@ -12,6 +13,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 
 
 class Game {

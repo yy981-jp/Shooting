@@ -15,9 +15,11 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
 
     Game::Game(const int windowWidth, const int windowHeight) {
         // SDL init
-        if (SDL_Init(SDL_INIT_VIDEO)) throw std::runtime_error(std::string("SDL_Init failed: ") + SDL_GetError());
-        if (!(IMG_Init(IMG_INIT_PNG)&IMG_INIT_PNG)) throw std::runtime_error(std::string("SDL_IMG_Init failed: ") + SDL_GetError());
-
+        if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) throw std::runtime_error(std::string("SDL_Init failed: ") + SDL_GetError());
+        if (!(IMG_Init(IMG_INIT_PNG)&IMG_INIT_PNG)) throw std::runtime_error(std::string("SDL_IMG_Init failed: ") + IMG_GetError());
+        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) < 0) throw std::runtime_error(std::string("SDL_IMG_Init failed: ") + Mix_GetError());
+        Mix_AllocateChannels(64);
+        
         window = SDL_CreateWindow(
             "Shooting-SDL2",
             SDL_WINDOWPOS_CENTERED,
@@ -140,6 +142,10 @@ vec2i makeDir(bool up, bool down, bool left, bool right) {
         }
 
         displayFps = fpsc.getFps();
+
+        // DEBUG
+        static SFX testsfx(SFXMode::se, "shot");
+        testsfx.playSE();
     }
 
     
