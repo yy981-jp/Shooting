@@ -102,7 +102,7 @@ class VM {
     
     inline const static std::string nullStr = "VM_const-null";
 
-    constexpr static uint64_t fileMagicNumber = 0x793953544742696e;
+    constexpr static uint64_t fileMagicNumber = 0x6e69424754533979;
 
     rj::Document eventTableDoc;
     const rj::Value& eventTable;

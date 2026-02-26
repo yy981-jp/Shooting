@@ -53,7 +53,7 @@ SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
 
     Renderer::~Renderer() {
         for (size_t i = 0; i < entityNames.size(); ++i)
-            SDL_DestroyTexture(spriteTable[i]);
+            SDL_DestroyTexture(spriteTable[i].tex);
     }
 
     vec2i Renderer::getSpriteSize(EntityType spriteID) const {
