@@ -6,35 +6,61 @@
 #include <SDL_mixer.h>
 
 
-SFX::SFX(SFXMode i_mode, std::string name): mode(i_mode) {
-    switch (mode) {
-        case SFXMode::se: {
-            Mix_Chunk* se = Mix_LoadWAV((Assets + "audio/" + name + ".wav").c_str());
-            if (!se) throw std::runtime_error("SFX::SFX: se is nullptr");
-            ptr1 = se;
+SFXManager::SFXManager() {
+    size_t count = static_cast<size_t>(SFXID::Count);
+    modes.resize(count);
+    phase2.resize(count,false);
+    se.resize(count,nullptr);
+    bgm_intro.resize(count,nullptr);
+    bgm_loop.resize(count,nullptr);
+
+    #define X(mode_t, id_t) loadOne(SFXMode::mode_t, SFXID::id_t, #id_t);
+    #include "../../../assets/sfx.def"
+    #undef X
+}
+
+void SFXManager::play(SFXID id) {
+    size_t idx = static_cast<size_t>(id);
+    switch (modes[idx]) {
+        case SFXMode::SE: playSE(idx); break;
+        case SFXMode::BGM: {
+            if (!phase2[idx]) {
+                playBGMIntro(idx);
+                phase2[idx] = true;
+            } else playBGMLoop(idx);
         } break;
-        case SFXMode::bgm: {
-            Mix_Music* intro = Mix_LoadMUS((Assets + "audio/" + name + "intro.ogg").c_str());
-            if (!intro) throw std::runtime_error("SFX::SFX: bgm.intro is nullptr");
-            Mix_Music* loop = Mix_LoadMUS((Assets + "audio/" + name + "loop.ogg").c_str());
-            if (!loop) throw std::runtime_error("SFX::SFX: bgm.loop is nullptr");
-            ptr1 = intro;
-            ptr2 = loop;
-        }
     }
 }
 
-void SFX::playSE() {
-    if (mode != SFXMode::se) throw std::runtime_error("SFX::playSE: isn't se");
-    if ( Mix_PlayChannel(-1,static_cast<Mix_Chunk*>(ptr1),0) < 0 ) throw std::runtime_error("SFX::playSE");
+void SFXManager::loadOne(SFXMode mode, SFXID id, const char* name) {
+    size_t idx = static_cast<size_t>(id);
+
+    modes[idx] = mode;
+
+    if (mode == SFXMode::SE) {
+        auto* chunk = Mix_LoadWAV((Assets + "audio/" + name + ".wav").c_str());
+        if (!chunk) throw std::runtime_error("SE load failed" + std::string(Mix_GetError()));
+        se[idx] = chunk;
+    } else {
+        auto* intro = Mix_LoadMUS((Assets + "audio/" + name + "/intro.ogg").c_str());
+        if (!intro) throw std::runtime_error("BGM intro load failed" + std::string(Mix_GetError()));
+
+        auto* loop = Mix_LoadMUS((Assets + "audio/" + name + "/loop.ogg").c_str());
+        if (!loop) throw std::runtime_error("BGM loop load failed" + std::string(Mix_GetError()));
+
+        bgm_intro[idx] = intro;
+        bgm_loop[idx] = loop;
+    }
 }
 
-void SFX::playBGMIntro() {
-    if (mode != SFXMode::bgm) throw std::runtime_error("SFX::playBGMIntro");
-    Mix_PlayMusic(static_cast<Mix_Music*>(ptr1),0);
+void SFXManager::playSE(size_t idx) {
+    if ( Mix_PlayChannel(-1,static_cast<Mix_Chunk*>(se[idx]),0) < 0 ) throw std::runtime_error("SFX::playSE");
 }
 
-void SFX::playBGMLoop() {
-    if (mode != SFXMode::bgm) throw std::runtime_error("SFX::playBGMLoop");
-    Mix_PlayMusic(static_cast<Mix_Music*>(ptr2),-1);
+void SFXManager::playBGMIntro(size_t idx) {
+    Mix_PlayMusic(static_cast<Mix_Music*>(bgm_intro[idx]),0);
+}
+
+void SFXManager::playBGMLoop(size_t idx) {
+    Mix_PlayMusic(static_cast<Mix_Music*>(bgm_loop[idx]),-1);
 }

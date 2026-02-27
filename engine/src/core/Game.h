@@ -1,8 +1,11 @@
+#pragma once
+
 #include <string>
 #include <stdexcept>
 
 #include "time.h"
 #include "collider.h"
+#include "commands.h"
 #include "../graphics/gfx.h"
 #include "../audio/sfx.h"
 #include "../VM/VM.h"
@@ -31,14 +34,6 @@ class Game {
     bool running = true;
     float displayFps = 0;
 
-    struct commandExec_core {
-        Game& game;
-
-        void operator()(const cmd::enemyBezier& c) const { game.enemyBezier_Manager->generate(vec2f(c.x,c.y),c.pattern,c.duration); }
-        void operator()(const cmd::simpleBullet& c) const { game.simpleBullet_Manager->generate(c.pos,c.degree,c.speed); }
-        void operator()(const cmd::playerBullet& c) const { game.playerBullet_Manager->generate(c.pos); }
-    };
-
     struct KeyStat {
         bool
             up      = false,
@@ -51,14 +46,12 @@ class Game {
 
     VM* vm;
     Renderer* renderer;
+    SFXManager* sfxMgr;
     ElapsedTime elapsedTime;
     FpsCounter fpsc;
     GCMS gcm;
 
     Player* player;
-    PlayerBullet_Manager* playerBullet_Manager;
-    EnemyBezier_Manager* enemyBezier_Manager;
-    SimpleBullet_Manager* simpleBullet_Manager;
 
     void update();
     void draw() const;
@@ -67,8 +60,15 @@ class Game {
     void commandExec();
 
 public:
+    PlayerBullet_Manager* playerBullet_Manager;
+    EnemyBezier_Manager* enemyBezier_Manager;
+    SimpleBullet_Manager* simpleBullet_Manager;
+
     Game(const int windowWidth, const int windowHeight);
     ~Game();
     void tick();
     bool shouldQuit() {return !running;}
+
+    // helper to avoid exposing sfxMgr to external code
+    void playSfx(SFXID id) { if(sfxMgr) sfxMgr->play(id); }
 };

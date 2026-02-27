@@ -1,10 +1,13 @@
 #pragma once
 
 #include "vec2.h"
+// commands don't depend on Game itself, avoid the circular include
 
 #include <cstdint>
 #include <variant>
 
+// we need the SFXID definition for the sfx command
+#include "../audio/sfx.h"
 
 namespace cmd {
     struct enemyBezier { int x, y, pattern, duration; };
@@ -14,13 +17,15 @@ namespace cmd {
         float speed;
     };
     struct playerBullet { vec2f pos; };
+    struct sfx { SFXID id; };
 }
 
 
 using GameCommand = std::variant<
     cmd::enemyBezier,
     cmd::simpleBullet,
-    cmd::playerBullet
+    cmd::playerBullet,
+    cmd::sfx
 >;
 
 

@@ -1,22 +1,33 @@
 #pragma once
 #include "../core/def.h"
 
+#include <vector>
 
-enum class SFXMode {
-    bgm, se
+
+enum class SFXID : uint16_t {
+#define X(mode, id) id,
+	#include "../../../assets/sfx.def"
+#undef X
+	Count
 };
 
-class SFX {
-    SFXMode mode;
+enum class SFXMode: uint8_t {
+    BGM, SE
+};
 
-    /// @details SE ptr1 = se, ptr2 = null
-    /// @details BGM ptr1 = intro, ptr2 = loop
-    void *ptr1, *ptr2;
+class SFXManager {
+    std::vector<bool> phase2;
+    std::vector<SFXMode> modes;
+    std::vector<void*> se;
+    std::vector<void*> bgm_intro;
+    std::vector<void*> bgm_loop;
 
 public:
-    SFX(SFXMode i_mode, std::string name);
-
-    void playSE();
-    void playBGMIntro();
-    void playBGMLoop();
+    SFXManager();
+    void play(SFXID id);
+private:
+    void loadOne(SFXMode mode, SFXID id, const char* name);
+    void playSE(size_t idx);
+    void playBGMIntro(size_t idx);
+    void playBGMLoop(size_t idx);
 };
