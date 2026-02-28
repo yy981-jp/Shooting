@@ -6,9 +6,9 @@
 #include "../core/entityManager.h"
 #include "../core/spawnManager.h"
 #include "../graphics/gfx.h"
-#include "../controller/all.h"
+#include "../motion/motion.h"
 #include "../tables/all.h"
-#include "../controller/all.h"
+#include "../motion/motion.h"
 
 
 struct EnemyBezier: public ICollidable {

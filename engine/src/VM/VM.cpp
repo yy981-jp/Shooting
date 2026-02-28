@@ -12,7 +12,7 @@
 
         memcpy(&fh, data.data(),sizeof(FileHeader));
 
-        if (fh.magic == fileMagicNumber) throw std::runtime_error("VM::VM(): stgdat.magic mismatch");
+        if (fh.magic != fileMagicNumber) throw std::runtime_error("VM::VM(): stgdat.magic mismatch");
 
         instr.assign(
             data.begin() + sizeof(FileHeader),

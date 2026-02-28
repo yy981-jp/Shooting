@@ -10,6 +10,7 @@
 Game* game = nullptr;
 
 void main_loop() {
+    if (game->shouldQuit()) exit(0);
     game->tick();
 }
 
@@ -24,5 +25,6 @@ int main() {
         game->tick();
         SDL_Delay(1);
     }
+    delete game;
 #endif
 }

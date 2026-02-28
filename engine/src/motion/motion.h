@@ -7,6 +7,7 @@
 #include "BezierController.h"
 #include "WaveDecorator.h"
 
+
 using MVController = std::variant<
     BezierController
 >;
@@ -15,6 +16,8 @@ using MVDecorator = std::variant<
     WaveDecorator
 >;
 
+
+/// @brief 1phase
 class MotionPipeline {
     MVController base;
     std::vector<MVDecorator> modifiers;
@@ -60,5 +63,31 @@ public:
 
     bool isRunning() {
         return running;
+    }
+};
+
+
+/// @brief phaseの集合体
+class MotionSequence {
+	std::vector<MotionPipeline> phases;
+	size_t index = 0;
+
+public:
+	vec2f update(float dt, MotionState& ms) {
+		if (index >= phases.size())
+			return {0,0};
+
+		auto& cur = phases[index];
+		vec2f vel = cur.update(dt, ms);
+
+		if (!cur.isRunning()) {
+			index++;
+		}
+
+		return vel;
+	}
+
+    void addPipeline(const MotionPipeline& mp) {
+        phases.push_back(mp);
     }
 };
