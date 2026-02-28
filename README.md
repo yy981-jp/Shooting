@@ -1,0 +1,117 @@
+# SHT - Shooting Game Engine
+
+A modern C++ game engine specifically designed for bullet-hell shooting games (STG), built with SDL2 and supporting both native and WebAssembly compilation targets.
+
+## Features
+
+- 🎮 **Specialized STG Engine**: Optimized for bullet-hell and shooting game development
+- 🚀 **High Performance**: Written in modern C++23 with efficient entity management
+- 🌐 **WebAssembly Support**: Seamless compilation to HTML5 via Emscripten
+- 🎬 **Advanced Motion Control**: Bezier curve-based movement and animation systems
+- 🔧 **Embedded VM**: Built-in virtual machine for game scripting (`.stg` format)
+- 🎨 **Graphics Pipeline**: Hardware-accelerated rendering with SDL2
+- 🔊 **Audio Support**: Full audio mixing and playback capabilities
+- ⚙️ **Entity System**: Powerful entity management for enemies, bullets, and effects
+
+## Architecture
+
+### Core Components
+
+```
+engine/src/
+├── core/           # Core game loop, entity management, and game state
+├── graphics/       # Rendering pipeline (SDL2-based)
+├── audio/          # Audio and sound effects management
+├── VM/             # Virtual machine for STG script execution
+├── motion/         # Motion controllers and Bezier curve animation
+├── player/         # Player character logic
+├── bullet/         # Bullet physics and rendering
+├── enemy/          # Enemy AI and behavior patterns
+├── tables/         # Entity and parameter tables
+└── external/       # Third-party libraries (rapidjson)
+```
+
+### Key Systems
+
+- **Entity Manager**: Manages spawn, update, and rendering of all game entities
+- **Collision System**: Efficient collision detection and response
+- **Motion Pipeline**: Sophisticated movement systems including Bezier curves
+- **Parameter Tables**: Centralized asset and configuration management
+- **Game VM**: Executes compiled STG scripts for game logic
+
+## Building
+
+### Requirements
+
+- CMake 3.20 or later
+- C++23 compatible compiler (GCC/Clang with -std=c++23)
+- SDL2, SDL2_image, SDL2_mixer development libraries
+- Emscripten SDK (for WebAssembly builds)
+
+### Build for Desktop
+
+```bash
+mkdir build && cd build
+cmake ..
+cmake --build . --config Release
+```
+
+### Build for WebAssembly
+
+```bash
+mkdir build_wasm && cd build_wasm
+emcmake cmake -DCMAKE_TOOLCHAIN_FILE=$EMSDK/cmake/Emscripten.cmake ..
+emmake cmake --build .
+```
+
+The WebAssembly output will be available as a single `.html` file that can be served directly.
+
+## Usage
+
+```bash
+./build/ST
+```
+
+The game loads STG scripts from `assets/main.stg.dat` and runs with an 800x800 display window.
+
+## Game Development
+
+### Asset Structure
+
+- `assets/image/` - Sprite graphics
+- `assets/audio/` - Sound effects and music
+- `assets/eventTable.json` - Game event definitions
+- `assets/entityTable.def` - Entity type definitions and properties
+- `script/` - Source STG scripts
+
+### Coordinate Systems
+
+- **Logic**: Center-based coordinate system with float precision
+- **Rendering**: Top-left origin with integer coordinates
+
+## Documentation
+
+Comprehensive API documentation is generated with Doxygen (Japanese):
+
+```bash
+doxygen Doxyfile
+# Output in docs/html/
+```
+
+## Project Notes
+
+- Entity IDs correspond to sprite IDs in the system
+- Motion patterns are defined in `param.patterns` arrays
+- The STG script format supports control flow (repeat, call) and event spawning
+- VM opcodes operate on entity types (uint16_t) and positions (vec2f internally, vec2i for rendering)
+
+## License
+
+See [LICENSE](LICENSE) file for details.
+
+## Building Tools
+
+Additional tools for game development:
+- `tools/pos/` - Position/animation tools
+- `tools/stgc/` - STG script compiler
+- `tools/updateSTG.bat` - Asset update utilities
