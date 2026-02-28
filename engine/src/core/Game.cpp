@@ -37,10 +37,10 @@ Game::Game(const int windowWidth, const int windowHeight) {
     );
     if (!rendererNative) throw std::runtime_error(std::string("SDL_CreateRenderer failed: ") + SDL_GetError());
 
-    SDL_RenderSetLogicalSize(rendererNative, widthULB, heightULB);
+    SDL_RenderSetLogicalSize(rendererNative, WINDOW.x, WINDOW.y);
     
     // entity
-    renderer = new Renderer(rendererNative, width, height);
+    renderer = new Renderer(rendererNative, SCREEN.x, SCREEN.y);
     sfxMgr = new SFXManager;
     player = new Player(static_cast<vec2f>(renderer->getSpriteSize(EntityType::player)/2), 5.0f*60.0f);
     playerBullet_Manager = new PlayerBullet_Manager(static_cast<vec2f>(renderer->getSpriteSize(EntityType::playerBullet)/2));
@@ -90,7 +90,7 @@ void Game::update() {
 }
 
 void Game::draw() const {
-    renderer->drawSprite(EntityType::background, vec2i(-width,-height));
+    renderer->drawSprite(EntityType::background, SCREEN * -1);
     player->draw(renderer);
     playerBullet_Manager->draw(renderer);
     enemyBezier_Manager->draw(renderer);
@@ -145,6 +145,5 @@ void Game::tick() {
     displayFps = fpsc.getFps();
 
     // DEBUG
-    gcm(cmd::sfx(SFXID::shot));
+    // gcm(cmd::sfx(SFXID::shot));
 }
-

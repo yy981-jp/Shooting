@@ -29,6 +29,7 @@
                 cmd::playerBullet rec_c;
                 rec_c.pos = pos;
                 gcm(rec_c);
+                gcm(cmd::sfx(SFXID::shot));
             }
 
         physWorld.setPos(h,pos);

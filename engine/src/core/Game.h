@@ -23,12 +23,6 @@ class Game {
     SDL_Window* window;
     SDL_Renderer* rendererNative;
     SDL_Texture* texture;
-
-    static constexpr int
-        widthULB = 800,         // 画面横幅, ULB座標系(左上を原点とする)の横方向の最大値
-        heightULB = 800,        // 画面縦幅, ULB座標系の縦方向の最大値
-        width = widthULB/2,     // 論理座標系(中央を原点とする)の横方向の最大値
-        height = heightULB/2;   // 論理座標系の縦方向の最大値
     
     const std::string stgdatpath = Assets + "main.stg.dat";
     bool running = true;
@@ -70,5 +64,5 @@ public:
     bool shouldQuit() {return !running;}
 
     // helper to avoid exposing sfxMgr to external code
-    void playSfx(SFXID id) { if(sfxMgr) sfxMgr->play(id); }
+    void playSfx(SFXID id) { sfxMgr->play(id); }
 };
