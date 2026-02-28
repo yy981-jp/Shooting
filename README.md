@@ -1,116 +1,122 @@
-1. プロジェクト概要
+# SHT - Shooting Game Engine
 
-本プロジェクトは、C++20とSDL2ライブラリを基盤とした、クロスプラットフォーム対応（Native/Emscripten）のシューティングゲームエンジンです。高性能なネイティブ環境と、Webブラウザ上でのシームレスな動作を両立させる設計を採用しています。
+A modern C++ game engine specifically designed for bullet-hell shooting games (STG), built with SDL2 and supporting both native and WebAssembly compilation targets.
 
-本エンジンは、描画および入力管理にSDL2を活用しつつ、独自の仮想マシン（VM）によるイベント制御、SoA（Structure of Arrays）形式の物理演算、世代管理エンジンによるメモリ安全性確保など、低レイヤーにおけるパフォーマンスと堅牢性を重視した設計が特徴です。
+## Features
 
-座標系とスケーリング
+- 🎮 **Specialized STG Engine**: Optimized for bullet-hell and shooting game development
+- 🚀 **High Performance**: Written in modern C++23 with efficient entity management
+- 🌐 **WebAssembly Support**: Seamless compilation to HTML5 via Emscripten
+- 🎬 **Advanced Motion Control**: Bezier curve-based movement and animation systems
+- 🔧 **Embedded VM**: Built-in virtual machine for game scripting (`.stg` format)
+- 🎨 **Graphics Pipeline**: Hardware-accelerated rendering with SDL2
+- 🔊 **Audio Support**: Full audio mixing and playback capabilities
+- ⚙️ **Entity System**: Powerful entity management for enemies, bullets, and effects
 
-計算効率とロジックの簡潔化のため、以下の2つの座標系を使い分けています。
+## Architecture
 
-* 論理座標系 (Center-based): ゲームロジック用。画面中央を原点 (0, 0) とし、左右 \pm 400、上下 \pm 300 の範囲で定義。
-* SDL2描画座標系 (Upper-Left Based: ULB): 左上を原点とする 800 * 600 の座標系。
-* 変換式: RenderX = LogicX + 400, RenderY = LogicY + 300。
-* 物理サイズ: SDL_RenderSetLogicalSize により、実行環境の解像度に関わらず内部解像度 800 * 600 (widthULB, heightULB) を維持したスケーリングを行います。
+### Core Components
+
+```
+engine/src/
+├── core/           # Core game loop, entity management, and game state
+├── graphics/       # Rendering pipeline (SDL2-based)
+├── audio/          # Audio and sound effects management
+├── VM/             # Virtual machine for STG script execution
+├── motion/         # Motion controllers and Bezier curve animation
+├── player/         # Player character logic
+├── bullet/         # Bullet physics and rendering
+├── enemy/          # Enemy AI and behavior patterns
+├── tables/         # Entity and parameter tables
+└── external/       # Third-party libraries (rapidjson)
+```
+
+### Key Systems
+
+- **Entity Manager**: Manages spawn, update, and rendering of all game entities
+- **Collision System**: Efficient collision detection and response
+- **Motion Pipeline**: Sophisticated movement systems including Bezier curves
+- **Parameter Tables**: Centralized asset and configuration management
+- **Game VM**: Executes compiled STG scripts for game logic
+
+## Building
+
+### Requirements
+
+- CMake 3.20 or later
+- C++23 compatible compiler (GCC/Clang with -std=c++23)
+- SDL2, SDL2_image, SDL2_mixer development libraries
+- Emscripten SDK (for WebAssembly builds)
+
+### Build for Desktop
+
+```bash
+mkdir build && cd build
+cmake ..
+cmake --build . --config Release
+```
+
+### Build for WebAssembly
+
+```bash
+mkdir build_wasm && cd build_wasm
+emcmake cmake -DCMAKE_TOOLCHAIN_FILE=$EMSDK/cmake/Emscripten.cmake ..
+emmake cmake --build .
+```
+
+The WebAssembly output will be available as a single `.html` file that can be served directly.
+
+## Usage
+
+```bash
+./build/ST
+```
+
+The game loads STG scripts from `assets/main.stg.dat` and runs with an 800x800 display window.
+
+## Game Development
+
+### Asset Structure
+
+- `assets/image/` - Sprite graphics
+- `assets/audio/` - Sound effects and music
+- `assets/eventTable.json` - Game event definitions
+- `assets/entityTable.def` - Entity type definitions and properties
+- `script/` - Source STG scripts
+
+### Coordinate Systems
+
+- **Logic**: Center-based coordinate system with float precision
+- **Rendering**: Top-left origin with integer coordinates
+
+## Documentation
+
+Comprehensive API documentation is generated with Doxygen (Japanese):
+
+```bash
+doxygen Doxyfile
+# Output in docs/html/
+```
+
+## Project Notes
+
+- Entity IDs correspond to sprite IDs in the system
+- Motion patterns are defined in `param.patterns` arrays
+- The STG script format supports control flow (repeat, call) and event spawning
+- VM opcodes operate on entity types (uint16_t) and positions (vec2f internally, vec2i for rendering)
+
+## License
+
+See [LICENSE](LICENSE) file for details.
+
+## Building Tools
+
+Additional tools for game development:
+- `tools/pos/` - Position/animation tools
+- `tools/stgc/` - STG script compiler
+- `tools/updateSTG.bat` - Asset update utilities
 
 
---------------------------------------------------------------------------------
 
-
-2. 主な技術的特徴
-
-* カスタムVMによるデータ駆動型ステージ制御: 独自のバイナリ形式（.stg.dat）を解釈するVMを搭載。命令セットにより、敵の出現（Spawn）や待機、ループ処理をスクリプト感覚で制御可能です。
-* 世代管理（Generation-based）ハンドルシステム: エンティティおよびコライダーの管理に、id と gen を組み合わせたハンドルを採用。Stale Pointer 問題を構造的に排除し、安全なオブジェクト参照を実現しています。
-* SoA設計の物理ワールド: 衝突判定データ（座標、半径、レイヤー等）をSoA形式で保持することで、L1/L2キャッシュのヒット率を最大化。大量の弾幕オブジェクトを低コストで処理します。
-* 任意次数のベジェ曲線移動: BezierMover により、制御点数に依存しない柔軟な移動パス設定をサポート。De Casteljauのアルゴリズムを繰り返し適用することで、滑らかな曲線移動を実現します。
-* マルチプラットフォーム抽象化: プリプロセッサ命令により、標準の while ループと Emscripten 特有の emscripten_set_main_loop を切り替え。単一のソースコードから Web/Native 両方のバイナリを生成可能です。
-
-
---------------------------------------------------------------------------------
-
-
-3. システムの詳細アーキテクチャ
-
-3.1 カスタム仮想マシン (VM)
-
-ステージ進行はバイナリファイルから供給されるインストラクションによって駆動されます。
-
-* バイナリレイアウト: .stg.dat ファイルは、マジックナンバー 0x793953544742696e で始まる18バイトのパックされた FileHeader（構造体サイズ厳守）を持ちます。
-* 命令セット (OPCode):
-* コマンドディスパッチ: spawn 命令実行時、VMは std::variant 型の GameCommand を発行します。これは Game::commandExec 内で std::visit を用いたビジターパターン（commandExec_core）によって各マネージャーへ分配・実行されます。
-
-3.2 エンティティ管理とメモリ安全性
-
-EntityManager は、メモリの動的確保を最小限に抑えつつ安全性を担保します。
-
-* Stale Handle Detection: オブジェクト破棄時にレコードの gen（世代）をインクリメントします。古いハンドルでアクセスした場合、gen の不一致により無効な参照であることを即座に検知します。
-* 低レイヤー実装: 内部的には void* による型消去ストレージを持ち、getPtr<T> テンプレート関数内で static_cast を用いてアクセスします。
-* フリーリスト再利用: 破棄されたスロットは freeHead を先頭とする連結リストとして管理され、新規生成時に O(1) で再利用されます。
-
-3.3 物理演算と衝突判定
-
-PhysicsWorld は、高度に最適化された判定パイプラインを提供します。
-
-* ブロードフェーズ: 形状（円/矩形）に関わらず、すべてのオブジェクトに対して AABB（軸平行境界ボックス）による aabbOverlap チェックを行い、詳細判定の試行回数を削減します。
-* マトリックス・ディスパッチ: 形状タイプ（Circle, Rect）の組み合わせによる分岐を避けるため、hitTable[2][2] という関数ポインタ行列による動的ディスパッチを採用。if-else チェーンを排除し、パイプラインのストールを抑制します。
-* SoAの採用: 座標や半径データを配列の構造体（AoS）ではなく、構造体の配列（SoA）で保持。判定ループ中のメモリアクセス局所性を向上させています。
-
-3.4 ベジェ曲線移動システム
-
-BezierMover.cpp では、時間 t \in [0, 1] をパラメータとした iterative な座標算出を実装しています。
-
-* De Casteljau アルゴリズム: 制御点リスト controlVec2s に対して線形補間を繰り返すことで、任意の制御点数（次数）に対応。
-* フレーム独立性: invDurationMs（持続時間の逆数）を事前に算出。deltaTime に基づき t を更新することで、可変フレームレート下でも正確な移動時間を維持します。
-
-
---------------------------------------------------------------------------------
-
-
-4. ディレクトリ構造
-
-* core/: エンジン中核。
-  * vec2.h, mathUtil.h: 数学ライブラリ。
-  * collider.h/cpp: SoA物理演算エンジン。
-  * entityManager.h/cpp: 世代管理ハンドルシステム。
-  * commands.h: std::variant による命令定義。
-  * time.h: 高精度タイマー・FPSカウンタ。
-* graphics/: SDL2レンダラ・テクスチャ管理。
-* VM/: 命令デコード、実行スタック、フラグ管理。
-* player/: プレイヤー制御ロジック。
-* enemy/: 敵行動ロジック、BezierMover。
-* bullet/: 弾丸（Player/Enemy）の挙動管理。
-* tables/: JSON（RapidJSON）からのデータ定義ロード。
-
-
---------------------------------------------------------------------------------
-
-
-5. 依存関係とビルド要件
-
-* C++20 標準ライブラリ: std::numbers::pi（円周率定数）、std::variant（コマンドシステム）、std::span（ベジェ制御点参照）等のモダンな機能を使用。
-* SDL2 / SDL_image: 低レイヤーの描画およびウィンドウ/入力管理。
-* RapidJSON: assets/ 内の設定ファイル群の高速パース。
-* Emscripten: Webターゲットビルド用（main.cpp のループ制御に対応）。
-
-
---------------------------------------------------------------------------------
-
-
-6. 操作方法
-
-キー	アクション	備考
-方向キー	プレイヤー移動	moveTable による正規化移動
-Z キー	ショット連射	shootInterval (50ms) 間隔で生成
-左 Shift キー	低速移動	移動速度に 0.5f 倍率を適用
-
-
---------------------------------------------------------------------------------
-
-
-7. 開発者向けノート：データの拡張
-
-本エンジンはデータ駆動型（Data-Driven）であり、以下の資産を編集することでプログラムを修正せずに挙動を変更可能です。
-
-* エンティティ定義: assets/entity.def.json にて、名称と uint16_t ID のマッピングを定義します。
-* ステージ構成: assets/eventTable.json 内の flags 定義や、BezierCurves セクションの制御点リストを編集します。
-* バイナリ生成: eventTable.json の変更を反映させた後、対応する main.stg.dat を生成してください。VMは起動時にこのファイルを読み込み、entry_pc から実行を開始します。
+---
+<div style="text-align: right;">Generated by Claude Haiku 4.5 </div>
