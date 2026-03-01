@@ -1,12 +1,10 @@
 #pragma once
 
 #include "vec2.h"
-// commands don't depend on Game itself, avoid the circular include
 
 #include <cstdint>
 #include <variant>
 
-// we need the SFXID definition for the sfx command
 #include "../audio/sfx.h"
 
 namespace cmd {

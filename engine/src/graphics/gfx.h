@@ -7,11 +7,18 @@
 #include "../tables/all.h"
 
 
-struct SpriteInfo;
+struct SpriteInfo {
+    SpriteInfo(): tex(nullptr), w(0), h(0) {}
+    SpriteInfo(void* tex, int width, int height):
+      tex(tex), w(width), h(height) {}
+    void* tex;
+    int w;
+    int h;
+};
 
 class Renderer {
 	void* native;
-    std::vector<SpriteInfo> spriteTable;
+    SpriteInfo spriteTable[static_cast<size_t>(EntityType::Count)];
     int halfWidth, halfHeight;
 
 public:

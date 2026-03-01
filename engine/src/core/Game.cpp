@@ -3,14 +3,8 @@
 #include "json.h"
 #include "collider.h"
 #include "commandExec.h"
-
-
-vec2i makeDir(bool up, bool down, bool left, bool right) {
-	return {
-		(right ? 1 : 0) - (left ? 1 : 0),
-		(down  ? 1 : 0) - (up   ? 1 : 0)
-	};
-}
+#include "entityManager.h"
+#include "../scenes/playScene.h"
 
 
 Game::Game(const int windowWidth, const int windowHeight) {
@@ -42,13 +36,10 @@ Game::Game(const int windowWidth, const int windowHeight) {
     // entity
     renderer = new Renderer(rendererNative, SCREEN.x, SCREEN.y);
     sfxMgr = new SFXManager;
-    player = new Player(static_cast<vec2f>(renderer->getSpriteSize(EntityType::player)/2), 5.0f*60.0f);
-    playerBullet_Manager = new PlayerBullet_Manager(static_cast<vec2f>(renderer->getSpriteSize(EntityType::playerBullet)/2));
-    enemyBezier_Manager = new EnemyBezier_Manager(static_cast<vec2f>(renderer->getSpriteSize(EntityType::enemyBezier)/2));
-    simpleBullet_Manager = new SimpleBullet_Manager(static_cast<vec2f>(renderer->getSpriteSize(EntityType::simpleBullet)/2));
 
-    // VM
-    vm = new VM(stgdatpath);
+    ctx = SceneContext{ &gcm, &keyStat, renderer, sfxMgr };
+
+    currentScene = new PlayScene(ctx);
 }
 
 Game::~Game() {
@@ -58,43 +49,22 @@ Game::~Game() {
     SDL_DestroyRenderer(rendererNative);
 }
 
-void Game::commandExec() {
-    for (auto& c: gcm.get()) std::visit(commandExec_core{*this}, c);
-    gcm.clear();
-}
-
 void Game::update() {
     if (!elapsedTime) elapsedTime.init();
     float deltatime = elapsedTime.get();
 
-    // VM step
-    if (vm->running) {
-        switch (vm->step(gcm)) {
-            using enum VM::ReturnCode;
-            case success: break;
-            case error: throw std::runtime_error("VMで何らかの異常が発生しました"); break;
-        }
-    }
-
-    // entity update
-    vec2i d = makeDir(keyStat.up, keyStat.down, keyStat.left, keyStat.right);
-    player->update(deltatime, gcm, d.x, d.y, keyStat.shift, keyStat.z);
-    // if (!player->isAllive()) running = false;
-    playerBullet_Manager->update(deltatime);
-    enemyBezier_Manager->update(deltatime,gcm);
-    simpleBullet_Manager->update(deltatime);
+    currentScene->update(ctx,deltatime);
 
     physWorld.step(); // 当たり判定
 
-    commandExec();
+    for (const auto& c: ctx.gcms->get()) currentScene->handleCommand(c,*this);
+    ctx.gcms->clear();
 }
 
 void Game::draw() const {
-    renderer->drawSprite(EntityType::background, SCREEN * -1);
-    player->draw(renderer);
-    playerBullet_Manager->draw(renderer);
-    enemyBezier_Manager->draw(renderer);
-    simpleBullet_Manager->draw(renderer);
+    ctx.gfx->drawSprite(EntityType::background, SCREEN * -1);
+
+    currentScene->draw(ctx);
 
     // DEBUG
     // physWorld.draw(renderer);
@@ -105,12 +75,13 @@ void Game::draw() const {
 void Game::onKeyDown(const SDL_KeyboardEvent& e) {
     if (e.repeat) return;
     switch (e.keysym.sym) {
-        case SDLK_UP: keyStat.up = true; break;
-        case SDLK_DOWN: keyStat.down = true; break;
-        case SDLK_LEFT: keyStat.left = true; break;
-        case SDLK_RIGHT: keyStat.right = true; break;
-        case SDLK_z: keyStat.z = true; break;
-        case SDLK_LSHIFT: keyStat.shift = true; break;
+        case SDLK_UP:       keyStat |= static_cast<uint8_t>(SHTKeyCode::up);    break;
+        case SDLK_DOWN:     keyStat |= static_cast<uint8_t>(SHTKeyCode::down);  break;
+        case SDLK_LEFT:     keyStat |= static_cast<uint8_t>(SHTKeyCode::left);  break;
+        case SDLK_RIGHT:    keyStat |= static_cast<uint8_t>(SHTKeyCode::right); break;
+        case SDLK_z:        keyStat |= static_cast<uint8_t>(SHTKeyCode::z);     break;
+        case SDLK_x:        keyStat |= static_cast<uint8_t>(SHTKeyCode::x);     break;
+        case SDLK_LSHIFT:   keyStat |= static_cast<uint8_t>(SHTKeyCode::shift); break;
 
         case SDLK_ESCAPE: exit(111);
     }
@@ -118,12 +89,13 @@ void Game::onKeyDown(const SDL_KeyboardEvent& e) {
 
 void Game::onKeyUP(const SDL_KeyboardEvent& e) {
     switch (e.keysym.sym) {
-        case SDLK_UP: keyStat.up = false; break;
-        case SDLK_DOWN: keyStat.down = false; break;
-        case SDLK_LEFT: keyStat.left = false; break;
-        case SDLK_RIGHT: keyStat.right = false; break;
-        case SDLK_z: keyStat.z = false; break;
-        case SDLK_LSHIFT: keyStat.shift = false; break;
+        case SDLK_UP:       keyStat &= static_cast<uint8_t>(SHTKeyCode::up);    break;
+        case SDLK_DOWN:     keyStat &= static_cast<uint8_t>(SHTKeyCode::down);  break;
+        case SDLK_LEFT:     keyStat &= static_cast<uint8_t>(SHTKeyCode::left);  break;
+        case SDLK_RIGHT:    keyStat &= static_cast<uint8_t>(SHTKeyCode::right); break;
+        case SDLK_z:        keyStat &= static_cast<uint8_t>(SHTKeyCode::z);     break;
+        case SDLK_x:        keyStat &= static_cast<uint8_t>(SHTKeyCode::x);     break;
+        case SDLK_LSHIFT:   keyStat &= static_cast<uint8_t>(SHTKeyCode::shift); break;
     }
 }
 

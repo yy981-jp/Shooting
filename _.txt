@@ -44,3 +44,5 @@ MotionPipeline mp;
 
 angle = rad
 degree = deg
+
+GCMS = GameCommandMessageSystem

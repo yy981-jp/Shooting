@@ -6,16 +6,6 @@
 #include <cmath>
 
 
-struct SpriteInfo {
-    SpriteInfo(): tex(nullptr), w(0), h(0) {}
-    SpriteInfo(SDL_Texture* tex, int width, int height):
-      tex(tex), w(width), h(height) {}
-    SDL_Texture* tex;
-    int w;
-    int h;
-};
-
-
 SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
     SDL_Surface* s = IMG_Load(path.c_str());
     if (!s) {
@@ -30,7 +20,7 @@ SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
 
     SDL_FreeSurface(s);
 
-    return SpriteInfo{t, width, height};
+    return SpriteInfo{static_cast<void*>(t), width, height};
 }
 
 
@@ -38,7 +28,7 @@ SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
 **          Renderer            **
 **------------------------------*/
     Renderer::Renderer(void* sdlRenderer, int halfWidth, int halfHeight)
-      : halfWidth(halfWidth), halfHeight(halfHeight), native(sdlRenderer), spriteTable(static_cast<size_t>(EntityType::Count)) {
+      : halfWidth(halfWidth), halfHeight(halfHeight), native(sdlRenderer) {
         auto* renderer = static_cast<SDL_Renderer*>(native);
 
         for (size_t i = 0; i < entityNames.size(); ++i) {
@@ -53,7 +43,7 @@ SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
 
     Renderer::~Renderer() {
         for (size_t i = 0; i < entityNames.size(); ++i)
-            SDL_DestroyTexture(spriteTable[i].tex);
+            SDL_DestroyTexture(static_cast<SDL_Texture*>(spriteTable[i].tex));
     }
 
     vec2i Renderer::getSpriteSize(EntityType spriteID) const {
@@ -76,7 +66,7 @@ SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
         dst.w = sprite.w;
         dst.h = sprite.h;
 
-        SDL_RenderCopy(renderer, sprite.tex, nullptr, &dst);
+        SDL_RenderCopy(renderer, static_cast<SDL_Texture*>(sprite.tex), nullptr, &dst);
     }
 
     void Renderer::drawSprite(EntityType spriteID, const vec2f& posF) const {
