@@ -2,7 +2,7 @@
 #include "fsutil.h"
 #include "json.h"
 #include "collider.h"
-#include "commandExec.h"
+#include "../gcms/exec.h"
 #include "entityManager.h"
 #include "../scenes/playScene.h"
 
@@ -48,12 +48,15 @@ Game::~Game() {
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(rendererNative);
 }
-
+// #include <iostream>
+// #include <format>
 void Game::update() {
     if (!elapsedTime) elapsedTime.init();
     float deltatime = elapsedTime.get();
 
     currentScene->update(ctx,deltatime);
+
+    // std::cout << std::format("{:0>60b}", *ctx.input) << std::endl;
 
     physWorld.step(); // 当たり判定
 
@@ -89,13 +92,13 @@ void Game::onKeyDown(const SDL_KeyboardEvent& e) {
 
 void Game::onKeyUP(const SDL_KeyboardEvent& e) {
     switch (e.keysym.sym) {
-        case SDLK_UP:       keyStat &= static_cast<uint8_t>(SHTKeyCode::up);    break;
-        case SDLK_DOWN:     keyStat &= static_cast<uint8_t>(SHTKeyCode::down);  break;
-        case SDLK_LEFT:     keyStat &= static_cast<uint8_t>(SHTKeyCode::left);  break;
-        case SDLK_RIGHT:    keyStat &= static_cast<uint8_t>(SHTKeyCode::right); break;
-        case SDLK_z:        keyStat &= static_cast<uint8_t>(SHTKeyCode::z);     break;
-        case SDLK_x:        keyStat &= static_cast<uint8_t>(SHTKeyCode::x);     break;
-        case SDLK_LSHIFT:   keyStat &= static_cast<uint8_t>(SHTKeyCode::shift); break;
+        case SDLK_UP:       keyStat &= ~static_cast<uint8_t>(SHTKeyCode::up);    break;
+        case SDLK_DOWN:     keyStat &= ~static_cast<uint8_t>(SHTKeyCode::down);  break;
+        case SDLK_LEFT:     keyStat &= ~static_cast<uint8_t>(SHTKeyCode::left);  break;
+        case SDLK_RIGHT:    keyStat &= ~static_cast<uint8_t>(SHTKeyCode::right); break;
+        case SDLK_z:        keyStat &= ~static_cast<uint8_t>(SHTKeyCode::z);     break;
+        case SDLK_x:        keyStat &= ~static_cast<uint8_t>(SHTKeyCode::x);     break;
+        case SDLK_LSHIFT:   keyStat &= ~static_cast<uint8_t>(SHTKeyCode::shift); break;
     }
 }
 

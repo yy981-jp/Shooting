@@ -5,7 +5,7 @@
 
 #include "time.h"
 #include "collider.h"
-#include "commands.h"
+#include "../gcms/gcms.h"
 #include "../graphics/gfx.h"
 #include "../audio/sfx.h"
 #include "../scenes/scene.h"

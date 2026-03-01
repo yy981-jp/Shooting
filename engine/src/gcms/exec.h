@@ -1,5 +1,6 @@
 #pragma once
-#include "Game.h"
+#include "gcms.h"
+#include "../core/Game.h"
 
 namespace commandExec {
 

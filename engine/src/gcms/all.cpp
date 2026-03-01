@@ -1,4 +1,4 @@
-#include "commandExec_playScene.h"
+#include "playScene.h"
 #include "../scenes/playScene.h"
 
 void commandExec::playScene::operator()(const cmd::enemyBezier& c) const { scene.enemyBezier_Manager->generate(vec2f(c.x,c.y),c.pattern,c.duration); }

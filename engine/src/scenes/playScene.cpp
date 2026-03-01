@@ -1,5 +1,5 @@
 #include "playScene.h"
-#include "../core/commandExec_playScene.h"
+#include "../gcms/playScene.h"
 
 
 void PlayScene::handleCommand(const GameCommand& cmd, Game& game) {
