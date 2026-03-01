@@ -9,10 +9,11 @@
 SFXManager::SFXManager() {
     size_t count = static_cast<size_t>(SFXID::Count);
     modes.resize(count);
-    phase2.resize(count,false);
     se.resize(count,nullptr);
     bgm_intro.resize(count,nullptr);
     bgm_loop.resize(count,nullptr);
+
+    instance = this;
 
     #define X(mode_t, id_t) loadOne(SFXMode::mode_t, SFXID::id_t, #id_t);
     #include "../../../assets/sfx.def"
@@ -24,10 +25,9 @@ void SFXManager::play(SFXID id) {
     switch (modes[idx]) {
         case SFXMode::SE: playSE(idx); break;
         case SFXMode::BGM: {
-            if (!phase2[idx]) {
-                playBGMIntro(idx);
-                phase2[idx] = true;
-            } else playBGMLoop(idx);
+            playBGMIntro(idx);
+            currentBGM = idx;
+            Mix_HookMusicFinished(playBGMLoopC);
         } break;
     }
 }
@@ -63,4 +63,8 @@ void SFXManager::playBGMIntro(size_t idx) {
 
 void SFXManager::playBGMLoop(size_t idx) {
     Mix_PlayMusic(static_cast<Mix_Music*>(bgm_loop[idx]),-1);
+}
+
+void SFXManager::playBGMLoopC() {
+    Mix_PlayMusic(static_cast<Mix_Music*>(instance->bgm_loop[instance->currentBGM]),-1);
 }
