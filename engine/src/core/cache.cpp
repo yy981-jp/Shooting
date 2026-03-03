@@ -27,7 +27,8 @@ float CacheSV::getCos(float rad) const {
 
 int CacheSV::toIndex(float rad) {
 	int idx = static_cast<int>(rad * INV_STEP);
-	return (idx - OFFSET_INDEX) & TABLE_MASK;
+	// no offset any more; wrap using the mask
+	return idx & TABLE_MASK;
 }
 
 

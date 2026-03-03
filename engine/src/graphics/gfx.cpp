@@ -70,11 +70,8 @@ void Renderer::drawSprite(EntityType spriteID, const vec2f& pos, float rad) cons
 	float hw = sp.w * 0.5f;
 	float hh = sp.h * 0.5f;
 
-    // CacheSV's table is stored with a PI/2 offset, so
-    // getCos/getSin are shifted. Convert them to the
-    // standard rotation values: c = cos(rad), s = -sin(rad).
-    float c = -cachesv.getSin(rad);
-    float s = -cachesv.getCos(rad);
+    float c = cachesv.getCos(rad);
+    float s = -cachesv.getSin(rad);
 
 	SDL_FPoint corners[4] = {
 		{-hw, -hh},
