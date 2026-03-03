@@ -2,7 +2,7 @@
 
 #include "../core/def.h"
 #include "../core/collider.h"
-#include "../core/commands.h"
+#include "../gcms/gcms.h"
 #include "../core/spawnManager.h"
 #include "../graphics/gfx.h"
 

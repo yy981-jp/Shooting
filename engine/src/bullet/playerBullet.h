@@ -14,17 +14,16 @@ public:
     vec2f pos;
     EntityHandle ent_h;
     ColliderHandle col_h;
-    vec2f spriteHalf;
 
-    PlayerBullet(vec2f i_pos, ColliderHandle col_h, EntityHandle ent_h, const vec2f& spriteHalf)
-      : col_h(col_h), ent_h(ent_h), spriteHalf(spriteHalf), pos(i_pos) {}
+    PlayerBullet(vec2f i_pos, ColliderHandle col_h, EntityHandle ent_h)
+      : col_h(col_h), ent_h(ent_h), pos(i_pos) {}
 
     void update(float deltatime) {
         pos.y -= speed * deltatime;
     }
 
     void draw(const Renderer* renderer) const {
-        renderer->drawSprite(EntityType::playerBullet, pos - spriteHalf);
+        renderer->drawSprite(EntityType::playerBullet, pos);
     }
 
     void onHit(const CollisionInfo& info) {
@@ -51,7 +50,7 @@ public:
         col.circle.r = 3.0f;
         auto col_handle = physWorld.add(col);
         
-        bullets.emplace_back(pos,col_handle,e,spriteHalf);
+        bullets.emplace_back(pos,col_handle,e);
         auto& bullet = bullets.back();
 
         entMgr.setPtr(e,&bullet);
@@ -73,5 +72,6 @@ public:
         for (const PlayerBullet& bullet: bullets) {
             bullet.draw(renderer);
         }
+        renderer->flush();
     }
 };

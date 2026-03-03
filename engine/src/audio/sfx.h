@@ -16,11 +16,12 @@ enum class SFXMode: uint8_t {
 };
 
 class SFXManager {
-    std::vector<bool> phase2;
     std::vector<SFXMode> modes;
     std::vector<void*> se;
     std::vector<void*> bgm_intro;
     std::vector<void*> bgm_loop;
+
+    size_t currentBGM;
 
 public:
     SFXManager();
@@ -30,4 +31,6 @@ private:
     void playSE(size_t idx);
     void playBGMIntro(size_t idx);
     void playBGMLoop(size_t idx);
+    static void playBGMLoopC();
+    inline static SFXManager* instance = nullptr;
 };

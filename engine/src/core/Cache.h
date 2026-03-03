@@ -12,12 +12,11 @@ class CacheSV {
 
 	float table[TABLE_SIZE][2];
 
-	static int toIndex(float rad) {
-		int idx = static_cast<int>(rad * INV_STEP);
-		return idx & TABLE_MASK;
-	}
+	static int toIndex(float rad);
 
 public:
+	static constexpr float OFFSET = std::numbers::pi / 2;
+
 	vec2f getDir(float rad) const;
 	float getSin(float rad) const;
 	float getCos(float rad) const;
