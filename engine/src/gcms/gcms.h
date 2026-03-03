@@ -16,6 +16,7 @@ namespace cmd {
     };
     struct playerBullet { vec2f pos; };
     struct sfx { SFXID id; };
+    struct changeScene { SceneID id; };
 }
 
 
@@ -23,7 +24,8 @@ using GameCommand = std::variant<
     cmd::enemyBezier,
     cmd::simpleBullet,
     cmd::playerBullet,
-    cmd::sfx
+    cmd::sfx,
+    cmd::changeScene
 >;
 
 

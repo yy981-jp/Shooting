@@ -27,6 +27,10 @@ struct Vec2 {
         return Vec2(x - other.x, y - other.y);
     }
 
+    constexpr Vec2 operator-() const  {
+        return *this * -1;
+    }
+
     constexpr Vec2& operator+=(const Vec2& other) {
         x += other.x;
         y += other.y;

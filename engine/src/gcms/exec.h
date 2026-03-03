@@ -8,6 +8,7 @@ struct base {
     Game& game;
 
     void operator()(const cmd::sfx& c) const { game.playSfx(c.id); }
+    void operator()(const cmd::changeScene& c) const { game.setScene(c.id); }
 };
 
 }

@@ -5,9 +5,19 @@
 #include "../gcms/exec.h"
 #include "entityManager.h"
 #include "../scenes/playScene.h"
+#include "../scenes/titleScene.h"
 
 
-Game::Game(const int windowWidth, const int windowHeight) {
+std::unique_ptr<IScene> createScene(SceneID id, SceneContext& ctx) {
+	switch (id) {
+		case SceneID::title:    return std::make_unique<TitleScene>(ctx);
+		case SceneID::play:     return std::make_unique<PlayScene>(ctx);
+	}
+	return nullptr;
+}
+
+
+Game::Game(const int windowWidth, const int windowHeight, bool fullscreen) {
     // SDL init
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) throw std::runtime_error(std::string("SDL_Init failed: ") + SDL_GetError());
     if (!(IMG_Init(IMG_INIT_PNG)&IMG_INIT_PNG)) throw std::runtime_error(std::string("SDL_IMG_Init failed: ") + IMG_GetError());
@@ -20,7 +30,7 @@ Game::Game(const int windowWidth, const int windowHeight) {
         SDL_WINDOWPOS_CENTERED,
         windowWidth,
         windowHeight,
-        SDL_WINDOW_SHOWN
+        (fullscreen? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_SHOWN)
     );
     if (!window) throw std::runtime_error(std::string("SDL_CreateWindow failed: ") + SDL_GetError());
 
@@ -39,7 +49,7 @@ Game::Game(const int windowWidth, const int windowHeight) {
 
     ctx = SceneContext{ &gcm, &keyStat, renderer, sfxMgr };
 
-    currentScene = new PlayScene(ctx);
+    setScene(SceneID::title);
 }
 
 Game::~Game() {
@@ -48,15 +58,12 @@ Game::~Game() {
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(rendererNative);
 }
-// #include <iostream>
-// #include <format>
+
 void Game::update() {
     if (!elapsedTime) elapsedTime.init();
     float deltatime = elapsedTime.get();
 
     currentScene->update(ctx,deltatime);
-
-    // std::cout << std::format("{:0>60b}", *ctx.input) << std::endl;
 
     physWorld.step(); // 当たり判定
 
@@ -65,8 +72,6 @@ void Game::update() {
 }
 
 void Game::draw() const {
-    ctx.gfx->drawSprite(EntityType::background, SCREEN * -1);
-
     currentScene->draw(ctx);
 
     // DEBUG
@@ -128,4 +133,9 @@ void Game::tick() {
 
     // DEBUG
     // gcm(cmd::sfx(SFXID::shot));
+}
+
+void Game::setScene(SceneID id) {
+    if (!(currentScene = createScene(id,ctx)))
+        throw std::runtime_error("createScene: nullptr");
 }

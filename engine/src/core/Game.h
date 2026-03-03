@@ -31,7 +31,7 @@ class Game {
 
     uint8_t keyStat; // SHTKeyCode
     SceneContext ctx;
-    IScene* currentScene = nullptr;
+    std::unique_ptr<IScene> currentScene = nullptr;
 
     void update();
     void draw() const;
@@ -39,8 +39,9 @@ class Game {
     void onKeyUP(const SDL_KeyboardEvent& e);
 
 public:
-
-    Game(const int windowWidth, const int windowHeight);
+    void setScene(SceneID id);
+    
+    Game(const int windowWidth, const int windowHeight, bool fullscreen);
     ~Game();
     void tick();
     bool shouldQuit() {return !running;}
