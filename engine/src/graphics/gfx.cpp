@@ -22,7 +22,7 @@ SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
 
     SDL_FreeSurface(s);
 
-    return SpriteInfo{static_cast<void*>(t), width, height};
+    return SpriteInfo{static_cast<void*>(t), width/2, height/2};
 }
 
 
@@ -47,12 +47,16 @@ Renderer::~Renderer() {
         SDL_DestroyTexture(static_cast<SDL_Texture*>(spriteTable[i].tex));
 }
 
-vec2i Renderer::getSpriteSize(EntityType spriteID) const {
+vec2i Renderer::getSpriteHalfSize(EntityType spriteID) const {
     const SpriteInfo& sprite = spriteTable[static_cast<size_t>(spriteID)];
     vec2i vec;
-    vec.x = sprite.w;
-    vec.y = sprite.h;
+    vec.x = sprite.hw;
+    vec.y = sprite.hh;
     return vec;
+}
+
+vec2i Renderer::getSpriteSize(EntityType spriteID) const {
+    return getSpriteHalfSize(spriteID) * 2;
 }
 
 void Renderer::drawSprite(EntityType spriteID, const vec2f& pos, float rad) const {
@@ -60,15 +64,15 @@ void Renderer::drawSprite(EntityType spriteID, const vec2f& pos, float rad) cons
 		spriteTable[static_cast<size_t>(spriteID)].tex
 	);
 
-	// テクスチャ変わるならruntimeerror
+	// flushを強制
 	if (currentTexture && currentTexture != tex) throw std::runtime_error("gfx::drawSprite: currentTexture != tex");
 
     currentTexture = static_cast<void*>(tex);
 
 	const auto& sp = spriteTable[static_cast<size_t>(spriteID)];
 
-	float hw = sp.w * 0.5f;
-	float hh = sp.h * 0.5f;
+	float hw = sp.hw;
+	float hh = sp.hh;
 
     float c = cachesv.getCos(rad);
     float s = -cachesv.getSin(rad);
@@ -118,10 +122,10 @@ void Renderer::drawSpriteNow(EntityType spriteID, const vec2f& pos, float rad) c
     SpriteInfo sprite = spriteTable[static_cast<size_t>(spriteID)];
 
     SDL_Rect dst;
-    dst.x = pos.x + SCREEN.x;
-    dst.y = pos.y + SCREEN.y;
-    dst.w = sprite.w;
-    dst.h = sprite.h;
+    dst.x = pos.x + SCREEN.x - sprite.hw;
+    dst.y = pos.y + SCREEN.y - sprite.hh;
+    dst.w = sprite.hw * 2;
+    dst.h = sprite.hh * 2;
 
     SDL_RenderCopyEx(renderer, static_cast<SDL_Texture*>(sprite.tex), nullptr, &dst, rad2deg(rad), nullptr, {});
 }

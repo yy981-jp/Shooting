@@ -8,12 +8,12 @@
 
 
 struct SpriteInfo {
-    SpriteInfo(): tex(nullptr), w(0), h(0) {}
+    SpriteInfo(): tex(nullptr), hw(0), hh(0) {}
     SpriteInfo(void* tex, int width, int height):
-      tex(tex), w(width), h(height) {}
+      tex(tex), hw(width), hh(height) {}
     void* tex;
-    int w;
-    int h;
+    int hw;
+    int hh;
 };
 
 struct SDL_Vertex;
@@ -32,6 +32,7 @@ public:
     ~Renderer();
 
     vec2i getSpriteSize(EntityType spriteID) const;
+    vec2i getSpriteHalfSize(EntityType spriteID) const;
 	void drawSprite(EntityType spriteID, const vec2f& pos, float rad = 0) const; // write to buffer
     void flush() const;
 	void drawSpriteNow(EntityType spriteID, const vec2f& pos, float rad = 0) const;

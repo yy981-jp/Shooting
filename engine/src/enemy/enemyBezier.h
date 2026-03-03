@@ -14,7 +14,6 @@
 struct EnemyBezier: public ICollidable {
     EntityHandle ent;
     ColliderHandle col_h;
-    vec2f spriteHalf;
     bool wasShot = false;
     bool req_enable = false;
     spawnManager spm;
@@ -24,9 +23,9 @@ struct EnemyBezier: public ICollidable {
     
     EnemyBezier(const EntityHandle& e, const vec2f& pos,
       std::span<const vec2f> bezierCurve, int duration,
-      const ColliderHandle& col_h, const vec2f& spriteHalf)
+      const ColliderHandle& col_h)
       : ms(pos), mp(BezierController(bezierCurve,duration,pos)),
-        ent(e), col_h(col_h), spriteHalf(spriteHalf), spm(300) {
+        ent(e), col_h(col_h), spm(300) {
             // WaveDecorator WaveDecorator(wave_amp,wave_freq);
             // mp.addMover(WaveDecorator);
         }
@@ -50,7 +49,7 @@ struct EnemyBezier: public ICollidable {
     }
 
     void draw(const Renderer* renderer) const {
-        renderer->drawSprite(EntityType::enemyBezier, ms.pos-spriteHalf, ms.angle);
+        renderer->drawSprite(EntityType::enemyBezier, ms.pos, ms.angle);
     }
 
     void onHit(const CollisionInfo& info) {
@@ -107,7 +106,7 @@ public:
         auto col_handle = physWorld.add(col);
 
         // ===== EnemyBezier生成 =====
-        list.emplace_back(e, pos, controlVec2, duration, col_handle, spriteHalf);
+        list.emplace_back(e, pos, controlVec2, duration, col_handle);
         EnemyBezier& enemy = list.back();
 
         // EntityManagerにポインタ登録

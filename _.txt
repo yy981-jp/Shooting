@@ -24,13 +24,6 @@ entityType = uint16_t
 内部表現はvec2fで 描画はvec2iで
 
 
-現状:
-	宣言: param.各自.patterns 配列のインデックスをpatternIDとして扱う patternIDは各オブジェクトによって異なる
-	実装: BezierCurvesに定義
-	各オブジェクトから制御点を参照するには、IDが統一されていないため、aliasを経由する必要がある 効率に問題あり?
-		-> 現状その状態で進めて問題ないが、構造は変えずもっと効率よく参照するシステムを作れると良い cache方式の現行paramTableを活用した上で効率の良いものを
-
-
 描画システムの座標系は左上を原点に, 論理部分の座標系は中央を原点に
 
 entity.def.jsonを廃止 entityTable.defに移行 imgはentity名と一致させる
@@ -46,3 +39,5 @@ angle = rad
 degree = deg
 
 GCMS = GameCommandMessageSystem
+
+現在singlethreadなのでent=1500ぐらいまでなら耐えられる これ以上の弾幕にはmultithread化を考える必要あり?
