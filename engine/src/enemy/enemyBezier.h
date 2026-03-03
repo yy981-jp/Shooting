@@ -36,21 +36,26 @@ struct EnemyBezier: public ICollidable {
         mp.update(deltatime, ms);
 
         spm.update(deltatime);
-        for (int i = 0; i < spm.get(); ++i) {
-            for (int rotate = 0; rotate < 360; rotate += 10) {
-                cmd::simpleBullet c;
-                c.pos = ms.pos;
-                c.degree = rotate;
-                c.speed = 3;
-                gcm(c);
-            }
-        }
+        // for (int i = 0; i < spm.get(); ++i) {
+        //     for (int rotate = 0; rotate < 360; rotate += 10) {
+        //         cmd::simpleBullet c;
+        //         c.pos = ms.pos;
+        //         c.degree = rotate;
+        //         c.speed = 3;
+        //         gcm(c);
+        //     }
+        // }
+        // cmd::simpleBullet c;
+        // c.pos = ms.pos;
+        // c.degree = 180;
+        // c.speed = 3;
+        // gcm(c);
 
         return true;
     }
 
     void draw(const Renderer* renderer) const {
-        renderer->drawSprite(EntityType::enemyBezier, ms.pos-spriteHalf);
+        renderer->drawSprite(EntityType::enemyBezier, ms.pos-spriteHalf, ms.angle);
     }
 
     void onHit(const CollisionInfo& info) {
@@ -101,7 +106,7 @@ public:
             static_cast<uint8_t>(CollisionLayer::playerBullet);
 
         col.circle.center = pos;
-        col.circle.r = 5.0f; // 敵の当たり判定半径（仮）
+        col.circle.r = 5.0f; // 敵の当たり判定半径
 
         // ===== Physics登録 =====
         auto col_handle = physWorld.add(col);
@@ -110,7 +115,7 @@ public:
         list.emplace_back(e, pos, controlVec2, duration, col_handle, spriteHalf);
         EnemyBezier& enemy = list.back();
 
-        // EntityManagerにポインタ登録（OOP方式）
+        // EntityManagerにポインタ登録
         entMgr.setPtr(e,&enemy);
     }
 
@@ -133,5 +138,6 @@ public:
         for (const auto& bullet: list) {
             bullet.draw(renderer);
         }
+        renderer->flush();
     }
 };

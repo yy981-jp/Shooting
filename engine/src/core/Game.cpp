@@ -34,29 +34,29 @@ Game::Game(const int windowWidth, const int windowHeight, bool fullscreen) {
     );
     if (!window) throw std::runtime_error(std::string("SDL_CreateWindow failed: ") + SDL_GetError());
 
-    rendererNative = SDL_CreateRenderer(
+    nativeRenderer = SDL_CreateRenderer(
         window,
         -1,
         SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
     );
-    if (!rendererNative) throw std::runtime_error(std::string("SDL_CreateRenderer failed: ") + SDL_GetError());
+    if (!nativeRenderer) throw std::runtime_error(std::string("SDL_CreateRenderer failed: ") + SDL_GetError());
 
-    SDL_RenderSetLogicalSize(rendererNative, WINDOW.x, WINDOW.y);
+    SDL_RenderSetLogicalSize(nativeRenderer, WINDOW.x, WINDOW.y);
     
     // entity
-    renderer = new Renderer(rendererNative, SCREEN.x, SCREEN.y);
+    renderer = new Renderer(nativeRenderer, SCREEN.x, SCREEN.y);
     sfxMgr = new SFXManager;
 
     ctx = SceneContext{ &gcm, &keyStat, renderer, sfxMgr };
 
-    setScene(SceneID::title);
+    setScene(SceneID::play);
 }
 
 Game::~Game() {
     SDL_Quit();
     IMG_Quit();
     SDL_DestroyWindow(window);
-    SDL_DestroyRenderer(rendererNative);
+    SDL_DestroyRenderer(nativeRenderer);
 }
 
 void Game::update() {
@@ -77,7 +77,7 @@ void Game::draw() const {
     // DEBUG
     // physWorld.draw(renderer);
 
-    SDL_RenderPresent(rendererNative);
+    SDL_RenderPresent(nativeRenderer);
 }
 
 void Game::onKeyDown(const SDL_KeyboardEvent& e) {

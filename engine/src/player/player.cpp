@@ -36,7 +36,7 @@
     }
 
     void Player::draw(const Renderer* renderer) const {
-        renderer->drawSprite(EntityType::player, pos-spriteHalf);
+        renderer->drawSpriteNow(EntityType::player, pos-spriteHalf);
     }
 
     Player::Player(const vec2f& spriteHalf, float speed, int remainingLives):

@@ -31,7 +31,7 @@ void PlayScene::update(SceneContext& ctx, const float dt) {
 }
 
 void PlayScene::draw(const SceneContext& ctx) const {
-    ctx.gfx->drawSprite(EntityType::background, -SCREEN);
+    ctx.gfx->drawSpriteNow(EntityType::background, -SCREEN);
     player->draw(ctx.gfx);
     playerBullet_Manager->draw(ctx.gfx);
     enemyBezier_Manager->draw(ctx.gfx);

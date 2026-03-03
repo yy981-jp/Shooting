@@ -17,7 +17,7 @@
 
 class Game {
     SDL_Window* window;
-    SDL_Renderer* rendererNative;
+    SDL_Renderer* nativeRenderer;
     SDL_Texture* texture;
     
     bool running = true;

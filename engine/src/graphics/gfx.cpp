@@ -1,4 +1,6 @@
 #include "gfx.h"
+#include "../core/mathUtil.h"
+#include "../core/cache.h"
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -27,73 +29,144 @@ SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
 /*------------------------------**
 **          Renderer            **
 **------------------------------*/
-    Renderer::Renderer(void* sdlRenderer, int halfWidth, int halfHeight)
-      : halfWidth(halfWidth), halfHeight(halfHeight), native(sdlRenderer) {
-        auto* renderer = static_cast<SDL_Renderer*>(native);
+Renderer::Renderer(void* sdlRenderer, int halfWidth, int halfHeight): native(sdlRenderer) {
+    auto* renderer = static_cast<SDL_Renderer*>(native);
 
-        for (size_t i = 0; i < entityNames.size(); ++i) {
-            auto name = entityNames[i];
+    for (size_t i = 0; i < entityNames.size(); ++i) {
+        auto name = entityNames[i];
 
-            spriteTable[i] = loadSprite(
-                Assets + "image/" + std::string(name) + ".png",
-                renderer
-            );
-        }
+        spriteTable[i] = loadSprite(
+            Assets + "image/" + std::string(name) + ".png",
+            renderer
+        );
     }
+}
 
-    Renderer::~Renderer() {
-        for (size_t i = 0; i < entityNames.size(); ++i)
-            SDL_DestroyTexture(static_cast<SDL_Texture*>(spriteTable[i].tex));
+Renderer::~Renderer() {
+    for (size_t i = 0; i < entityNames.size(); ++i)
+        SDL_DestroyTexture(static_cast<SDL_Texture*>(spriteTable[i].tex));
+}
+
+vec2i Renderer::getSpriteSize(EntityType spriteID) const {
+    const SpriteInfo& sprite = spriteTable[static_cast<size_t>(spriteID)];
+    vec2i vec;
+    vec.x = sprite.w;
+    vec.y = sprite.h;
+    return vec;
+}
+
+void Renderer::drawSprite(EntityType spriteID, const vec2f& pos, float rad) const {
+	SDL_Texture* tex = static_cast<SDL_Texture*>(
+		spriteTable[static_cast<size_t>(spriteID)].tex
+	);
+
+	// テクスチャ変わるならruntimeerror
+	if (currentTexture && currentTexture != tex) throw std::runtime_error("gfx::drawSprite: currentTexture != tex");
+
+    currentTexture = static_cast<void*>(tex);
+
+	const auto& sp = spriteTable[static_cast<size_t>(spriteID)];
+
+	float hw = sp.w * 0.5f;
+	float hh = sp.h * 0.5f;
+
+    // CacheSV's table is stored with a PI/2 offset, so
+    // getCos/getSin are shifted. Convert them to the
+    // standard rotation values: c = cos(rad), s = -sin(rad).
+    float c = -cachesv.getSin(rad);
+    float s = -cachesv.getCos(rad);
+
+	SDL_FPoint corners[4] = {
+		{-hw, -hh},
+		{ hw, -hh},
+		{ hw,  hh},
+		{-hw,  hh}
+	};
+
+	int baseIndex = vertexBuffer.size();
+
+    // 回転処理
+	for (int i = 0; i < 4; ++i) {
+		float rx = corners[i].x * c - corners[i].y * s;
+		float ry = corners[i].x * s + corners[i].y * c;
+
+		SDL_Vertex v;
+		v.position = {
+            SCREEN.x + pos.x + rx,
+            SCREEN.y + pos.y + ry
+        };
+
+        v.color = {255,255,255,255};
+
+		v.tex_coord = {
+			(i == 1 || i == 2) ? 1.0f : 0.0f,
+			(i >= 2) ? 1.0f : 0.0f
+		};
+
+		vertexBuffer.push_back(v);
+	}
+
+	indexBuffer.push_back(baseIndex + 0);
+	indexBuffer.push_back(baseIndex + 1);
+	indexBuffer.push_back(baseIndex + 2);
+	indexBuffer.push_back(baseIndex + 2);
+	indexBuffer.push_back(baseIndex + 3);
+	indexBuffer.push_back(baseIndex + 0);
+}
+
+void Renderer::drawSpriteNow(EntityType spriteID, const vec2f& pos, float rad) const {
+    auto* renderer = static_cast<SDL_Renderer*>(native);
+    if (!renderer) return;
+
+    SpriteInfo sprite = spriteTable[static_cast<size_t>(spriteID)];
+
+    SDL_Rect dst;
+    dst.x = pos.x + SCREEN.x;
+    dst.y = pos.y + SCREEN.y;
+    dst.w = sprite.w;
+    dst.h = sprite.h;
+
+    SDL_RenderCopyEx(renderer, static_cast<SDL_Texture*>(sprite.tex), nullptr, &dst, rad2deg(rad), nullptr, {});
+}
+
+void Renderer::flush() const {
+	if (vertexBuffer.empty() || !currentTexture) return;
+
+	SDL_RenderGeometry(
+		static_cast<SDL_Renderer*>(native),
+		static_cast<SDL_Texture*>(currentTexture),
+		vertexBuffer.data(),
+		vertexBuffer.size(),
+		indexBuffer.data(),
+		indexBuffer.size()
+	);
+
+	vertexBuffer.clear();
+	indexBuffer.clear();
+    currentTexture = nullptr;
+}
+
+void Renderer::drawFilledCircle(const vec2f pos, float rad) const {
+    SDL_Renderer* renderer = static_cast<SDL_Renderer*>(native);
+
+    const int cx = static_cast<int>(pos.x) + SCREEN.x;
+    const int cy = static_cast<int>(pos.y) + SCREEN.y;
+    const int r  = static_cast<int>(rad);
+
+    for(int y = -r; y <= r; y++) {
+        float yy = static_cast<float>(y);
+        float dx = std::sqrt(rad * rad - yy * yy);
+
+        int ix = static_cast<int>(dx);
+
+        SDL_RenderDrawLine(
+            renderer,
+            cx - ix, cy + y,
+            cx + ix, cy + y
+        );
     }
+}
 
-    vec2i Renderer::getSpriteSize(EntityType spriteID) const {
-        const SpriteInfo& sprite = spriteTable[static_cast<size_t>(spriteID)];
-        vec2i vec;
-        vec.x = sprite.w;
-        vec.y = sprite.h;
-        return vec;
-    }
-
-    void Renderer::drawSprite(EntityType spriteID, const vec2i& pos) const {
-        auto* renderer = static_cast<SDL_Renderer*>(native);
-        if (!renderer) return;
-
-        SpriteInfo sprite = spriteTable[static_cast<size_t>(spriteID)];
-
-        SDL_Rect dst;
-        dst.x = pos.x + halfWidth;
-        dst.y = pos.y + halfHeight;
-        dst.w = sprite.w;
-        dst.h = sprite.h;
-
-        SDL_RenderCopy(renderer, static_cast<SDL_Texture*>(sprite.tex), nullptr, &dst);
-    }
-
-    void Renderer::drawSprite(EntityType spriteID, const vec2f& posF) const {
-        drawSprite(spriteID,vec2i(posF));
-    }
-
-    void Renderer::drawFilledCircle(const vec2f pos, float rad) const {
-        SDL_Renderer* renderer = static_cast<SDL_Renderer*>(native);
-
-        const int cx = static_cast<int>(pos.x) + halfWidth;
-        const int cy = static_cast<int>(pos.y) + halfHeight;
-        const int r  = static_cast<int>(rad);
-
-        for(int y = -r; y <= r; y++) {
-            float yy = static_cast<float>(y);
-            float dx = std::sqrt(rad * rad - yy * yy);
-
-            int ix = static_cast<int>(dx);
-
-            SDL_RenderDrawLine(
-                renderer,
-                cx - ix, cy + y,
-                cx + ix, cy + y
-            );
-        }
-    }
-
-    void Renderer::setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a) const {
-        SDL_SetRenderDrawColor(static_cast<SDL_Renderer*>(native),r,g,b,a);
-    }
+void Renderer::setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a) const {
+    SDL_SetRenderDrawColor(static_cast<SDL_Renderer*>(native),r,g,b,a);
+}

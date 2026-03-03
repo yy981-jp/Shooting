@@ -12,7 +12,7 @@ CacheSV::CacheSV() {
 
 vec2f CacheSV::getDir(float rad) const {
 	int idx = toIndex(rad);
-	return { table[idx][0], -table[idx][1] };
+	return { table[idx][0], table[idx][1] };
 }
 
 float CacheSV::getSin(float rad) const {
@@ -24,5 +24,11 @@ float CacheSV::getCos(float rad) const {
 	int idx = toIndex(rad);
 	return table[idx][0];
 }
+
+int CacheSV::toIndex(float rad) {
+	int idx = static_cast<int>(rad * INV_STEP);
+	return (idx - OFFSET_INDEX) & TABLE_MASK;
+}
+
 
 CacheSV cachesv;

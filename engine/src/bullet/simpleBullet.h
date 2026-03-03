@@ -82,5 +82,6 @@ public:
         for (const auto& entity: list) {
             entity.draw(r);
         }
+        r->flush();
     }
 };

@@ -73,5 +73,6 @@ public:
         for (const PlayerBullet& bullet: bullets) {
             bullet.draw(renderer);
         }
+        renderer->flush();
     }
 };
