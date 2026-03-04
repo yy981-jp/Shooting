@@ -64,47 +64,74 @@ void Renderer::drawSprite(EntityType spriteID, const vec2f& pos, float rad) cons
 		spriteTable[static_cast<size_t>(spriteID)].tex
 	);
 
-	// flushを強制
-	if (currentTexture && currentTexture != tex) throw std::runtime_error("gfx::drawSprite: currentTexture != tex");
+	if (currentTexture && currentTexture != tex)
+		throw std::runtime_error("gfx::drawSprite: currentTexture != tex");
 
-    currentTexture = static_cast<void*>(tex);
+	currentTexture = static_cast<void*>(tex);
 
 	const auto& sp = spriteTable[static_cast<size_t>(spriteID)];
 
 	float hw = sp.hw;
 	float hh = sp.hh;
 
-    float c = cachesv.getCos(rad);
-    float s = -cachesv.getSin(rad);
-
-	SDL_FPoint corners[4] = {
-		{-hw, -hh},
-		{ hw, -hh},
-		{ hw,  hh},
-		{-hw,  hh}
-	};
-
 	int baseIndex = vertexBuffer.size();
 
-    // 回転処理
-	for (int i = 0; i < 4; ++i) {
-		float rx = corners[i].x * c - corners[i].y * s;
-		float ry = corners[i].x * s + corners[i].y * c;
+	// ---- 回転なしルート ----
+	if (rad == 0.0f)
+	{
+		SDL_Vertex v[4];
 
-		SDL_Vertex v;
-		v.position = {
-            SCREEN.x + pos.x + rx,
-            SCREEN.y + pos.y + ry
-        };
+		v[0].position = { SCREEN.x + pos.x - hw, SCREEN.y + pos.y - hh };
+		v[1].position = { SCREEN.x + pos.x + hw, SCREEN.y + pos.y - hh };
+		v[2].position = { SCREEN.x + pos.x + hw, SCREEN.y + pos.y + hh };
+		v[3].position = { SCREEN.x + pos.x - hw, SCREEN.y + pos.y + hh };
 
-        v.color = {255,255,255,255};
+		for (int i = 0; i < 4; ++i)
+		{
+			v[i].color = {255,255,255,255};
 
-		v.tex_coord = {
-			(i == 1 || i == 2) ? 1.0f : 0.0f,
-			(i >= 2) ? 1.0f : 0.0f
+			v[i].tex_coord = {
+				(i == 1 || i == 2) ? 1.0f : 0.0f,
+				(i >= 2) ? 1.0f : 0.0f
+			};
+
+			vertexBuffer.push_back(v[i]);
+		}
+	}
+	// ---- 回転ありルート ----
+	else
+	{
+		float c = cachesv.getCos(rad);
+		float s = -cachesv.getSin(rad);
+
+		SDL_FPoint corners[4] = {
+			{-hw, -hh},
+			{ hw, -hh},
+			{ hw,  hh},
+			{-hw,  hh}
 		};
 
-		vertexBuffer.push_back(v);
+		for (int i = 0; i < 4; ++i)
+		{
+			float rx = corners[i].x * c - corners[i].y * s;
+			float ry = corners[i].x * s + corners[i].y * c;
+
+			SDL_Vertex v;
+
+			v.position = {
+				SCREEN.x + pos.x + rx,
+				SCREEN.y + pos.y + ry
+			};
+
+			v.color = {255,255,255,255};
+
+			v.tex_coord = {
+				(i == 1 || i == 2) ? 1.0f : 0.0f,
+				(i >= 2) ? 1.0f : 0.0f
+			};
+
+			vertexBuffer.push_back(v);
+		}
 	}
 
 	indexBuffer.push_back(baseIndex + 0);
