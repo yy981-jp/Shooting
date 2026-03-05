@@ -149,6 +149,15 @@ def pack_spawn_data(entity_type: str, args: Dict[str, Any]) -> bytes:
 		if field_name == "duration":
 			value = parse_second_value(value)
 		
+		# pattern フィールドの場合、eventTable.json から ID を取得
+		if field_name == "pattern" and isinstance(value, str):
+			if entity_type in EVENT_TABLE.get("param", {}) and "patterns" in EVENT_TABLE["param"][entity_type]:
+				patterns = EVENT_TABLE["param"][entity_type]["patterns"]
+				if value in patterns:
+					value = patterns.index(value)
+				else:
+					raise SyntaxError(f"unknown pattern '{value}' for {entity_type}")
+		
 		# 型変換（文字列値を処理）
 		if isinstance(value, str):
 			# 文字列を型に応じて変換
