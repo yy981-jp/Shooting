@@ -20,7 +20,7 @@ struct SDL_Vertex;
 
 class Renderer {
 	void* native;
-    SpriteInfo spriteTable[static_cast<size_t>(EntityType::Count)];
+    SpriteInfo spriteTable[static_cast<size_t>(SpriteID::Count)];
 
 	// ===== for batch buffer =====
 	mutable std::vector<SDL_Vertex> vertexBuffer;
@@ -31,11 +31,11 @@ public:
 	Renderer(void* sdlRenderer, int halfWidth, int halfHeight);
     ~Renderer();
 
-    vec2i getSpriteSize(EntityType spriteID) const;
-    vec2i getSpriteHalfSize(EntityType spriteID) const;
-	void drawSprite(EntityType spriteID, const vec2f& pos, float rad = 0) const; // write to buffer
+    vec2i getSpriteSize(SpriteID spriteID) const;
+    vec2i getSpriteHalfSize(SpriteID spriteID) const;
+	void drawSprite(SpriteID spriteID, const vec2f& pos, float rad = 0) const; // write to buffer
     void flush() const;
-	void drawSpriteNow(EntityType spriteID, const vec2f& pos, float rad = 0) const;
+	void drawSpriteNow(SpriteID spriteID, const vec2f& pos, float rad = 0) const;
 
     // for Debug
     void drawFilledCircle(const vec2f pos, float rad) const;

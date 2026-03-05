@@ -47,7 +47,7 @@ Renderer::~Renderer() {
         SDL_DestroyTexture(static_cast<SDL_Texture*>(spriteTable[i].tex));
 }
 
-vec2i Renderer::getSpriteHalfSize(EntityType spriteID) const {
+vec2i Renderer::getSpriteHalfSize(SpriteID spriteID) const {
     const SpriteInfo& sprite = spriteTable[static_cast<size_t>(spriteID)];
     vec2i vec;
     vec.x = sprite.hw;
@@ -55,11 +55,11 @@ vec2i Renderer::getSpriteHalfSize(EntityType spriteID) const {
     return vec;
 }
 
-vec2i Renderer::getSpriteSize(EntityType spriteID) const {
+vec2i Renderer::getSpriteSize(SpriteID spriteID) const {
     return getSpriteHalfSize(spriteID) * 2;
 }
 
-void Renderer::drawSprite(EntityType spriteID, const vec2f& pos, float rad) const {
+void Renderer::drawSprite(SpriteID spriteID, const vec2f& pos, float rad) const {
 	SDL_Texture* tex = static_cast<SDL_Texture*>(
 		spriteTable[static_cast<size_t>(spriteID)].tex
 	);
@@ -142,7 +142,7 @@ void Renderer::drawSprite(EntityType spriteID, const vec2f& pos, float rad) cons
 	indexBuffer.push_back(baseIndex + 0);
 }
 
-void Renderer::drawSpriteNow(EntityType spriteID, const vec2f& pos, float rad) const {
+void Renderer::drawSpriteNow(SpriteID spriteID, const vec2f& pos, float rad) const {
     auto* renderer = static_cast<SDL_Renderer*>(native);
     if (!renderer) return;
 

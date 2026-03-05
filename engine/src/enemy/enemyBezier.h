@@ -49,7 +49,7 @@ struct EnemyBezier: public ICollidable {
     }
 
     void draw(const Renderer* renderer) const {
-        renderer->drawSprite(EntityType::enemyBezier, ms.pos, ms.angle);
+        renderer->drawSprite(SpriteID::enemyBezier, ms.pos, ms.angle);
     }
 
     void onHit(const CollisionInfo& info) {

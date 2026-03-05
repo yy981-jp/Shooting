@@ -3,10 +3,10 @@
 
 
 PlayScene::PlayScene(SceneContext& ctx) {
-    player = new Player(static_cast<vec2f>(ctx.gfx->getSpriteHalfSize(EntityType::player)/2), 5.0f*60.0f);
-    playerBullet_Manager = new PlayerBullet_Manager(static_cast<vec2f>(ctx.gfx->getSpriteHalfSize(EntityType::playerBullet)/2));
-    enemyBezier_Manager = new EnemyBezier_Manager(static_cast<vec2f>(ctx.gfx->getSpriteHalfSize(EntityType::enemyBezier)/2));
-    simpleBullet_Manager = new SimpleBullet_Manager(static_cast<vec2f>(ctx.gfx->getSpriteHalfSize(EntityType::simpleBullet)/2));
+    player = new Player(static_cast<vec2f>(ctx.gfx->getSpriteHalfSize(SpriteID::player)/2), 5.0f*60.0f);
+    playerBullet_Manager = new PlayerBullet_Manager(static_cast<vec2f>(ctx.gfx->getSpriteHalfSize(SpriteID::playerBullet)/2));
+    enemyBezier_Manager = new EnemyBezier_Manager(static_cast<vec2f>(ctx.gfx->getSpriteHalfSize(SpriteID::enemyBezier)/2));
+    simpleBullet_Manager = new SimpleBullet_Manager(static_cast<vec2f>(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)/2));
     // VM
     vm = new VM(stgdatpath);
 }
@@ -31,7 +31,7 @@ void PlayScene::update(SceneContext& ctx, const float dt) {
 }
 
 void PlayScene::draw(const SceneContext& ctx) const {
-    ctx.gfx->drawSpriteNow(EntityType::background, {0,0});
+    ctx.gfx->drawSpriteNow(SpriteID::background, {0,0});
     player->draw(ctx.gfx);
     playerBullet_Manager->draw(ctx.gfx);
     enemyBezier_Manager->draw(ctx.gfx);

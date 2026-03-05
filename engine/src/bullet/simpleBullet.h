@@ -28,7 +28,7 @@ struct SimpleBullet: public ICollidable {
     }
 
     void draw(const Renderer* r) const {
-        r->drawSprite(EntityType::simpleBullet, pos);
+        r->drawSprite(SpriteID::simpleBullet, pos);
     }
 
     void onHit(const CollisionInfo& info) override {

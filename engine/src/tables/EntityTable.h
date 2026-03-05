@@ -3,7 +3,7 @@
 #include <string_view>
 #include <cstddef>
 
-enum class EntityType : size_t {
+enum class SpriteID : size_t {
 #define X(name) name,
 #include "../../../assets/entityTable.def"
 #undef X
@@ -11,7 +11,7 @@ enum class EntityType : size_t {
 };
 
 constexpr std::array<std::string_view,
-    static_cast<size_t>(EntityType::Count)> entityNames = {
+    static_cast<size_t>(SpriteID::Count)> entityNames = {
 #define X(name) #name,
 #include "../../../assets/entityTable.def"
 #undef X
