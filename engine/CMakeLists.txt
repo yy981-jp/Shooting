@@ -18,6 +18,8 @@ target_include_directories(${PROJECT_NAME}
 
 
 if(EMSCRIPTEN)
+    # 非推奨
+    message(WARNING "非推奨")
 
 	# wasm出力をhtmlにする
 	set(CMAKE_EXECUTABLE_SUFFIX ".html")

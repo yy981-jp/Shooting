@@ -45,9 +45,10 @@ pc = uint32_t
 vec2 = uint16_t
 entityType = uint16_t
 
-enemyBezierをまずは実装 そしてmanagerも作成
+stgcをC++化し、XMacroを用いて唯一の真実を保証する spawnコマンドを主に修正
+C++化のコストが重すぎるのでpyにXMacroを読ませる方針
 
-内部表現はVec2Fで 描画はVec2で
+内部表現はvec2fで 描画はvec2iで
 
 
 現状:

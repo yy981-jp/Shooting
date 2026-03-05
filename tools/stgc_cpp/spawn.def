@@ -1,0 +1,12 @@
+X(enemyBezier,
+	float x;
+	float y;
+	uint16_t duration;
+)
+
+X(enemyLinear,
+	float x;
+	float y;
+	float vx;
+	float vy;
+)

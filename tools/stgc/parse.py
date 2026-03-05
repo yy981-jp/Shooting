@@ -1,5 +1,5 @@
 from defi import Instruction
-from typing import Dict, Union
+from typing import Dict
 
 
 MAX_NEST: int = 32

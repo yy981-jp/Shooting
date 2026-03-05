@@ -7,6 +7,61 @@ import re
 
 from pprint import pprint
 
+TYPE_MAP = {
+	"u8":  "B",
+	"s8":  "b",
+	"u16": "H",
+	"s16": "h",
+	"u32": "I",
+	"s32": "i",
+	"f32": "f",
+}
+
+import re
+
+def load_spawn_defs(path):
+	spawns = {}
+
+	with open(path, encoding="utf-8") as f:
+		text = f.read()
+
+	blocks = re.findall(r'X\((.*?)\)', text, re.S)
+
+	field_pattern = re.compile(r'(\w+)\s+(\w+)')
+
+	for block in blocks:
+		lines = field_pattern.findall(block)
+
+		name = block.split(",",1)[0].strip()
+		fields = [(t,n) for t,n in lines]
+
+		spawns[name] = fields
+		
+	return spawns
+
+def make_struct_format(fields):
+	fmt = "<"
+	for t, _ in fields:
+		fmt += TYPE_MAP[t]
+	return fmt
+
+SPAWN_DEFS: Dict[str,list[tuple[str, str]]] = load_spawn_defs("../../common/spawn.def")
+
+def pack_spawn(entity:str, args):
+    fields: list[tuple[str, str]] = SPAWN_DEFS[entity]
+    
+    if not fields:
+        raise SyntaxError("spawn: 未知の敵")
+
+    fmt = make_struct_format(fields)
+
+    values = []
+    for t, name in fields:
+        values.append(int(args[name]))
+
+    return struct.pack(fmt, *values)
+
+
 opSizeTable: Dict[str,int] # op -> size(byte)
 EVENT_TABLE: Dict[str,Any] = {}
 FLAGS_TABLE: Dict[str,int] = {}
@@ -59,25 +114,7 @@ def packParam(cmd:Instruction):
     elif (cmd.op == "spawn"):
         opCode = 3
         code+= struct.pack("<B",opCode)
-        entityType:str = cmd.args["entityType"]
-        if (entityType == "enemyBezier"):
-            pattern = int(
-                enemyBezier_patterns.get(
-                    cmd.args["pattern"],
-                    enemyBezier_patterns["default"]
-                )
-            ) if "pattern" in cmd.args else 0
-            # pprint(ENTITY_TABLE[entityType])
-            code+= struct.pack(
-                "<H h h H I",
-                int(ENTITY_TABLE[entityType]),
-                int(cmd.args["x"]), int(cmd.args["y"]),
-                pattern,
-                int(cmd.args.get("duration", 5000))
-            )
-            # pprint(code)
-        else:
-            raise SyntaxError("spawn: 未知の敵")
+        code+= pack_spawn(cmd.op,cmd.args)
 
     elif (cmd.op == "call"):
         opCode = 4

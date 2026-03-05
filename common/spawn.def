@@ -1,0 +1,12 @@
+X(enemyBezier,
+	f32 x;
+	f32 y;
+	u16 duration;
+)
+
+X(enemyLinear,
+	f32 x;
+	f32 y;
+	f32 vx;
+	f32 vy;
+)

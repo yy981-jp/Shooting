@@ -5,4 +5,4 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
 
 add_subdirectory(engine)
-add_subdirectory(tools/pos)
+add_subdirectory(tools/stgc_cpp)
