@@ -41,3 +41,14 @@ degree = deg
 GCMS = GameCommandMessageSystem
 
 現在singlethreadなのでent=1500ぐらいまでなら耐えられる これ以上の弾幕にはmultithread化を考える必要あり?
+	release buildの場合4000ぐらいまで50~60fpsで行けた 当分singlethreadで十分?
+↓ release build
+batch有効->
+	4000 50~60
+	10000 30?
+batch無効->
+	5000 50~60
+	6000 30~40
+ハイブリッド->
+	5000~6000 60
+	7000 30

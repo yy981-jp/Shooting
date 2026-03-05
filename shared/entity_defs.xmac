@@ -1,0 +1,21 @@
+#ifndef ENTITY
+#define ENTITY(name, fields)
+#define FIELD(type, name, ...)
+#endif
+
+ENTITY(enemyBezier,
+	FIELD(int16, x)
+	FIELD(int16, y)
+	FIELD(uint16, pattern, 0)
+	FIELD(uint32, duration, 5000)
+)
+
+ENTITY(enemyStraight,
+	FIELD(int16, x)
+	FIELD(int16, y)
+	FIELD(int16, vx)
+	FIELD(int16, vy)
+)
+
+#undef ENTITY
+#undef FIELD
