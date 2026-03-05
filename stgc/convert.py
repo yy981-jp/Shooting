@@ -122,8 +122,6 @@ def parse_second_value(value: str) -> int:
 
 
 # XMacro から entity 定義と ID を読み込む
-# stgc.py は stgc/ フォルダにあり、entity_defs.xmac は shared/ フォルダにあるため
-# 相対パスは ../shared/entity_defs.xmac
 current_dir = os.path.dirname(os.path.abspath(__file__))
 entity_defs_path = os.path.join(current_dir, "..", "shared", "entity_defs.xmac")
 
@@ -151,45 +149,39 @@ def pack_spawn_data(entity_type: str, args: Dict[str, Any]) -> bytes:
 		if field_name == "duration":
 			value = parse_second_value(value)
 		
-		# pattern などの文字列値をマッピング（型変換前）
+		# 型変換（文字列値を処理）
 		if isinstance(value, str):
-			# pattern マッピングがあるかチェック
-			if entity_type in ENTITY_PATTERN_MAP and field_name in ENTITY_PATTERN_MAP[entity_type]:
-				pattern_map = ENTITY_PATTERN_MAP[entity_type]
-				if value in pattern_map:
-					value = pattern_map[value]
-				else:
-					print(f"Warning: Unknown pattern '{value}' for {entity_type}, using 0")
-					value = 0
-			else:
-				# pattern マッピングが定義されていない場合
-				# 文字列を整数に変換できるか試す
+			# 文字列を型に応じて変換
+			if field_type in ["int8", "uint8", "int16", "uint16", "int32", "uint32"]:
+				# 文字列が数値な場合のみ変換、そうでなければデフォルト値を使う
 				try:
 					value = int(value)
 				except ValueError:
-					# 数値変換も失敗した場合、0 にデフォルト
-					print(f"Warning: Cannot convert '{value}' to int for {entity_type}.{field_name}, using 0")
-					value = 0
-		
-		# 型変換
-		if field_type in ["int8", "uint8", "int16", "uint16", "int32", "uint32"]:
-			value = int(value)
-		elif field_type == "float":
-			value = float(value)
+					# 数値に変換できない場合、デフォルト値を使う
+					value = default if default is not None else 0
+			elif field_type == "float":
+				try:
+					value = float(value)
+				except ValueError:
+					value = default if default is not None else 0.0
+		else:
+			# 非文字列の場合は型変換
+			if field_type in ["int8", "uint8", "int16", "uint16", "int32", "uint32"]:
+				value = int(value)
+			elif field_type == "float":
+				value = float(value)
 		
 		values.append(value)
 	
 	return struct.pack(fmt, *values)
 
 
-opSizeTable: Dict[str,int] # op -> size(byte)
+
+
+# Flag システムは別途初期化（event table から読み込み）
 EVENT_TABLE: Dict[str,Any] = {}
 FLAGS_TABLE: Dict[str,int] = {}
-PARAM_TABLE: Dict[str,Any] ={}
-ENTITY_PATTERN_MAP: Dict[str, Dict[str, int]] = {}  # entity -> {pattern_name -> id}
-ENTITY_TABLE: Dict[str,int] ={}
 
-# Event Table のロード（旧来のシステム用）
 try:
 	assets_dir = os.path.join(current_dir, "..", "assets")
 	event_table_path = os.path.join(assets_dir, "eventTable.json")
@@ -197,33 +189,8 @@ try:
 		EVENT_TABLE = json.load(f)
 		for idx, name in enumerate(EVENT_TABLE["flags"]):
 			FLAGS_TABLE[name] = idx
-		PARAM_TABLE = EVENT_TABLE["param"]
-		
-		# Entity ごとの pattern マッピングを構築
-		for entity_name, entity_params in PARAM_TABLE.items():
-			if "patterns" in entity_params:
-				patterns = entity_params["patterns"]
-				ENTITY_PATTERN_MAP[entity_name] = {name: i for i, name in enumerate(patterns)}
-except Exception as e:
-	print(f"Warning: Failed to load eventTable.json: {e}")
-
-# 旧来の Entity Table のロード（後方互換性用）
-try:
-	assets_dir = os.path.join(current_dir, "..", "assets")
-	entity_table_path = os.path.join(assets_dir, "entityTable.def")
-	with open(entity_table_path, "r", encoding="utf-8") as f:
-		index = 0
-		for line in f:
-			line = line.split("//")[0].strip()
-			if not line:
-				continue
-			m = re.match(r"X\((\w+)\)", line)
-			if m:
-				name = m.group(1)
-				ENTITY_TABLE[name] = index
-				index += 1
-except Exception as e:
-	print(f"Warning: Failed to load entityTable.def: {e}")
+except Exception:
+	pass
 
 
 def packParam(cmd:Instruction):
@@ -251,8 +218,8 @@ def packParam(cmd:Instruction):
 		entity_type = cmd.args["entityType"]
 		entity_id = ENTITY_IDS[entity_type]
 		
-		code+= struct.pack("<H", entity_id) #uint16
-		code+= pack_spawn_data(entity_type, cmd.args)
+		code+= struct.pack("<H", entity_id) #uint16: STGEntityID
+		code+= pack_spawn_data(entity_type, cmd.args) #entity struct
 
 	elif (cmd.op == "call"):
 		opCode = 4

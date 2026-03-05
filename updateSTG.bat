@@ -12,10 +12,10 @@ if "%2" == "d" (
 
 cd stgc
 
-call stgc ../../script/%1.stg %mode%
+call stgc ../script/%1.stg %mode%
 
 if "%errorlevel%" == "0" (
-    copy "%1.stg.dat" "../../../assets/main.stg.dat" > nul
+    copy "stgc\%1.stg.dat" "assets\main.stg.dat" /y > nul
 )
 
 

@@ -9,7 +9,7 @@
 #include <limits>
 
 #include "../core/fsutil.h"
-#include "../core/commands.h"
+#include "../gcms/gcms.h"
 
 
 class VM {
