@@ -1,5 +1,6 @@
 #include "VM.h"
 #include "../tables/all.h"
+#include "../../../shared/entity_table.h"
 
 
     VM::VM(const std::string& stgdatPath): eventTableDoc(readJson(Assets+"eventTable.json")), eventTable(eventTableDoc), pc(0) {
@@ -12,7 +13,7 @@
 
         memcpy(&fh, data.data(),sizeof(FileHeader));
 
-        if (fh.magic != fileMagicNumber) throw std::runtime_error("VM::VM(): stgdat.magic mismatch");
+        if (fh.magic == fileMagicNumber) throw std::runtime_error("VM::VM(): stgdat.magic mismatch");
 
         instr.assign(
             data.begin() + sizeof(FileHeader),

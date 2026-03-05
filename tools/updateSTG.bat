@@ -15,7 +15,7 @@ cd stgc
 call stgc ../../script/%1.stg %mode%
 
 if "%errorlevel%" == "0" (
-    copy "%1.stg.dat" "../../Assets/main.stg.dat" > nul
+    copy "%1.stg.dat" "../../../assets/main.stg.dat" > nul
 )
 
 

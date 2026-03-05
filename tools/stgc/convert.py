@@ -15,7 +15,7 @@ ENTITY_TABLE: Dict[str,int] ={}
 enemyBezier_patterns: Dict[str,int] = {}
 
 # loadJson
-with open("../../assets/eventTable.json", "r", encoding="utf-8") as f:
+with open("../../../assets/eventTable.json", "r", encoding="utf-8") as f:
     EVENT_TABLE = json.load(f)
     for idx, name in enumerate(EVENT_TABLE["flags"]):
         FLAGS_TABLE[name] = idx
@@ -23,7 +23,7 @@ with open("../../assets/eventTable.json", "r", encoding="utf-8") as f:
     patterns = PARAM_TABLE["enemyBezier"]["patterns"]
     enemyBezier_patterns = {name: i for i, name in enumerate(patterns)}
 
-with open("../../assets/entityTable.def", "r", encoding="utf-8") as f:
+with open("../../../assets/entityTable.def", "r", encoding="utf-8") as f:
     index = 0
     for line in f:
         # コメント除去
