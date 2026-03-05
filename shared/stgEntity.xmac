@@ -7,17 +7,17 @@
 
 
 ENTITY(enemyBezier,
-	FIELD(int16, x)
-	FIELD(int16, y)
-	FIELD(int16, pattern, 0)
-	FIELD(int32, duration, 5000)
+	FIELD(s16, x)
+	FIELD(s16, y)
+	FIELD(s16, pattern, 0)
+	FIELD(s32, duration, 5000)
 )
 
 ENTITY(enemyStraight,
-	FIELD(int16, x)
-	FIELD(int16, y)
-	FIELD(int16, vx)
-	FIELD(int16, vy)
+	FIELD(s16, x)
+	FIELD(s16, y)
+	FIELD(s16, vx)
+	FIELD(s16, vy)
 )
 
 

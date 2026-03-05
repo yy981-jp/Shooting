@@ -41,7 +41,7 @@ class Game {
 public:
     void setScene(SceneID id);
     
-    Game(const int windowWidth, const int windowHeight, bool fullscreen);
+    Game(const int windowWidth, const int windowHeight, SceneID initScene, bool fullscreen);
     ~Game();
     void tick();
     bool shouldQuit() {return !running;}

@@ -7,6 +7,13 @@
 #include "../tables/all.h"
 
 
+enum class SpriteID : size_t {
+#define X(name) name,
+#include "../../../assets/sprite.def"
+#undef X
+    Count
+};
+
 struct SpriteInfo {
     SpriteInfo(): tex(nullptr), hw(0), hh(0) {}
     SpriteInfo(void* tex, int width, int height):
@@ -35,7 +42,7 @@ public:
     vec2i getSpriteHalfSize(SpriteID spriteID) const;
 	void drawSprite(SpriteID spriteID, const vec2f& pos, float rad = 0) const; // write to buffer
     void flush() const;
-	void drawSpriteNow(SpriteID spriteID, const vec2f& pos, float rad = 0) const;
+	void drawSpriteNow(SpriteID spriteID, const vec2f& pos, float rad = 0, float scale = 1) const;
 
     // for Debug
     void drawFilledCircle(const vec2f pos, float rad) const;

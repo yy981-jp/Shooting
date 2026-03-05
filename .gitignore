@@ -2,3 +2,5 @@ build*/
 /docs/
 *.pyc
 *.stg.dat
+*.o
+*.exe
