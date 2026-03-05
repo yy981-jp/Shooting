@@ -5,7 +5,7 @@ enum class STGEntityID : uint16_t {
 
 #define ENTITY(name, fields) name,
 #define FIELD(...)
-#include "entity_defs.xmac"
+#include "stgEntity.xmac"
 #undef ENTITY
 #undef FIELD
 
@@ -16,13 +16,13 @@ namespace STGEntity {
 
 #pragma pack(1)
 
-using int8 = int8_t;
-// using uint8 = uint8_t;
-using int16 = int16_t;
-// using uint16 = uint16_t;
-using int32 = int32_t;
-// using uint32 = uint32_t;
-// using float = float;
+using s8 = int8_t;
+// using u8 = uint8_t;
+using s16 = int16_t;
+// using u16 = uint16_t;
+using s32 = int32_t;
+// using u32 = uint32_t;
+using f = float;
 
 // unsignedは許容されない
 
@@ -40,7 +40,7 @@ struct name { \
 #define FIELD3(type, name, default_value) \
     type name = default_value;
 
-#include "entity_defs.xmac"
+#include "stgEntity.xmac"
 
 #undef FIELD
 #undef FIELD2

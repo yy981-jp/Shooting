@@ -9,13 +9,13 @@ import os
 
 # 指示書に従った型マッピング
 TYPE_MAP = {
-	"int8": "b",
-	"uint8": "B",
-	"int16": "h",
-	"uint16": "H",
-	"int32": "i",
-	"uint32": "I",
-	"float": "f",
+	"s8": "b",
+	"u8": "B",
+	"s16": "h",
+	"u16": "H",
+	"s32": "i",
+	"u32": "I",
+	"f": "f",
 }
 
 def load_entity_defs(xmac_path: str) -> Dict[str, List[tuple]]:
@@ -123,7 +123,7 @@ def parse_second_value(value: str) -> int:
 
 # XMacro から entity 定義と ID を読み込む
 current_dir = os.path.dirname(os.path.abspath(__file__))
-entity_defs_path = os.path.join(current_dir, "..", "shared", "entity_defs.xmac")
+entity_defs_path = os.path.join(current_dir, "..", "shared", "stgEntity.xmac")
 
 ENTITY_DEFS: Dict[str, List[tuple]] = load_entity_defs(entity_defs_path)
 ENTITY_IDS: Dict[str, int] = load_entity_ids(entity_defs_path)
