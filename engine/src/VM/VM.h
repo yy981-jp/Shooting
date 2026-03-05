@@ -94,6 +94,14 @@ class VM {
     int16_t read_s16() { return static_cast<int16_t>(read_u16()); }
     int32_t read_s32() { return static_cast<int32_t>(read_u32()); }
 
+    template<typename T>
+    T readStruct() {
+        T structure;
+        memcpy(&structure, &instr[pc], sizeof(T));
+        pc += sizeof(T);
+        return structure;
+    }
+
 
     BIN instr;
     uint32_t pc;

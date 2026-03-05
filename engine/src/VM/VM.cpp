@@ -106,11 +106,12 @@ void VM::op_spawn(GCMS& gcm) {
     switch (static_cast<STGEntityID>(entityType)) {
         using enum STGEntityID;
         case enemyBezier: {
+            const auto raw = readStruct<STGEntity::enemyBezier>();
             cmd::enemyBezier c;
-            c.x = read_s16();
-            c.y = read_s16();
-            c.pattern = read_u16();
-            c.duration = read_u32();
+            c.x = raw.x;
+            c.y = raw.y;
+            c.pattern = raw.pattern;
+            c.duration = raw.duration;
             gcm(c);
         } break;
         default: throw std::runtime_error("VM::op_spawn(): entityType");

@@ -3,11 +3,14 @@
 #define FIELD(type, name, ...)
 #endif
 
+
+
+
 ENTITY(enemyBezier,
 	FIELD(int16, x)
 	FIELD(int16, y)
-	FIELD(uint16, pattern, 0)
-	FIELD(uint32, duration, 5000)
+	FIELD(int16, pattern, 0)
+	FIELD(int32, duration, 5000)
 )
 
 ENTITY(enemyStraight,
@@ -16,6 +19,8 @@ ENTITY(enemyStraight,
 	FIELD(int16, vx)
 	FIELD(int16, vy)
 )
+
+
 
 #undef ENTITY
 #undef FIELD
