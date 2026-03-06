@@ -6,9 +6,10 @@
 #include <variant>
 
 #include "../audio/sfx.h"
+#include "../core/hitEvent.h"
 
 namespace cmd {
-    struct enemyBezier { int x, y, pattern, duration; };
+    struct bezierEnemy { int x, y, pattern, duration; };
     struct simpleBullet {
         vec2f pos;
         int degree;
@@ -17,15 +18,17 @@ namespace cmd {
     struct playerBullet { vec2f pos; };
     struct sfx { SFXID id; };
     struct changeScene { SceneID id; };
+    struct onHit { HitEvents events; };
 }
 
 
 using GameCommand = std::variant<
-    cmd::enemyBezier,
+    cmd::bezierEnemy,
     cmd::simpleBullet,
     cmd::playerBullet,
     cmd::sfx,
-    cmd::changeScene
+    cmd::changeScene,
+    cmd::onHit
 >;
 
 

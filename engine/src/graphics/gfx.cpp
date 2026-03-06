@@ -8,6 +8,14 @@
 #include <cmath>
 
 
+constexpr std::array<std::string_view,
+    static_cast<size_t>(SpriteID::Count)> entityNames = {
+#define X(name) #name,
+#include "../../../assets/sprite.def"
+#undef X
+};
+
+
 SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
     SDL_Surface* s = IMG_Load(path.c_str());
     if (!s) {
@@ -19,8 +27,9 @@ SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
 
     SDL_Texture* t = SDL_CreateTextureFromSurface(renderer, s);
     if (!t) throw std::runtime_error(std::string("SDL_CreateTextureFromSurface") + IMG_GetError());
-
-    SDL_FreeSurface(s);
+	SDL_SetTextureBlendMode(t, SDL_BLENDMODE_BLEND); // 透過有効
+    
+	SDL_FreeSurface(s);
 
     return SpriteInfo{static_cast<void*>(t), width/2, height/2};
 }
@@ -47,7 +56,7 @@ Renderer::~Renderer() {
         SDL_DestroyTexture(static_cast<SDL_Texture*>(spriteTable[i].tex));
 }
 
-vec2i Renderer::getSpriteHalfSize(EntityType spriteID) const {
+vec2i Renderer::getSpriteHalfSize(SpriteID spriteID) const {
     const SpriteInfo& sprite = spriteTable[static_cast<size_t>(spriteID)];
     vec2i vec;
     vec.x = sprite.hw;
@@ -55,11 +64,11 @@ vec2i Renderer::getSpriteHalfSize(EntityType spriteID) const {
     return vec;
 }
 
-vec2i Renderer::getSpriteSize(EntityType spriteID) const {
+vec2i Renderer::getSpriteSize(SpriteID spriteID) const {
     return getSpriteHalfSize(spriteID) * 2;
 }
 
-void Renderer::drawSprite(EntityType spriteID, const vec2f& pos, float rad) const {
+void Renderer::drawSprite(SpriteID spriteID, const vec2f& pos, float rad) const {
 	SDL_Texture* tex = static_cast<SDL_Texture*>(
 		spriteTable[static_cast<size_t>(spriteID)].tex
 	);
@@ -142,19 +151,20 @@ void Renderer::drawSprite(EntityType spriteID, const vec2f& pos, float rad) cons
 	indexBuffer.push_back(baseIndex + 0);
 }
 
-void Renderer::drawSpriteNow(EntityType spriteID, const vec2f& pos, float rad) const {
+void Renderer::drawSpriteNow(SpriteID spriteID, const vec2f& pos, float rad, float scale) const {
     auto* renderer = static_cast<SDL_Renderer*>(native);
     if (!renderer) return;
 
     SpriteInfo sprite = spriteTable[static_cast<size_t>(spriteID)];
 
-    SDL_Rect dst;
-    dst.x = pos.x + SCREEN.x - sprite.hw;
-    dst.y = pos.y + SCREEN.y - sprite.hh;
-    dst.w = sprite.hw * 2;
-    dst.h = sprite.hh * 2;
+    SDL_FRect dst;
+    dst.x = pos.x + SCREEN.x - sprite.hw * scale;
+    dst.y = pos.y + SCREEN.y - sprite.hh * scale;
 
-    SDL_RenderCopyEx(renderer, static_cast<SDL_Texture*>(sprite.tex), nullptr, &dst, rad2deg(rad), nullptr, {});
+	dst.w = sprite.hw * 2 * scale;
+    dst.h = sprite.hh * 2 * scale;
+
+    SDL_RenderCopyExF(renderer, static_cast<SDL_Texture*>(sprite.tex), nullptr, &dst, rad2deg(rad), nullptr, SDL_FLIP_NONE);
 }
 
 void Renderer::flush() const {

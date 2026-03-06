@@ -1,34 +1,33 @@
 #include "../core/def.h"
 #include "../core/cache.h"
+#include "../core/entity.h"
 #include "../core/entityManager.h"
 #include "../core/collider.h"
 #include "../core/util.h"
 #include "../core/mathutil.h"
+#include "../motion/motion.h"
 
 #include <deque>
 
 
-struct SimpleBullet: public ICollidable {
-    vec2f pos, vel;
+struct SimpleBullet: public EntityBase<SimpleBullet>, ICollidable {
     vec2f spriteHalf;
-    EntityHandle eh;
-    ColliderHandle ch;
     bool alive = true;
 
-    SimpleBullet(vec2f pos, float speed, vec2f dir, EntityHandle eh, ColliderHandle ch, const vec2f& spriteHalf)
-      : pos(pos), eh(eh), ch(ch), spriteHalf(spriteHalf) {
-        vel = dir * speed;
-    }
+    MotionPipeline mp;
 
-    bool update() {
+    SimpleBullet(vec2f pos, float angle, float speed, EntityHandle eh, ColliderHandle ch, const vec2f& spriteHalf)
+      : EntityBase(eh, ch, pos), spriteHalf(spriteHalf), mp(LineController(angle,speed)) {}
+
+    bool update(float dt) {
         if (!alive) return false;
-        pos += vel;
-        if (isOffScreen(pos,spriteHalf)) alive = false;
+        ms.pos += mp.update(dt,ms);
+        if (isOffScreen(ms.pos,spriteHalf)) alive = false;
         return true;
     }
 
     void draw(const Renderer* r) const {
-        r->drawSprite(EntityType::simpleBullet, pos);
+        r->drawSprite(SpriteID::simpleBullet, ms.pos);
     }
 
     void onHit(const CollisionInfo& info) override {
@@ -36,8 +35,7 @@ struct SimpleBullet: public ICollidable {
     }
 };
 
-class SimpleBullet_Manager {
-    std::deque<SimpleBullet> list;
+class SimpleBullet_Manager: public EntityManagerBase<SimpleBullet> {
     vec2f spriteHalf;
 
 public:
@@ -56,32 +54,9 @@ public:
         col.circle.r = 3.0f;
 
         ColliderHandle ch = physWorld.add(col);
-        vec2f dir = cachesv.getDir(deg2rad(degree));
         
-        list.emplace_back(pos, speed, dir, eh, ch, spriteHalf);
+        objects.emplace_back(pos, deg2rad(degree), speed, eh, ch, spriteHalf);
 
-        entMgr.setPtr(eh, &list.back());
-    }
-
-    void update(float deltatime) {
-        for (size_t i = 0; i < list.size(); ) {
-            if (!list[i].update()) { // 削除されていた場合
-                physWorld.destroy(list[i].ch);
-                entMgr.destroy(list[i].eh);
-                list[i] = std::move(list.back());
-                entMgr.setPtr(list[i].eh, &list[i]); // moveされたentityのptrを更新
-                list.pop_back();
-            } else {
-                physWorld.setPos(list[i].ch,list[i].pos);
-                ++i;
-            }
-        }
-    }
-
-    void draw(const Renderer* r) {
-        for (const auto& entity: list) {
-            entity.draw(r);
-        }
-        r->flush();
+        entMgr.setPtr(eh, &objects.back());
     }
 };

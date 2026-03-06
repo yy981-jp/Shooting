@@ -23,7 +23,7 @@ public:
     }
 
     void draw(const Renderer* renderer) const {
-        renderer->drawSprite(EntityType::playerBullet, pos);
+        renderer->drawSprite(SpriteID::playerBullet, pos);
     }
 
     void onHit(const CollisionInfo& info) {

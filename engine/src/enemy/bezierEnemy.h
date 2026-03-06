@@ -5,32 +5,28 @@
 #include "../gcms/gcms.h"
 #include "../core/entityManager.h"
 #include "../core/spawnManager.h"
+#include "../core/entity.h"
 #include "../graphics/gfx.h"
 #include "../motion/motion.h"
 #include "../tables/all.h"
 #include "../motion/motion.h"
 
 
-struct EnemyBezier: public ICollidable {
-    EntityHandle ent;
-    ColliderHandle col_h;
+
+struct BezierEnemy: public EntityBase<BezierEnemy>, ICollidable {
     bool wasShot = false;
     bool req_enable = false;
     spawnManager spm;
-
-    MotionState ms;
     MotionPipeline mp;
     
-    EnemyBezier(const EntityHandle& e, const vec2f& pos,
+    BezierEnemy(const EntityHandle& e, const vec2f& pos,
       std::span<const vec2f> bezierCurve, int duration,
       const ColliderHandle& col_h)
-      : ms(pos), mp(BezierController(bezierCurve,duration,pos)),
-        ent(e), col_h(col_h), spm(300) {
-            // WaveDecorator WaveDecorator(wave_amp,wave_freq);
-            // mp.addMover(WaveDecorator);
-        }
+      : EntityBase(e, col_h, pos), spm(300),
+        mp(BezierController(bezierCurve,duration,pos)) {
+    }
 
-    bool update(float deltatime, GCMS& gcm) { // true -> 有効,  false -> 削除
+    bool update(float deltatime, GCMS& gcm) { // false -> 削除,  true -> 生存
         if (!mp.isRunning() || wasShot) return false;
         mp.update(deltatime, ms);
 
@@ -49,9 +45,9 @@ struct EnemyBezier: public ICollidable {
     }
 
     void draw(const Renderer* renderer) const {
-        renderer->drawSprite(EntityType::enemyBezier, ms.pos, ms.angle);
+        renderer->drawSprite(SpriteID::bezierEnemy, ms.pos, ms.angle);
     }
-
+    
     void onHit(const CollisionInfo& info) {
         if (info.layer == CollisionLayer::playerBullet) wasShot = true;
     }
@@ -59,15 +55,12 @@ struct EnemyBezier: public ICollidable {
 
 
 
-class EnemyBezier_Manager {
-    std::deque<EnemyBezier> list;
-    vec2f spriteHalf;
-
+class BezierEnemy_Manager: public EntityManagerBase<BezierEnemy> {
     struct BMCache {
         std::string_view get(const int BezierCurveType) const {
             auto it = table.find(BezierCurveType);
             if (it == table.end()) 
-                throw std::runtime_error("enemyBezier_Manager::CacheSV: not found - id: "
+                throw std::runtime_error("BezierEnemy_Manager::CacheSV: not found - id: "
                     + std::to_string(BezierCurveType));
             return it->second;
         }
@@ -75,8 +68,8 @@ class EnemyBezier_Manager {
     } bmcache;
 
 public:
-    EnemyBezier_Manager(const vec2f& spriteHalf): spriteHalf(spriteHalf) {
-        auto arr = paramTable.json["param"]["enemyBezier"]["patterns"].GetArray();
+    BezierEnemy_Manager() {
+        auto arr = paramTable.json["param"]["bezierEnemy"]["patterns"].GetArray();
         int index = 0;
         for (const auto& v: arr) {
             bmcache.table[index++] = v.GetString();
@@ -105,33 +98,11 @@ public:
         // ===== Physics登録 =====
         auto col_handle = physWorld.add(col);
 
-        // ===== EnemyBezier生成 =====
-        list.emplace_back(e, pos, controlVec2, duration, col_handle);
-        EnemyBezier& enemy = list.back();
+        // ===== bezierEnemy生成 =====
+        objects.emplace_back(e, pos, controlVec2, duration, col_handle);
+        BezierEnemy& enemy = objects.back();
 
         // EntityManagerにポインタ登録
         entMgr.setPtr(e,&enemy);
-    }
-
-    void update(float deltatime, GCMS& gcm) {
-        for (size_t i = 0; i < list.size(); ) {
-            if (!list[i].update(deltatime,gcm)) { // 削除されていた場合
-                physWorld.destroy(list[i].col_h);
-                entMgr.destroy(list[i].ent);
-                list[i] = std::move(list.back());
-                entMgr.setPtr(list[i].ent, &list[i]); // moveされたentityのptrを更新
-                list.pop_back();
-            } else {
-                physWorld.setPos(list[i].col_h,list[i].ms.pos);
-                ++i;
-            }
-        }
-    }
-
-    void draw(const Renderer* renderer) const {
-        for (const auto& bullet: list) {
-            bullet.draw(renderer);
-        }
-        renderer->flush();
     }
 };

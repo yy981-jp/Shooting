@@ -1,2 +1,2 @@
-enemyBezier
+bezierEnemy
     x:16, y:16, patternID:16-opt, duration:32-opt

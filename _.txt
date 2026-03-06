@@ -21,8 +21,18 @@ pc = uint32_t
 vec2 = uint16_t
 entityType = uint16_t
 
-内部表現はvec2fで 描画はvec2iで
+stg XMacro化成功
+STGEntity::bezierEnemyはメモリレイアウトによって.stg.datを読むのに使う
+cmd::bezierEnemyはintなどのengine内部での標準的な単位で表現される
+この連携はVM::op_spawnで行われる
+STGEntity:: はXMacroによって自動生成され、stgc/convert.pyも参照する
+cmd:: は手動でstructを書き、engine内部に特化している
+基本的にintはsignedであるべき
 
+
+内部表現はvec2fで 描画もvec2f
+
+entity update: true -> 生存, false -> 削除
 
 描画システムの座標系は左上を原点に, 論理部分の座標系は中央を原点に
 
@@ -52,3 +62,6 @@ batch無効->
 ハイブリッド->
 	5000~6000 60
 	7000 30
+当たり判定無効化->
+	数万 60
+当たり範囲処理が重すぎる

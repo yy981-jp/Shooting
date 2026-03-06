@@ -17,7 +17,7 @@ std::unique_ptr<IScene> createScene(SceneID id, SceneContext& ctx) {
 }
 
 
-Game::Game(const int windowWidth, const int windowHeight, bool fullscreen) {
+Game::Game(const int windowWidth, const int windowHeight, SceneID initScene, bool fullscreen) {
     // SDL init
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) throw std::runtime_error(std::string("SDL_Init failed: ") + SDL_GetError());
     if (!(IMG_Init(IMG_INIT_PNG)&IMG_INIT_PNG)) throw std::runtime_error(std::string("SDL_IMG_Init failed: ") + IMG_GetError());
@@ -49,7 +49,7 @@ Game::Game(const int windowWidth, const int windowHeight, bool fullscreen) {
 
     ctx = SceneContext{ &gcm, &keyStat, renderer, sfxMgr };
 
-    setScene(SceneID::play);
+    setScene(initScene);
 }
 
 Game::~Game() {
@@ -64,8 +64,6 @@ void Game::update() {
     float deltatime = elapsedTime.get();
 
     currentScene->update(ctx,deltatime);
-
-    physWorld.step(); // 当たり判定
 
     for (const auto& c: ctx.gcms->get()) currentScene->handleCommand(c,*this);
     ctx.gcms->clear();

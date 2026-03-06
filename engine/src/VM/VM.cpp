@@ -29,20 +29,20 @@ VM::VM(const std::string& stgdatPath): eventTableDoc(readJson(Assets+"eventTable
 
 
 
-VM::ReturnCode VM::step(GCMS& gcm) {
-    if (!running) return ReturnCode::finished;
+void VM::step(GCMS& gcm) {
+    if (!running) return;
 
     // 複数tick処理
     switch (frame.state) {
     case ExecState::WaitTick:
         if (!--frame.waitTick)
             frame.state = ExecState::Running;
-        return ReturnCode::success;
+        return;
 
     case ExecState::WaitFlag:
         if (flags[flagsTable[frame.waitFlag]])
             frame.state = ExecState::Running;
-        return ReturnCode::success;
+        return;
 
     case ExecState::Running:
         break;
@@ -62,7 +62,7 @@ VM::ReturnCode VM::step(GCMS& gcm) {
         } break;
         case spawn: {
             op_spawn(gcm);
-            return ReturnCode::success;
+            return;
         } break;
         case call: {
             uint32_t jumpAddr = read_u32();
@@ -96,7 +96,6 @@ VM::ReturnCode VM::step(GCMS& gcm) {
             }
         } break;
     }
-    return ReturnCode::success;
 }
 
 
@@ -105,12 +104,13 @@ void VM::op_spawn(GCMS& gcm) {
     uint16_t entityType = read_u16();
     switch (static_cast<STGEntityID>(entityType)) {
         using enum STGEntityID;
-        case enemyBezier: {
-            cmd::enemyBezier c;
-            c.x = read_s16();
-            c.y = read_s16();
-            c.pattern = read_u16();
-            c.duration = read_u32();
+        case bezierEnemy: {
+            const auto raw = readStruct<STGEntity::bezierEnemy>();
+            cmd::bezierEnemy c;
+            c.x = raw.x;
+            c.y = raw.y;
+            c.pattern = raw.pattern;
+            c.duration = raw.duration;
             gcm(c);
         } break;
         default: throw std::runtime_error("VM::op_spawn(): entityType");

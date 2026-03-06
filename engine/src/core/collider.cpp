@@ -136,7 +136,7 @@
     }
 
     // 判定ループ（circle only broadphase）
-    void PhysicsWorld::step() {
+    void PhysicsWorld::step(GCMS& gcm) {
         HitEvents events;
 
         const size_t N = alive.size();
@@ -163,13 +163,7 @@
             }
         }
 
-        // 衝突処理
-        for (const auto& ev: events) {
-            if (auto* a = entMgr.getPtr<ICollidable>(ev.a_handle))
-                a->onHit(ev.a_info);
-            if (auto* b = entMgr.getPtr<ICollidable>(ev.b_handle))
-                b->onHit(ev.b_info);
-        }
+        gcm(cmd::onHit(events));
     }
 
     void PhysicsWorld::destroy(ColliderHandle h) {
