@@ -5,30 +5,27 @@
 #include "../gcms/gcms.h"
 #include "../core/entityManager.h"
 #include "../core/spawnManager.h"
+#include "../core/entity.h"
 #include "../graphics/gfx.h"
 #include "../motion/motion.h"
 #include "../tables/all.h"
 #include "../motion/motion.h"
 
 
-struct BezierEnemy: public ICollidable {
-    EntityHandle ent;
-    ColliderHandle col_h;
+struct BezierEnemy: public EntityBase<BezierEnemy>, ICollidable {
     bool wasShot = false;
     bool req_enable = false;
     spawnManager spm;
-
-    MotionState ms;
     MotionPipeline mp;
     
     BezierEnemy(const EntityHandle& e, const vec2f& pos,
       std::span<const vec2f> bezierCurve, int duration,
       const ColliderHandle& col_h)
-      : ms(pos), mp(BezierController(bezierCurve,duration,pos)),
-        ent(e), col_h(col_h), spm(300) {
+      : EntityBase(e, col_h, pos), spm(300),
+        mp(BezierController(bezierCurve,duration,pos)) {
             // WaveDecorator WaveDecorator(wave_amp,wave_freq);
             // mp.addMover(WaveDecorator);
-        }
+    }
 
     bool update(float deltatime, GCMS& gcm) { // true -> 有効,  false -> 削除
         if (!mp.isRunning() || wasShot) return false;
@@ -51,7 +48,7 @@ struct BezierEnemy: public ICollidable {
     void draw(const Renderer* renderer) const {
         renderer->drawSprite(SpriteID::bezierEnemy, ms.pos, ms.angle);
     }
-
+    
     void onHit(const CollisionInfo& info) {
         if (info.layer == CollisionLayer::playerBullet) wasShot = true;
     }
@@ -59,10 +56,7 @@ struct BezierEnemy: public ICollidable {
 
 
 
-class BezierEnemy_Manager {
-    std::deque<BezierEnemy> list;
-    vec2f spriteHalf;
-
+class BezierEnemy_Manager: public EntityManagerBase<BezierEnemy> {
     struct BMCache {
         std::string_view get(const int BezierCurveType) const {
             auto it = table.find(BezierCurveType);
@@ -75,7 +69,7 @@ class BezierEnemy_Manager {
     } bmcache;
 
 public:
-    BezierEnemy_Manager(const vec2f& spriteHalf): spriteHalf(spriteHalf) {
+    BezierEnemy_Manager() {
         auto arr = paramTable.json["param"]["bezierEnemy"]["patterns"].GetArray();
         int index = 0;
         for (const auto& v: arr) {
@@ -106,32 +100,10 @@ public:
         auto col_handle = physWorld.add(col);
 
         // ===== bezierEnemy生成 =====
-        list.emplace_back(e, pos, controlVec2, duration, col_handle);
-        BezierEnemy& enemy = list.back();
+        objects.emplace_back(e, pos, controlVec2, duration, col_handle);
+        BezierEnemy& enemy = objects.back();
 
         // EntityManagerにポインタ登録
         entMgr.setPtr(e,&enemy);
-    }
-
-    void update(float deltatime, GCMS& gcm) {
-        for (size_t i = 0; i < list.size(); ) {
-            if (!list[i].update(deltatime,gcm)) { // 削除されていた場合
-                physWorld.destroy(list[i].col_h);
-                entMgr.destroy(list[i].ent);
-                list[i] = std::move(list.back());
-                entMgr.setPtr(list[i].ent, &list[i]); // moveされたentityのptrを更新
-                list.pop_back();
-            } else {
-                physWorld.setPos(list[i].col_h,list[i].ms.pos);
-                ++i;
-            }
-        }
-    }
-
-    void draw(const Renderer* renderer) const {
-        for (const auto& bullet: list) {
-            bullet.draw(renderer);
-        }
-        renderer->flush();
     }
 };

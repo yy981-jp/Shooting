@@ -23,12 +23,12 @@ inline vec2i makeDir(uint8_t keys) {
 struct PlayScene: public IScene {
     const std::string stgdatpath = Assets + "main.stg.dat";
 
-    VM* vm;
+    VM vm;
 
-    Player* player;
-    PlayerBullet_Manager* playerBullet_Manager;
-    BezierEnemy_Manager* bezierEnemy_Manager;
-    SimpleBullet_Manager* simpleBullet_Manager;
+    Player player;
+    PlayerBullet_Manager playerBullet_Manager;
+    BezierEnemy_Manager bezierEnemy_Manager;
+    SimpleBullet_Manager simpleBullet_Manager;
 
     PlayScene(SceneContext& ctx);
     void update(SceneContext& ctx, const float dt) override;

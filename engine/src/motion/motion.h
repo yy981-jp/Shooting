@@ -4,11 +4,13 @@
 
 #include "../core/def.h"
 
+#include "LineController.h"
 #include "BezierController.h"
 #include "WaveDecorator.h"
 
 
 using MVController = std::variant<
+    LineController,
     BezierController
 >;
 

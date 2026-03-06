@@ -123,11 +123,5 @@ public:
 
     VM(const std::string& stgdatPath);
 
-    enum class ReturnCode: uint8_t {
-        error,              // 何らかのエラー
-        success,            // 通常終了
-        finished            // stg終端
-    };
-
-    ReturnCode step(GCMS& gcm);
+    void step(GCMS& gcm);
 };
