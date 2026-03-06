@@ -22,8 +22,8 @@ vec2 = uint16_t
 entityType = uint16_t
 
 stg XMacro化成功
-STGEntity::enemyBezierはメモリレイアウトによって.stg.datを読むのに使う
-cmd::enemyBezierはintなどのengine内部での標準的な単位で表現される
+STGEntity::bezierEnemyはメモリレイアウトによって.stg.datを読むのに使う
+cmd::bezierEnemyはintなどのengine内部での標準的な単位で表現される
 この連携はVM::op_spawnで行われる
 STGEntity:: はXMacroによって自動生成され、stgc/convert.pyも参照する
 cmd:: は手動でstructを書き、engine内部に特化している

@@ -6,7 +6,7 @@
 
 
 
-ENTITY(enemyBezier,
+ENTITY(bezierEnemy,
 	FIELD(s16, x)
 	FIELD(s16, y)
 	FIELD(s16, pattern, 0)

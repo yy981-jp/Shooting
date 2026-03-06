@@ -4,7 +4,7 @@
 #include "../player/player.h"
 #include "../bullet/playerBullet.h"
 #include "../bullet/simpleBullet.h"
-#include "../enemy/enemyBezier.h"
+#include "../enemy/bezierEnemy.h"
 
 #include "scene.h"
 
@@ -27,7 +27,7 @@ struct PlayScene: public IScene {
 
     Player* player;
     PlayerBullet_Manager* playerBullet_Manager;
-    EnemyBezier_Manager* enemyBezier_Manager;
+    BezierEnemy_Manager* bezierEnemy_Manager;
     SimpleBullet_Manager* simpleBullet_Manager;
 
     PlayScene(SceneContext& ctx);

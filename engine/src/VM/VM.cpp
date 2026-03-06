@@ -105,9 +105,9 @@ void VM::op_spawn(GCMS& gcm) {
     uint16_t entityType = read_u16();
     switch (static_cast<STGEntityID>(entityType)) {
         using enum STGEntityID;
-        case enemyBezier: {
-            const auto raw = readStruct<STGEntity::enemyBezier>();
-            cmd::enemyBezier c;
+        case bezierEnemy: {
+            const auto raw = readStruct<STGEntity::bezierEnemy>();
+            cmd::bezierEnemy c;
             c.x = raw.x;
             c.y = raw.y;
             c.pattern = raw.pattern;

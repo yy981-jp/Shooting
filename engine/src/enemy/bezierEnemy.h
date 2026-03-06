@@ -11,7 +11,7 @@
 #include "../motion/motion.h"
 
 
-struct EnemyBezier: public ICollidable {
+struct BezierEnemy: public ICollidable {
     EntityHandle ent;
     ColliderHandle col_h;
     bool wasShot = false;
@@ -21,7 +21,7 @@ struct EnemyBezier: public ICollidable {
     MotionState ms;
     MotionPipeline mp;
     
-    EnemyBezier(const EntityHandle& e, const vec2f& pos,
+    BezierEnemy(const EntityHandle& e, const vec2f& pos,
       std::span<const vec2f> bezierCurve, int duration,
       const ColliderHandle& col_h)
       : ms(pos), mp(BezierController(bezierCurve,duration,pos)),
@@ -49,7 +49,7 @@ struct EnemyBezier: public ICollidable {
     }
 
     void draw(const Renderer* renderer) const {
-        renderer->drawSprite(SpriteID::enemyBezier, ms.pos, ms.angle);
+        renderer->drawSprite(SpriteID::bezierEnemy, ms.pos, ms.angle);
     }
 
     void onHit(const CollisionInfo& info) {
@@ -59,15 +59,15 @@ struct EnemyBezier: public ICollidable {
 
 
 
-class EnemyBezier_Manager {
-    std::deque<EnemyBezier> list;
+class BezierEnemy_Manager {
+    std::deque<BezierEnemy> list;
     vec2f spriteHalf;
 
     struct BMCache {
         std::string_view get(const int BezierCurveType) const {
             auto it = table.find(BezierCurveType);
             if (it == table.end()) 
-                throw std::runtime_error("enemyBezier_Manager::CacheSV: not found - id: "
+                throw std::runtime_error("BezierEnemy_Manager::CacheSV: not found - id: "
                     + std::to_string(BezierCurveType));
             return it->second;
         }
@@ -75,8 +75,8 @@ class EnemyBezier_Manager {
     } bmcache;
 
 public:
-    EnemyBezier_Manager(const vec2f& spriteHalf): spriteHalf(spriteHalf) {
-        auto arr = paramTable.json["param"]["enemyBezier"]["patterns"].GetArray();
+    BezierEnemy_Manager(const vec2f& spriteHalf): spriteHalf(spriteHalf) {
+        auto arr = paramTable.json["param"]["bezierEnemy"]["patterns"].GetArray();
         int index = 0;
         for (const auto& v: arr) {
             bmcache.table[index++] = v.GetString();
@@ -105,9 +105,9 @@ public:
         // ===== Physics登録 =====
         auto col_handle = physWorld.add(col);
 
-        // ===== EnemyBezier生成 =====
+        // ===== bezierEnemy生成 =====
         list.emplace_back(e, pos, controlVec2, duration, col_handle);
-        EnemyBezier& enemy = list.back();
+        BezierEnemy& enemy = list.back();
 
         // EntityManagerにポインタ登録
         entMgr.setPtr(e,&enemy);
