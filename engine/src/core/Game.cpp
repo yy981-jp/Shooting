@@ -65,8 +65,6 @@ void Game::update() {
 
     currentScene->update(ctx,deltatime);
 
-    physWorld.step(); // 当たり判定
-
     for (const auto& c: ctx.gcms->get()) currentScene->handleCommand(c,*this);
     ctx.gcms->clear();
 }

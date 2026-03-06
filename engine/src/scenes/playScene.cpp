@@ -12,6 +12,9 @@ void PlayScene::update(SceneContext& ctx, const float dt) {
     // VM step
     if (vm.running) vm.step(*ctx.gcms);
 
+    // 当たり判定
+    physWorld.step(*ctx.gcms);
+
     // entity update
     vec2i d = makeDir(*ctx.input);
     player.update(dt, *ctx.gcms, d.x, d.y, has(*ctx.input, SHTKeyCode::shift), has(*ctx.input, SHTKeyCode::z));

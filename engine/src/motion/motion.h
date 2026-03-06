@@ -34,30 +34,24 @@ public:
 
     /// @return vel
 	vec2f update(float dt, MotionState& ms) {
+        bool alive = true;
 		// Base
 		std::visit([&](auto& b){
-            if constexpr (requires { b.isRunning(); }) {
-                if (running) {
-                    running = false;
-                    if (b.isRunning()) running = true;
-                }
-            }
+            if constexpr (requires { b.isRunning(); }) 
+                alive &= b.isRunning();
 			b.update(dt, ms);
 		}, base);
 
 		// Modifier
 		for (auto& m : modifiers) {
 			std::visit([&](auto& mod){
-                if constexpr (requires { mod.isRunning(); }) {
-                    if (running) {
-                        running = false;
-                        if (mod.isRunning()) running = true;
-                    }
-                }
-				mod.update(dt, ms);
+            if constexpr (requires { mod.isRunning(); }) 
+                alive &= mod.isRunning();
+			mod.update(dt, ms);
 			}, m);
 		}
 
+        running = alive;
         vec2f dir = cachesv.getDir(ms.angle);
         vec2f vel = dir * ms.speed;
         return vel;

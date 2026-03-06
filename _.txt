@@ -32,6 +32,7 @@ cmd:: は手動でstructを書き、engine内部に特化している
 
 内部表現はvec2fで 描画もvec2f
 
+entity update: true -> 生存, false -> 削除
 
 描画システムの座標系は左上を原点に, 論理部分の座標系は中央を原点に
 

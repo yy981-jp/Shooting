@@ -21,7 +21,7 @@ struct SimpleBullet: public EntityBase<SimpleBullet>, ICollidable {
 
     bool update(float dt) {
         if (!alive) return false;
-        mp.update(dt,ms);
+        ms.pos += mp.update(dt,ms);
         if (isOffScreen(ms.pos,spriteHalf)) alive = false;
         return true;
     }

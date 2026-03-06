@@ -1,6 +1,7 @@
 #pragma once
 #include "def.h"
 
+#include <deque>
 
 template<typename T>
 struct EntityBase {
@@ -14,7 +15,7 @@ struct EntityBase {
 
 template<typename T>
 struct EntityManagerBase {
-    std::vector<T> objects;
+    std::deque<T> objects;
 
     template<typename T_E>
     bool callUpdate(T_E& obj, float dt) {
@@ -31,7 +32,7 @@ struct EntityManagerBase {
     
     void update(float dt, GCMS& gcm) {
         for (size_t i = 0; i < objects.size();) {
-            if (callUpdate(objects[i], dt, gcm)) {
+            if (!callUpdate(objects[i], dt, gcm)) {
                 physWorld.destroy(objects[i].col_h);
                 entMgr.destroy(objects[i].ent_h);
                 objects[i] = std::move(objects.back());
@@ -46,7 +47,7 @@ struct EntityManagerBase {
 
     void update(float dt) {
         for (size_t i = 0; i < objects.size();) {
-            if (callUpdate(objects[i], dt)) {
+            if (!callUpdate(objects[i], dt)) {
                 physWorld.destroy(objects[i].col_h);
                 entMgr.destroy(objects[i].ent_h);
                 objects[i] = std::move(objects.back());

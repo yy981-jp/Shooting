@@ -12,6 +12,7 @@
 #include "../motion/motion.h"
 
 
+
 struct BezierEnemy: public EntityBase<BezierEnemy>, ICollidable {
     bool wasShot = false;
     bool req_enable = false;
@@ -23,11 +24,9 @@ struct BezierEnemy: public EntityBase<BezierEnemy>, ICollidable {
       const ColliderHandle& col_h)
       : EntityBase(e, col_h, pos), spm(300),
         mp(BezierController(bezierCurve,duration,pos)) {
-            // WaveDecorator WaveDecorator(wave_amp,wave_freq);
-            // mp.addMover(WaveDecorator);
     }
 
-    bool update(float deltatime, GCMS& gcm) { // true -> 有効,  false -> 削除
+    bool update(float deltatime, GCMS& gcm) { // false -> 削除,  true -> 生存
         if (!mp.isRunning() || wasShot) return false;
         mp.update(deltatime, ms);
 
