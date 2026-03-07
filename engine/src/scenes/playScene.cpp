@@ -19,17 +19,16 @@ void PlayScene::update(SceneContext& ctx, const float dt) {
     vec2i d = makeDir(*ctx.input);
     player.update(dt, *ctx.gcms, d.x, d.y, has(*ctx.input, SHTKeyCode::shift), has(*ctx.input, SHTKeyCode::z));
     // if (!player->isAllive()) running = false;
-    playerBullet_Manager.update(dt);
-    bezierEnemy_Manager.update(dt,*ctx.gcms);
-    simpleBullet_Manager.update(dt);
+    IEntityManagerBase::updateAll(dt,*ctx.gcms);
 }
 
 void PlayScene::draw(const SceneContext& ctx) const {
     ctx.gfx->drawSpriteNow(SpriteID::background, {0,0});
     player.draw(ctx.gfx);
-    playerBullet_Manager.draw(ctx.gfx);
-    bezierEnemy_Manager.draw(ctx.gfx);
-    simpleBullet_Manager.draw(ctx.gfx);
+    IEntityManagerBase::drawAll(ctx.gfx);
+
+    // DEBUG
+    physWorld.draw(ctx.gfx);
 }
 
 void PlayScene::handleCommand(const GameCommand& cmd, Game& game) {

@@ -72,9 +72,6 @@ void Game::update() {
 void Game::draw() const {
     currentScene->draw(ctx);
 
-    // DEBUG
-    // physWorld.draw(renderer);
-
     SDL_RenderPresent(nativeRenderer);
 }
 
