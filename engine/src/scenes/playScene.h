@@ -31,7 +31,6 @@ struct PlayScene: public IScene {
     SimpleBullet_Manager simpleBullet_Manager;
 
     PlayScene(SceneContext& ctx);
-    ~PlayScene();
     void update(SceneContext& ctx, const float dt) override;
     void draw(const SceneContext& ctx) const override;
     void handleCommand(const GameCommand& cmd, Game& game) override;

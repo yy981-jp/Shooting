@@ -7,10 +7,6 @@ PlayScene::PlayScene(SceneContext& ctx):
     simpleBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
     vm(stgdatpath) {}
 
-PlayScene::~PlayScene() {
-    IEntityManagerBase::destroy();
-}
-
 void PlayScene::update(SceneContext& ctx, const float dt) {
     // VM step
     if (vm.running) vm.step(*ctx.gcms);
