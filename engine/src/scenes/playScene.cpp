@@ -4,9 +4,12 @@
 
 PlayScene::PlayScene(SceneContext& ctx):
     player(static_cast<vec2f>(ctx.gfx->getSpriteHalfSize(SpriteID::player)/2), 5.0f*60.0f),
-    playerBullet_Manager(static_cast<vec2f>(ctx.gfx->getSpriteHalfSize(SpriteID::playerBullet)/2)),
-    simpleBullet_Manager(static_cast<vec2f>(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)/2)),
+    simpleBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
     vm(stgdatpath) {}
+
+PlayScene::~PlayScene() {
+    IEntityManagerBase::destroy();
+}
 
 void PlayScene::update(SceneContext& ctx, const float dt) {
     // VM step
@@ -28,7 +31,7 @@ void PlayScene::draw(const SceneContext& ctx) const {
     IEntityManagerBase::drawAll(ctx.gfx);
 
     // DEBUG
-    physWorld.draw(ctx.gfx);
+    // physWorld.draw(ctx.gfx);
 }
 
 void PlayScene::handleCommand(const GameCommand& cmd, Game& game) {

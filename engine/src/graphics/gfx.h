@@ -19,8 +19,8 @@ struct SpriteInfo {
     SpriteInfo(void* tex, int width, int height):
       tex(tex), hw(width), hh(height) {}
     void* tex;
-    int hw;
-    int hh;
+    float hw;
+    float hh;
 };
 
 struct SDL_Vertex;
@@ -39,7 +39,7 @@ public:
     ~Renderer();
 
     vec2i getSpriteSize(SpriteID spriteID) const;
-    vec2i getSpriteHalfSize(SpriteID spriteID) const;
+    vec2f getSpriteHalfSize(SpriteID spriteID) const;
 	void drawSprite(SpriteID spriteID, const vec2f& pos, float rad = 0) const; // write to buffer
     void flush() const;
 	void drawSpriteNow(SpriteID spriteID, const vec2f& pos, float rad = 0, float scale = 1) const;

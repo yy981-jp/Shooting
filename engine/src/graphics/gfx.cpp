@@ -56,16 +56,16 @@ Renderer::~Renderer() {
         SDL_DestroyTexture(static_cast<SDL_Texture*>(spriteTable[i].tex));
 }
 
-vec2i Renderer::getSpriteHalfSize(SpriteID spriteID) const {
+vec2f Renderer::getSpriteHalfSize(SpriteID spriteID) const {
     const SpriteInfo& sprite = spriteTable[static_cast<size_t>(spriteID)];
-    vec2i vec;
+    vec2f vec;
     vec.x = sprite.hw;
     vec.y = sprite.hh;
     return vec;
 }
 
 vec2i Renderer::getSpriteSize(SpriteID spriteID) const {
-    return getSpriteHalfSize(spriteID) * 2;
+    return static_cast<vec2i>(getSpriteHalfSize(spriteID) * 2);
 }
 
 void Renderer::drawSprite(SpriteID spriteID, const vec2f& pos, float rad) const {

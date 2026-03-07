@@ -29,12 +29,7 @@ public:
 
 
 class PlayerBullet_Manager: public EntityManagerBase<PlayerBullet> {
-    std::deque<PlayerBullet> objects;
-    vec2f spriteHalf;
-
 public:
-    PlayerBullet_Manager(const vec2f& spriteHalf): spriteHalf(spriteHalf) {}
-
     void generate(const vec2f& pos) {
         EntityHandle e = entMgr.create();
         Collider col{};
