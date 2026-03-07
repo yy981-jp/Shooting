@@ -1,29 +1,25 @@
 #pragma once
 
 #include "../core/def.h"
+#include "../core/entity.h"
 #include "../core/collider.h"
 #include "../core/entityManager.h"
 
-#include <deque>
 
-
-class PlayerBullet: public ICollidable {
+class PlayerBullet: public EntityBase<PlayerBullet>, ICollidable {
     static constexpr float speed = 800.0f; // pixels per second
     
 public:
-    vec2f pos;
-    EntityHandle ent_h;
-    ColliderHandle col_h;
-
     PlayerBullet(vec2f i_pos, ColliderHandle col_h, EntityHandle ent_h)
-      : col_h(col_h), ent_h(ent_h), pos(i_pos) {}
+      : EntityBase(ent_h,col_h,i_pos) {}
 
-    void update(float deltatime) {
-        pos.y -= speed * deltatime;
+    bool update(float deltatime, GCMS& gcm) {
+        ms.pos.y -= speed * deltatime;
+        return true;
     }
 
     void draw(const Renderer* renderer) const {
-        renderer->drawSprite(SpriteID::playerBullet, pos);
+        renderer->drawSprite(SpriteID::playerBullet, ms.pos);
     }
 
     void onHit(const CollisionInfo& info) {
@@ -32,13 +28,8 @@ public:
 };
 
 
-class PlayerBullet_Manager {
-    std::deque<PlayerBullet> bullets;
-    vec2f spriteHalf;
-
+class PlayerBullet_Manager: public EntityManagerBase<PlayerBullet> {
 public:
-    PlayerBullet_Manager(const vec2f& spriteHalf): spriteHalf(spriteHalf) {}
-
     void generate(const vec2f& pos) {
         EntityHandle e = entMgr.create();
         Collider col{};
@@ -50,28 +41,21 @@ public:
         col.circle.r = 3.0f;
         auto col_handle = physWorld.add(col);
         
-        bullets.emplace_back(pos,col_handle,e);
-        auto& bullet = bullets.back();
+        objects.emplace_back(pos,col_handle,e);
+        auto& bullet = objects.back();
 
         entMgr.setPtr(e,&bullet);
     }
 
-    void update(float deltatime) {
-        if (bullets.size() > 50) {
-            physWorld.destroy(bullets.front().col_h);
-            entMgr.destroy(bullets.front().ent_h);
-            bullets.pop_front();
+    void update(float deltatime, GCMS& gcm) override {
+        if (objects.size() > 50) {
+            physWorld.destroy(objects.front().col_h);
+            entMgr.destroy(objects.front().ent_h);
+            objects.pop_front();
         }
-        for (PlayerBullet& bullet: bullets) {
-            bullet.update(deltatime);
-            physWorld.setPos(bullet.col_h,bullet.pos);
+        for (PlayerBullet& bullet: objects) {
+            bullet.update(deltatime, gcm);
+            physWorld.setPos(bullet.col_h,bullet.ms.pos);
         }
-    }
-
-    void draw(const Renderer* renderer) const {
-        for (const PlayerBullet& bullet: bullets) {
-            bullet.draw(renderer);
-        }
-        renderer->flush();
     }
 };

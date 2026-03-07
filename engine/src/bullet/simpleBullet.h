@@ -19,7 +19,7 @@ struct SimpleBullet: public EntityBase<SimpleBullet>, ICollidable {
     SimpleBullet(vec2f pos, float angle, float speed, EntityHandle eh, ColliderHandle ch, const vec2f& spriteHalf)
       : EntityBase(eh, ch, pos), spriteHalf(spriteHalf), mp(LineController(angle,speed)) {}
 
-    bool update(float dt) {
+    bool update(float dt, GCMS& gcm) {
         if (!alive) return false;
         ms.pos += mp.update(dt,ms);
         if (isOffScreen(ms.pos,spriteHalf)) alive = false;
