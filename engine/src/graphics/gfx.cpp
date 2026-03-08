@@ -85,9 +85,8 @@ void Renderer::drawSprite(SpriteID spriteID, const vec2f& pos, float rad) const 
 
 	int baseIndex = vertexBuffer.size();
 
-	// ---- 回転なしルート ----
-	if (rad == 0.0f)
-	{
+	if (rad == 0.0f) {
+		// ---- 回転なしルート ----
 		SDL_Vertex v[4];
 
 		v[0].position = { SCREEN.x + pos.x - hw, SCREEN.y + pos.y - hh };
@@ -95,8 +94,7 @@ void Renderer::drawSprite(SpriteID spriteID, const vec2f& pos, float rad) const 
 		v[2].position = { SCREEN.x + pos.x + hw, SCREEN.y + pos.y + hh };
 		v[3].position = { SCREEN.x + pos.x - hw, SCREEN.y + pos.y + hh };
 
-		for (int i = 0; i < 4; ++i)
-		{
+		for (int i = 0; i < 4; ++i) {
 			v[i].color = {255,255,255,255};
 
 			v[i].tex_coord = {
@@ -106,10 +104,8 @@ void Renderer::drawSprite(SpriteID spriteID, const vec2f& pos, float rad) const 
 
 			vertexBuffer.push_back(v[i]);
 		}
-	}
-	// ---- 回転ありルート ----
-	else
-	{
+	} else {
+		// ---- 回転ありルート ----
 		float c = cachesv.getCos(rad);
 		float s = -cachesv.getSin(rad);
 

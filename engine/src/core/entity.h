@@ -34,14 +34,6 @@ public:
             e->draw(renderer);
         }
     }
-/*  static void destroy() {
-        スタック上にはないため不要どころか危険
-        for (auto& e: list) {
-            delete e;
-            e = nullptr;
-        }
-    }
-*/
 };
 
 template<typename T>

@@ -6,11 +6,11 @@
 
 // 衝突層
 enum class CollisionLayer: uint8_t {
-    wall            = 1 << 0,
-    player          = 1 << 1,
-    playerBullet    = 1 << 2,
-    enemy           = 1 << 3,
-    enemyBullet     = 1 << 4
+    player          = 1 << 0,
+    playerBullet    = 1 << 1,
+    enemy           = 1 << 2,
+    enemyBullet     = 1 << 3,
+    item            = 1 << 4
 };
 
 // CollisionSystemが衝突処理関数に情報を渡すのに使う構造体

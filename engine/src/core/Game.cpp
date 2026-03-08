@@ -42,6 +42,7 @@ Game::Game(const int windowWidth, const int windowHeight, SceneID initScene, boo
     if (!nativeRenderer) throw std::runtime_error(std::string("SDL_CreateRenderer failed: ") + SDL_GetError());
 
     SDL_RenderSetLogicalSize(nativeRenderer, WINDOW.x, WINDOW.y);
+    SDL_SetRenderDrawBlendMode(nativeRenderer, SDL_BLENDMODE_BLEND);
     
     // entity
     renderer = new Renderer(nativeRenderer, SCREEN.x, SCREEN.y);
@@ -65,8 +66,12 @@ void Game::update() {
 
     currentScene->update(ctx,deltatime);
 
-    for (const auto& c: ctx.gcms->get()) currentScene->handleCommand(c,*this);
-    ctx.gcms->clear();
+    // ハンドラー内で発行されたコマンドも処理するため、ループを繰り返す
+    while (!ctx.gcms->get().empty()) {
+        auto cmds = ctx.gcms->get();
+        ctx.gcms->clear();
+        for (const auto& c: cmds) currentScene->handleCommand(c,*this);
+    }
 }
 
 void Game::draw() const {

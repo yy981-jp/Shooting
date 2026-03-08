@@ -27,7 +27,6 @@ class Game {
     SFXManager* sfxMgr;
     ElapsedTime elapsedTime;
     FpsCounter fpsc;
-    GCMS gcm;
 
     uint8_t keyStat; // SHTKeyCode
     SceneContext ctx;
@@ -39,6 +38,7 @@ class Game {
     void onKeyUP(const SDL_KeyboardEvent& e);
 
 public:
+    GCMS gcm;
     void setScene(SceneID id);
     
     Game(const int windowWidth, const int windowHeight, SceneID initScene, bool fullscreen);

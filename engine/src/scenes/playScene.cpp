@@ -5,6 +5,7 @@
 PlayScene::PlayScene(SceneContext& ctx):
     player(static_cast<vec2f>(ctx.gfx->getSpriteHalfSize(SpriteID::player)/2), 5.0f*60.0f),
     simpleBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
+    pointBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
     vm(stgdatpath) {}
 
 void PlayScene::update(SceneContext& ctx, const float dt) {
@@ -17,7 +18,7 @@ void PlayScene::update(SceneContext& ctx, const float dt) {
     // entity update
     vec2i d = makeDir(*ctx.input);
     player.update(dt, *ctx.gcms, d.x, d.y, has(*ctx.input, SHTKeyCode::shift), has(*ctx.input, SHTKeyCode::z));
-    // if (!player->isAllive()) running = false;
+    if (!player.isAllive()) (*ctx.gcms)(cmd::changeScene{SceneID::title});
     IEntityManagerBase::updateAll(dt,*ctx.gcms);
 }
 

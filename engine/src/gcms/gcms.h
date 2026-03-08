@@ -15,6 +15,7 @@ namespace cmd {
         int degree;
         float speed;
     };
+    struct pointBullet { vec2f pos; };
     struct playerBullet { vec2f pos; };
     struct sfx { SFXID id; };
     struct changeScene { SceneID id; };
@@ -25,6 +26,7 @@ namespace cmd {
 using GameCommand = std::variant<
     cmd::bezierEnemy,
     cmd::simpleBullet,
+    cmd::pointBullet,
     cmd::playerBullet,
     cmd::sfx,
     cmd::changeScene,
