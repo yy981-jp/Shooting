@@ -41,7 +41,7 @@ public:
     GCMS gcm;
     void setScene(SceneID id);
     
-    Game(const int windowWidth, const int windowHeight, SceneID initScene, bool fullscreen);
+    Game(SceneID initScene, bool fullscreen);
     ~Game();
     void tick();
     bool shouldQuit() {return !running;}

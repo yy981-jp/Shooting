@@ -18,7 +18,7 @@ void main_loop() {
 int main(int argc, char* argv[]) {
     bool fullScrernMode = false;
     if (argc >= 2 && std::string(argv[1]) == "f") fullScrernMode = true;
-    game = new Game(800,800, SceneID::play, fullScrernMode);
+    game = new Game(SceneID::play, fullScrernMode);
 
 #ifdef __EMSCRIPTEN__
     emscripten_set_main_loop(main_loop, 0, 1);

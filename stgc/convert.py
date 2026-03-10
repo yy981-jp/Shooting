@@ -7,7 +7,7 @@ import re
 from pprint import pprint
 import os
 
-# 指示書に従った型マッピング
+# 従った型マッピング
 TYPE_MAP = {
 	"s8": "b",
 	"u8": "B",

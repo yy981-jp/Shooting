@@ -13,7 +13,7 @@ class Player: public ICollidable {
     static constexpr vec2f initPos = {0,350};
     vec2f pos = initPos;
     vec2f spriteHalf;
-    int remainingLives = 5;
+    int remainingLives = 500; // DEBUG TODO
     uint64_t score = 0;
     spawnManager spm;
     spawnManager invincible;
