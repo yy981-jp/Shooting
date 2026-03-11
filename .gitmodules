@@ -1,3 +1,6 @@
 [submodule "assets"]
 	path = assets
 	url = https://github.com/y9-T2Project/Assets.git
+[submodule "y9inc"]
+	path = y9inc
+	url = https://github.com/yy981-jp/tools
