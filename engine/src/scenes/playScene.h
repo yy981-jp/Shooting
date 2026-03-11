@@ -24,6 +24,7 @@ inline vec2i makeDir(uint8_t keys) {
 
 struct PlayScene: public IScene {
     const std::string stgdatpath = Assets + "main.stg.dat";
+    std::string buildID, buildTimeStamp;
 
     struct FrameState {
         vec2f playerPos;

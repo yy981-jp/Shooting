@@ -1,13 +1,26 @@
 #include "playScene.h"
 #include "../gcms/playScene.h"
-#include "build_info.h"
+
+#include <y9inc/string.h>
 
 
 PlayScene::PlayScene(SceneContext& ctx):
     player(static_cast<vec2f>(ctx.gfx->getSpriteHalfSize(SpriteID::player)/2), 5.0f*60.0f),
     simpleBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
     pointBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
-    ui(ctx), vm(stgdatpath) {}
+    ui(ctx), vm(stgdatpath) {
+        std::ifstream ifs(Assets+"build.info");
+        if (!ifs) {
+            buildID = "UNKNOWN";
+            buildTimeStamp = "UNKNOWN";
+        } else {
+            std::string line;
+            std::getline(ifs, line);
+            const auto&& values = st::split(line, ",");
+            buildID = values[0];
+            buildTimeStamp = values[1];
+        }
+    }
 
 void PlayScene::update(SceneContext& ctx, const float dt) {
     // DEBUG
@@ -39,7 +52,9 @@ void PlayScene::draw(const SceneContext& ctx) const {
 
 void PlayScene::drawUI(const SceneContext& ctx) const {
     ui.initCur();
-    ui.write(FontSize::f16, std::string("build: ") + BUILD_GIT);
+    ui.write(FontSize::f16, std::string("buildID: ") + buildID);
+    ui.enter();
+    ui.write(FontSize::f16, std::string("buildTime: ") + buildTimeStamp);
     ui.enter();
     ui.write(FontSize::f16, "Copyright (c) 2026 yy981");
     ui.enter();
