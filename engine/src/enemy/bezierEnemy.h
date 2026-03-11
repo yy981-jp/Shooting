@@ -48,8 +48,13 @@ struct BezierEnemy: public EntityBase<BezierEnemy>, ICollidable {
         renderer->drawSprite(SpriteID::bezierEnemy, ms.pos, ms.angle);
     }
     
-    void onHit(const CollisionInfo& info) {
-        if (info.layer == CollisionLayer::playerBullet) wasShot = true;
+    void onHit(const CollisionInfo& info, GCMS& gcm) override {
+        if (info.layer == CollisionLayer::playerBullet) {
+            cmd::pointBullet c;
+            c.pos = ms.pos;
+            gcm(c);
+            wasShot = true;
+        }
     }
 };
 

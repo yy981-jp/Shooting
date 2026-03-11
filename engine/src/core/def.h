@@ -7,8 +7,10 @@
 
 
 const std::string Assets = "../assets/";
-constexpr vec2f WINDOW{800,800};
-constexpr vec2f SCREEN = WINDOW / 2;
+constexpr vec2f WINDOW{1000,800};
+constexpr vec2f UI = {200,0};
+constexpr vec2f SCREEN = {400,400};
+constexpr vec2f UI_ON_WINDOW = {800,0};
 
 using EntityGen = uint16_t;    // 世代
 using EntityID = uint32_t;      // 個体別

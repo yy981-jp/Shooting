@@ -1,9 +1,11 @@
 #include "gfx.h"
+#include "util.h"
 #include "../core/mathUtil.h"
 #include "../core/cache.h"
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 #include <stdexcept>
 #include <cmath>
 
@@ -16,31 +18,41 @@ constexpr std::array<std::string_view,
 };
 
 
-SpriteInfo loadSprite(const std::string& path, SDL_Renderer* renderer) {
-    SDL_Surface* s = IMG_Load(path.c_str());
-    if (!s) {
-        throw std::runtime_error(std::string("IMG_Load error: ") + IMG_GetError());
-    }
-
-    int width  = s->w;
-    int height = s->h;
-
-    SDL_Texture* t = SDL_CreateTextureFromSurface(renderer, s);
-    if (!t) throw std::runtime_error(std::string("SDL_CreateTextureFromSurface") + IMG_GetError());
-	SDL_SetTextureBlendMode(t, SDL_BLENDMODE_BLEND); // 透過有効
-    
-	SDL_FreeSurface(s);
-
-    return SpriteInfo{static_cast<void*>(t), width/2, height/2};
+Color::operator SDL_Color() const {
+    return SDL_Color{r,g,b,a};
 }
 
+
+SpriteEntry loadSprite(const std::string& path, SDL_Renderer* renderer) {
+    SDL_Surface* s = IMG_Load(path.c_str());
+    if (!s) throw std::runtime_error(std::string("IMG_Load error: ") + IMG_GetError());
+	
+	return createEntry(s,renderer);
+}
+/*
+std::vector<std::string> parseU8String(const std::string& str) {
+	int char_size;
+	std::vector<std::string> result;
+
+	for (size_t pos = 0; pos < str.size(); pos += char_size) {
+		unsigned char lead = str[pos];
+			 if (lead < 0x80) char_size=1;
+		else if (lead < 0xE0) char_size=2;
+		else if (lead < 0xF0) char_size=3;
+		else char_size=4;
+
+		result.push_back(str.substr(pos,char_size));
+	}
+}
+*/
 
 /*------------------------------**
 **          Renderer            **
 **------------------------------*/
 Renderer::Renderer(void* sdlRenderer, int halfWidth, int halfHeight): native(sdlRenderer) {
     auto* renderer = static_cast<SDL_Renderer*>(native);
-
+	
+	// sprite 読み込み
     for (size_t i = 0; i < entityNames.size(); ++i) {
         auto name = entityNames[i];
 
@@ -57,7 +69,7 @@ Renderer::~Renderer() {
 }
 
 vec2f Renderer::getSpriteHalfSize(SpriteID spriteID) const {
-    const SpriteInfo& sprite = spriteTable[static_cast<size_t>(spriteID)];
+    const SpriteEntry& sprite = spriteTable[static_cast<size_t>(spriteID)];
     vec2f vec;
     vec.x = sprite.hw;
     vec.y = sprite.hh;
@@ -85,9 +97,8 @@ void Renderer::drawSprite(SpriteID spriteID, const vec2f& pos, float rad) const 
 
 	int baseIndex = vertexBuffer.size();
 
-	// ---- 回転なしルート ----
-	if (rad == 0.0f)
-	{
+	if (rad == 0.0f) {
+		// ---- 回転なしルート ----
 		SDL_Vertex v[4];
 
 		v[0].position = { SCREEN.x + pos.x - hw, SCREEN.y + pos.y - hh };
@@ -95,8 +106,7 @@ void Renderer::drawSprite(SpriteID spriteID, const vec2f& pos, float rad) const 
 		v[2].position = { SCREEN.x + pos.x + hw, SCREEN.y + pos.y + hh };
 		v[3].position = { SCREEN.x + pos.x - hw, SCREEN.y + pos.y + hh };
 
-		for (int i = 0; i < 4; ++i)
-		{
+		for (int i = 0; i < 4; ++i) {
 			v[i].color = {255,255,255,255};
 
 			v[i].tex_coord = {
@@ -106,10 +116,8 @@ void Renderer::drawSprite(SpriteID spriteID, const vec2f& pos, float rad) const 
 
 			vertexBuffer.push_back(v[i]);
 		}
-	}
-	// ---- 回転ありルート ----
-	else
-	{
+	} else {
+		// ---- 回転ありルート ----
 		float c = cachesv.getCos(rad);
 		float s = -cachesv.getSin(rad);
 
@@ -155,11 +163,25 @@ void Renderer::drawSpriteNow(SpriteID spriteID, const vec2f& pos, float rad, flo
     auto* renderer = static_cast<SDL_Renderer*>(native);
     if (!renderer) return;
 
-    SpriteInfo sprite = spriteTable[static_cast<size_t>(spriteID)];
+    SpriteEntry sprite = spriteTable[static_cast<size_t>(spriteID)];
 
     SDL_FRect dst;
     dst.x = pos.x + SCREEN.x - sprite.hw * scale;
     dst.y = pos.y + SCREEN.y - sprite.hh * scale;
+
+	dst.w = sprite.hw * 2 * scale;
+    dst.h = sprite.hh * 2 * scale;
+
+    SDL_RenderCopyExF(renderer, static_cast<SDL_Texture*>(sprite.tex), nullptr, &dst, rad2deg(rad), nullptr, SDL_FLIP_NONE);
+}
+
+void Renderer::drawSpriteNow(const SpriteEntry& sprite, const vec2f& pos, float rad, float scale) const {
+    auto* renderer = static_cast<SDL_Renderer*>(native);
+    if (!renderer) return;
+
+    SDL_FRect dst;
+    dst.x = pos.x + SCREEN.x;
+    dst.y = pos.y + SCREEN.y;
 
 	dst.w = sprite.hw * 2 * scale;
     dst.h = sprite.hh * 2 * scale;

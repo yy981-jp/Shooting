@@ -35,12 +35,12 @@ cmd:: は手動でstructを書き、engine内部に特化している
 entity update: true -> 生存, false -> 削除
 
 enemy追加手順
-	enemy/に.hでEntitytemplateを継承したクラスを作り、その.hをplayscene.cppに埋め込み、playsceneにupdateなどを書き込む
+	enemy/に.hでEntitytemplateを継承したクラスを作り、その.hをplayscene.cppに埋め込む
 	shared/stgEntity.xmacにメモリ構成を定義
 	gcms/gcms.hにコマンドを構成
 
 bullet追加手順
-	bullet/に.hでEntitytemplateを継承したクラスを作り、その.hをplayscene.cppに埋め込み、playsceneにupdateなどを書き込む
+	bullet/に.hでEntitytemplateを継承したクラスを作り、その.hをplayscene.cppに埋め込む
 	gcms/gcms.hにコマンドを構成
 
 描画システムの座標系は左上を原点に, 論理部分の座標系は中央を原点に
@@ -74,3 +74,7 @@ batch無効->
 当たり判定無効化->
 	数万 60
 当たり範囲処理が重すぎる
+
+PlaySceneUI 汎用性をもう少し上げて全Scene共通UI編集システムを作るべき?
+score 敵ごとに何点か振るシステムを作る
+gif対応 先に連番に分解する fpsを格納する設定ファイルがおそらく必要

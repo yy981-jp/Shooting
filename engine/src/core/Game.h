@@ -7,12 +7,14 @@
 #include "collider.h"
 #include "../gcms/gcms.h"
 #include "../graphics/gfx.h"
+#include "../graphics/text.h"
 #include "../audio/sfx.h"
 #include "../scenes/scene.h"
 
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
+#include <SDL_ttf.h>
 
 
 class Game {
@@ -24,10 +26,10 @@ class Game {
     float displayFps = 0;
 
     Renderer* renderer;
+    Text* text;
     SFXManager* sfxMgr;
     ElapsedTime elapsedTime;
     FpsCounter fpsc;
-    GCMS gcm;
 
     uint8_t keyStat; // SHTKeyCode
     SceneContext ctx;
@@ -39,9 +41,10 @@ class Game {
     void onKeyUP(const SDL_KeyboardEvent& e);
 
 public:
+    GCMS gcm;
     void setScene(SceneID id);
     
-    Game(const int windowWidth, const int windowHeight, SceneID initScene, bool fullscreen);
+    Game(SceneID initScene, bool fullscreen);
     ~Game();
     void tick();
     bool shouldQuit() {return !running;}

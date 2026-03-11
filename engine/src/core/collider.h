@@ -6,9 +6,9 @@
 #include "../gcms/gcms.h"
 
 
-// 当たり判定があるentityはこれを継承する
+// 衝突時処理があるentityはこれを継承する
 struct ICollidable {
-	virtual void onHit(const CollisionInfo& info) = 0;
+	virtual void onHit(const CollisionInfo& info, GCMS& gcm) {};
 };
 
 // 下の構造体のためのenumclass
@@ -96,7 +96,7 @@ private:
 
 public:
     void draw(const Renderer* r) {
-        r->setColor(255,255,255,255);
+        r->setColor(255,255,255,200); // 少し透過
         for (const auto& e: alive) {
             r->drawFilledCircle(pos[e], radius[e]);
         }

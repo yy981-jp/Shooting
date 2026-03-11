@@ -17,22 +17,27 @@ std::unique_ptr<IScene> createScene(SceneID id, SceneContext& ctx) {
 }
 
 
-Game::Game(const int windowWidth, const int windowHeight, SceneID initScene, bool fullscreen) {
+Game::Game(SceneID initScene, bool fullscreen) {
     // SDL init
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) throw std::runtime_error(std::string("SDL_Init failed: ") + SDL_GetError());
     if (!(IMG_Init(IMG_INIT_PNG)&IMG_INIT_PNG)) throw std::runtime_error(std::string("SDL_IMG_Init failed: ") + IMG_GetError());
-    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) < 0) throw std::runtime_error(std::string("SDL_IMG_Init failed: ") + Mix_GetError());
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) < 0) throw std::runtime_error(std::string("SDL_MIX_Init failed: ") + Mix_GetError());
+    if (TTF_Init() == -1) throw std::runtime_error(std::string("SDL_TTF_Init failed: ") + TTF_GetError());
+
     Mix_AllocateChannels(64);
 
     window = SDL_CreateWindow(
-        "Shooting-SDL2",
+        "SHT",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        windowWidth,
-        windowHeight,
+        WINDOW.x,
+        WINDOW.y,
         (fullscreen? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_SHOWN)
     );
     if (!window) throw std::runtime_error(std::string("SDL_CreateWindow failed: ") + SDL_GetError());
+    // int w_x, w_y;
+    // SDL_GetWindowPosition(window, &w_x, &w_y);
+    // SDL_SetWindowPosition(window, w_x + UI.x/2, w_y);
 
     nativeRenderer = SDL_CreateRenderer(
         window,
@@ -42,12 +47,15 @@ Game::Game(const int windowWidth, const int windowHeight, SceneID initScene, boo
     if (!nativeRenderer) throw std::runtime_error(std::string("SDL_CreateRenderer failed: ") + SDL_GetError());
 
     SDL_RenderSetLogicalSize(nativeRenderer, WINDOW.x, WINDOW.y);
-    
-    // entity
+    SDL_SetRenderDrawBlendMode(nativeRenderer, SDL_BLENDMODE_BLEND);
+    // SDL_Rect rect{0,0, static_cast<int>(WINDOW.x), static_cast<int>(WINDOW.y)};
+    // SDL_RenderSetViewport(nativeRenderer, &rect);
+
     renderer = new Renderer(nativeRenderer, SCREEN.x, SCREEN.y);
+    text = new Text(renderer);
     sfxMgr = new SFXManager;
 
-    ctx = SceneContext{ &gcm, &keyStat, renderer, sfxMgr };
+    ctx = SceneContext{ &gcm, &keyStat, renderer, text, sfxMgr };
 
     setScene(initScene);
 }
@@ -55,6 +63,7 @@ Game::Game(const int windowWidth, const int windowHeight, SceneID initScene, boo
 Game::~Game() {
     SDL_Quit();
     IMG_Quit();
+    TTF_Quit();
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(nativeRenderer);
 }
@@ -65,8 +74,12 @@ void Game::update() {
 
     currentScene->update(ctx,deltatime);
 
-    for (const auto& c: ctx.gcms->get()) currentScene->handleCommand(c,*this);
-    ctx.gcms->clear();
+    // ハンドラー内で発行されたコマンドも処理するため、ループを繰り返す
+    while (!ctx.gcms->get().empty()) {
+        auto cmds = ctx.gcms->get();
+        ctx.gcms->clear();
+        for (const auto& c: cmds) currentScene->handleCommand(c,*this);
+    }
 }
 
 void Game::draw() const {
@@ -111,7 +124,7 @@ void Game::onKeyUP(const SDL_KeyboardEvent& e) {
 
 void Game::tick() {
     fpsc.update();
-    SDL_SetWindowTitle(window,(std::to_string(displayFps) + "fps   " + std::to_string(entMgr.size()) + "ents").c_str());
+    gcm(cmd::notiFps(displayFps));
     update();
     draw();
 

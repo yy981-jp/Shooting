@@ -15,9 +15,9 @@ struct base {
         // 衝突処理
         for (const auto& ev: c.events) {
             if (auto* a = entMgr.getPtr<ICollidable>(ev.a_handle))
-                a->onHit(ev.a_info);
+                a->onHit(ev.a_info, game.gcm);
             if (auto* b = entMgr.getPtr<ICollidable>(ev.b_handle))
-                b->onHit(ev.b_info);
+                b->onHit(ev.b_info, game.gcm);
         }
     }
 };

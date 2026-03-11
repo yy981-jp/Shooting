@@ -22,7 +22,7 @@ public:
         renderer->drawSprite(SpriteID::playerBullet, ms.pos);
     }
 
-    void onHit(const CollisionInfo& info) {
+    void onHit(const CollisionInfo& info, GCMS& gcm) override {
         // 一旦無視
     }
 };
