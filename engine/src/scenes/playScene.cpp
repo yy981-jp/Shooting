@@ -1,5 +1,6 @@
 #include "playScene.h"
 #include "../gcms/playScene.h"
+#include "build_info.h"
 
 
 PlayScene::PlayScene(SceneContext& ctx):
@@ -38,14 +39,14 @@ void PlayScene::draw(const SceneContext& ctx) const {
 
 void PlayScene::drawUI(const SceneContext& ctx) const {
     ui.initCur();
-    ui.write(FontSize::f16, "build: " + std::string(__DATE__) + " " + std::string(__TIME__));
+    ui.write(FontSize::f16, std::string("build: ") + BUILD_GIT);
     ui.enter();
     ui.write(FontSize::f16, "Copyright (c) 2026 yy981");
     ui.enter();
     ui.write(FontSize::f32, "fps: ");
     ui.write(currentFps, FontSize::f32);
     ui.enter();
-    ui.write(FontSize::f32, "ent: ");
+    ui.write(FontSize::f32, "ents: ");
     ui.write((int)entMgr.size(), FontSize::f32);
     ui.enter();
 }

@@ -9,12 +9,26 @@ set(CMAKE_CXX_STANDARD 23)
 
 file(GLOB_RECURSE SOURCES src/*.cpp)
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+set(BUILD_INFO ${CMAKE_BINARY_DIR}/engine/generated/build_info.h)
+
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/engine/generated)
+
+add_custom_command(
+    OUTPUT ${BUILD_INFO}
+    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_SOURCE_DIR}/cmake/gen_buildinfo.cmake
+    DEPENDS ${CMAKE_SOURCE_DIR}/cmake/gen_buildinfo.cmake
+    COMMENT "Generating build_info.h"
+)
+
+add_executable(${PROJECT_NAME}
+    ${SOURCES}
+    ${BUILD_INFO}
+)
 
 target_include_directories(${PROJECT_NAME}
     SYSTEM PRIVATE ${CMAKE_SOURCE_DIR}/external
+    ${CMAKE_BINARY_DIR}/engine/generated
 )
-
 
 
 if(EMSCRIPTEN)
