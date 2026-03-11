@@ -10,6 +10,8 @@ class Text {
     void* nativeGfx;
     void *font16, *font32, *font64;
 
+    const std::string TTFPath = Assets + "NotoSansJP.ttf";
+
 public:
     Text(Renderer* r);
     SpriteEntry createTextureFromTTF(const std::string& text, FontSize size, Color color) const;

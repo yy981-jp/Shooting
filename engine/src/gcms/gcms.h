@@ -20,6 +20,7 @@ namespace cmd {
     struct sfx { SFXID id; };
     struct changeScene { SceneID id; };
     struct onHit { HitEvents events; };
+    struct notiFps { float fps; };
 }
 
 
@@ -30,7 +31,8 @@ using GameCommand = std::variant<
     cmd::playerBullet,
     cmd::sfx,
     cmd::changeScene,
-    cmd::onHit
+    cmd::onHit,
+    cmd::notiFps
 >;
 
 

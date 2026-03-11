@@ -8,6 +8,7 @@
 #include "../enemy/bezierEnemy.h"
 
 #include "scene.h"
+#include "playSceneUI.h"
 
 
 
@@ -21,26 +22,6 @@ inline vec2i makeDir(uint8_t keys) {
     };
 }
 
-enum class TTFCache {
-    notice,
-    Count
-};
-
-class PlaySceneUI {
-    static constexpr float min = -390;
-    static constexpr float max = 390;
-    float cur = min;
-
-public:
-    inline void init() { cur = min; }
-
-    inline void write(const SceneContext& ctx, FontSize size, const std::string& str) {
-        const auto entry = ctx.txtgfx->createTextureFromTTF(str, size, Color(255,255,255,255));
-        ctx.gfx->drawSpriteNow(entry, {410,cur}, 0.f);
-        cur += ctx.txtgfx->getFontLineSkip(size);
-    }
-};
-
 struct PlayScene: public IScene {
     const std::string stgdatpath = Assets + "main.stg.dat";
 
@@ -49,6 +30,7 @@ struct PlayScene: public IScene {
     } frameState;
 
     mutable PlaySceneUI ui;
+    float currentFps;
 
     VM vm;
 

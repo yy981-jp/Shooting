@@ -6,7 +6,7 @@ PlayScene::PlayScene(SceneContext& ctx):
     player(static_cast<vec2f>(ctx.gfx->getSpriteHalfSize(SpriteID::player)/2), 5.0f*60.0f),
     simpleBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
     pointBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
-    vm(stgdatpath) {}
+    ui(ctx), vm(stgdatpath) {}
 
 void PlayScene::update(SceneContext& ctx, const float dt) {
     // DEBUG
@@ -37,9 +37,17 @@ void PlayScene::draw(const SceneContext& ctx) const {
 }
 
 void PlayScene::drawUI(const SceneContext& ctx) const {
-    ui.init();
-    ui.write(ctx, FontSize::f16, "build: " + std::string(__DATE__) + " " + std::string(__TIME__));
-    ui.write(ctx, FontSize::f16, "Copyright (c) 2026 yy981");
+    ui.initCur();
+    ui.write(FontSize::f16, "build: " + std::string(__DATE__) + " " + std::string(__TIME__));
+    ui.enter();
+    ui.write(FontSize::f16, "Copyright (c) 2026 yy981");
+    ui.enter();
+    ui.write(FontSize::f32, "fps: ");
+    ui.write(currentFps, FontSize::f32);
+    ui.enter();
+    ui.write(FontSize::f32, "ent: ");
+    ui.write((int)entMgr.size(), FontSize::f32);
+    ui.enter();
 }
 
 void PlayScene::handleCommand(const GameCommand& cmd, Game& game) {

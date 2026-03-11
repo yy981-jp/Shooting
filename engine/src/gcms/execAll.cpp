@@ -5,3 +5,4 @@ void commandExec::playScene::operator()(const cmd::bezierEnemy& c) const { scene
 void commandExec::playScene::operator()(const cmd::simpleBullet& c) const { scene.simpleBullet_Manager.generate(c.pos,c.degree,c.speed); }
 void commandExec::playScene::operator()(const cmd::pointBullet& c) const { scene.pointBullet_Manager.generate(c.pos, false /* TODO */); }
 void commandExec::playScene::operator()(const cmd::playerBullet& c) const { scene.playerBullet_Manager.generate(c.pos); }
+void commandExec::playScene::operator()(const cmd::notiFps& c) const { scene.currentFps = c.fps; }

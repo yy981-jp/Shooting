@@ -27,7 +27,7 @@ Game::Game(SceneID initScene, bool fullscreen) {
     Mix_AllocateChannels(64);
 
     window = SDL_CreateWindow(
-        "Shooting-SDL2",
+        "SHT",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
         WINDOW.x,
@@ -124,7 +124,7 @@ void Game::onKeyUP(const SDL_KeyboardEvent& e) {
 
 void Game::tick() {
     fpsc.update();
-    SDL_SetWindowTitle(window,(std::to_string(displayFps) + "fps   " + std::to_string(entMgr.size()) + "ents").c_str());
+    gcm(cmd::notiFps(displayFps));
     update();
     draw();
 

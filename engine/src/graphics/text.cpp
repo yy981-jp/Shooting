@@ -7,9 +7,9 @@
 
 Text::Text(Renderer* r) {
     nativeGfx = r->getNativePtr();
-	font16 = TTF_OpenFont((Assets + "NotoSansJP.ttf").c_str(), 16);
-	font32 = TTF_OpenFont((Assets + "NotoSansJP.ttf").c_str(), 32);
-	font64 = TTF_OpenFont((Assets + "NotoSansJP.ttf").c_str(), 64);
+	font16 = TTF_OpenFont(TTFPath.c_str(), 16);
+	font32 = TTF_OpenFont(TTFPath.c_str(), 32);
+	font64 = TTF_OpenFont(TTFPath.c_str(), 64);
 	if (!font16 || !font32 || !font64) throw std::runtime_error(std::string("load font failed: ") + TTF_GetError());
 }
 
