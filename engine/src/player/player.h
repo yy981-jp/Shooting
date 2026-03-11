@@ -13,14 +13,15 @@ class Player: public ICollidable {
     static constexpr vec2f initPos = {0,350};
     vec2f pos = initPos;
     vec2f spriteHalf;
-    int remainingLives = 500; // DEBUG TODO
-    uint64_t score = 0;
     spawnManager spm;
     spawnManager invincible;
     ColliderHandle h;
     void onHit(const CollisionInfo& info, GCMS& gcm) override;
 
 public:
+    uint64_t score = 0;
+    int remainingLives = 500; // DEBUG
+
     Player(const vec2f& spriteHalf, float speed);
     bool isAllive() { return remainingLives; }
 

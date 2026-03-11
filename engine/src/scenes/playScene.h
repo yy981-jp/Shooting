@@ -28,6 +28,7 @@ struct PlayScene: public IScene {
 
     struct FrameState {
         vec2f playerPos;
+        int playerRemainingLives;
     } frameState;
 
     mutable PlaySceneUI ui;

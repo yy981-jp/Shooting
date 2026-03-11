@@ -15,19 +15,9 @@ target_include_directories(${PROJECT_NAME}
     SYSTEM PRIVATE ${CMAKE_SOURCE_DIR}/engine/external
 )
 
-execute_process(
-    COMMAND git describe --always --dirty --tags
+add_custom_target(buildinfo ALL
+    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_SOURCE_DIR}/cmake/gen_buildinfo.cmake
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    OUTPUT_VARIABLE GIT_DESCRIBE
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-
-string(TIMESTAMP BUILD_DATETIME "%Y/%m/%d-%H:%M:%S")
-
-configure_file(
-    ${CMAKE_SOURCE_DIR}/cmake/_buildinfo.csv.in
-    ${CMAKE_SOURCE_DIR}/assets/build.info
-    @ONLY
 )
 
 if(EMSCRIPTEN)

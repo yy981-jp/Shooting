@@ -61,8 +61,8 @@ public:
 
     inline void setSize(FontSize size) { currentFontSize = size; }
 
-    inline void enter() {
-        cur += ctx.txtgfx->getFontLineSkip(currentFontSize);
+    inline void enter(int loop = 1) {
+        cur += ctx.txtgfx->getFontLineSkip(currentFontSize) * loop;
         wcur = wmin;
     }
 

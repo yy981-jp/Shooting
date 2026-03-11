@@ -52,17 +52,27 @@ void PlayScene::draw(const SceneContext& ctx) const {
 
 void PlayScene::drawUI(const SceneContext& ctx) const {
     ui.initCur();
-    ui.write(FontSize::f16, std::string("buildID: ") + buildID);
+    ui.write(FontSize::f16, "buildID:");
     ui.enter();
-    ui.write(FontSize::f16, std::string("buildTime: ") + buildTimeStamp);
+    ui.write(FontSize::f16, buildID);
     ui.enter();
+    ui.write(FontSize::f16, "buildTime:");
+    ui.enter();
+    ui.write(FontSize::f16, buildTimeStamp);
+    ui.enter(2);
     ui.write(FontSize::f16, "Copyright (c) 2026 yy981");
-    ui.enter();
+    ui.enter(5);
     ui.write(FontSize::f32, "fps: ");
     ui.write(currentFps, FontSize::f32);
     ui.enter();
     ui.write(FontSize::f32, "ents: ");
     ui.write((int)entMgr.size(), FontSize::f32);
+    ui.enter();
+    ui.write(FontSize::f32, "score: ");
+    ui.write((int)player.score, FontSize::f32);
+    ui.enter();
+    ui.write(FontSize::f32, "残機: ");
+    ui.write((int)player.remainingLives, FontSize::f32);
     ui.enter();
 }
 
