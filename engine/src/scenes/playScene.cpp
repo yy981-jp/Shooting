@@ -9,6 +9,9 @@ PlayScene::PlayScene(SceneContext& ctx):
     vm(stgdatpath) {}
 
 void PlayScene::update(SceneContext& ctx, const float dt) {
+    // DEBUG
+    if (has(*ctx.input, SHTKeyCode::x)) (*ctx.gcms)(cmd::changeScene{SceneID::title});
+
     // VM step
     if (vm.running) vm.step(*ctx.gcms);
 
@@ -24,11 +27,19 @@ void PlayScene::update(SceneContext& ctx, const float dt) {
 
 void PlayScene::draw(const SceneContext& ctx) const {
     ctx.gfx->drawSpriteNow(SpriteID::background, {0,0});
+    ctx.gfx->drawSpriteNow(SpriteID::uiBackground, {500,0});
     player.draw(ctx.gfx);
     IEntityManagerBase::drawAll(ctx.gfx);
+    drawUI(ctx);
 
     // DEBUG
     // physWorld.draw(ctx.gfx);
+}
+
+void PlayScene::drawUI(const SceneContext& ctx) const {
+    ui.init();
+    ui.write(ctx, FontSize::f16, "build: " + std::string(__DATE__) + " " + std::string(__TIME__));
+    ui.write(ctx, FontSize::f16, "Copyright (c) 2026 yy981");
 }
 
 void PlayScene::handleCommand(const GameCommand& cmd, Game& game) {

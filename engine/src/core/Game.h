@@ -7,12 +7,14 @@
 #include "collider.h"
 #include "../gcms/gcms.h"
 #include "../graphics/gfx.h"
+#include "../graphics/text.h"
 #include "../audio/sfx.h"
 #include "../scenes/scene.h"
 
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
+#include <SDL_ttf.h>
 
 
 class Game {
@@ -24,6 +26,7 @@ class Game {
     float displayFps = 0;
 
     Renderer* renderer;
+    Text* text;
     SFXManager* sfxMgr;
     ElapsedTime elapsedTime;
     FpsCounter fpsc;

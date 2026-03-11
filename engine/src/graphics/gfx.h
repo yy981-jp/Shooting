@@ -14,20 +14,27 @@ enum class SpriteID : size_t {
     Count
 };
 
-struct SpriteInfo {
-    SpriteInfo(): tex(nullptr), hw(0), hh(0) {}
-    SpriteInfo(void* tex, int width, int height):
+struct SDL_Vertex;
+struct SDL_Color;
+
+struct SpriteEntry {
+    SpriteEntry(): tex(nullptr), hw(0), hh(0) {}
+    SpriteEntry(void* tex, int width, int height):
       tex(tex), hw(width), hh(height) {}
     void* tex;
     float hw;
     float hh;
 };
 
-struct SDL_Vertex;
+struct Color {
+    uint8_t r, g, b, a;
+
+    operator SDL_Color() const;
+};
 
 class Renderer {
 	void* native;
-    SpriteInfo spriteTable[static_cast<size_t>(SpriteID::Count)];
+    SpriteEntry spriteTable[static_cast<size_t>(SpriteID::Count)];
 
 	// ===== for batch buffer =====
 	mutable std::vector<SDL_Vertex> vertexBuffer;
@@ -43,6 +50,9 @@ public:
 	void drawSprite(SpriteID spriteID, const vec2f& pos, float rad = 0) const; // write to buffer
     void flush() const;
 	void drawSpriteNow(SpriteID spriteID, const vec2f& pos, float rad = 0, float scale = 1) const;
+	void drawSpriteNow(const SpriteEntry& spriteEntry, const vec2f& pos, float rad = 0, float scale = 1) const;
+
+    void* getNativePtr() { return native; }
 
     // for Debug
     void drawFilledCircle(const vec2f pos, float rad) const;

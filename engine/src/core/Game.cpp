@@ -21,7 +21,9 @@ Game::Game(SceneID initScene, bool fullscreen) {
     // SDL init
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) throw std::runtime_error(std::string("SDL_Init failed: ") + SDL_GetError());
     if (!(IMG_Init(IMG_INIT_PNG)&IMG_INIT_PNG)) throw std::runtime_error(std::string("SDL_IMG_Init failed: ") + IMG_GetError());
-    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) < 0) throw std::runtime_error(std::string("SDL_IMG_Init failed: ") + Mix_GetError());
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) < 0) throw std::runtime_error(std::string("SDL_MIX_Init failed: ") + Mix_GetError());
+    if (TTF_Init() == -1) throw std::runtime_error(std::string("SDL_TTF_Init failed: ") + TTF_GetError());
+
     Mix_AllocateChannels(64);
 
     window = SDL_CreateWindow(
@@ -46,14 +48,14 @@ Game::Game(SceneID initScene, bool fullscreen) {
 
     SDL_RenderSetLogicalSize(nativeRenderer, WINDOW.x, WINDOW.y);
     SDL_SetRenderDrawBlendMode(nativeRenderer, SDL_BLENDMODE_BLEND);
-    SDL_Rect rect{0,0, static_cast<int>(WINDOW.x), static_cast<int>(WINDOW.y)};
-    SDL_RenderSetViewport(nativeRenderer, &rect);
+    // SDL_Rect rect{0,0, static_cast<int>(WINDOW.x), static_cast<int>(WINDOW.y)};
+    // SDL_RenderSetViewport(nativeRenderer, &rect);
 
-    // entity
     renderer = new Renderer(nativeRenderer, SCREEN.x, SCREEN.y);
+    text = new Text(renderer);
     sfxMgr = new SFXManager;
 
-    ctx = SceneContext{ &gcm, &keyStat, renderer, sfxMgr };
+    ctx = SceneContext{ &gcm, &keyStat, renderer, text, sfxMgr };
 
     setScene(initScene);
 }
@@ -61,6 +63,7 @@ Game::Game(SceneID initScene, bool fullscreen) {
 Game::~Game() {
     SDL_Quit();
     IMG_Quit();
+    TTF_Quit();
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(nativeRenderer);
 }
