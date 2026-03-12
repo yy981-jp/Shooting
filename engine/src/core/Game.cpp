@@ -35,9 +35,6 @@ Game::Game(SceneID initScene, bool fullscreen) {
         (fullscreen? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_SHOWN)
     );
     if (!window) throw std::runtime_error(std::string("SDL_CreateWindow failed: ") + SDL_GetError());
-    // int w_x, w_y;
-    // SDL_GetWindowPosition(window, &w_x, &w_y);
-    // SDL_SetWindowPosition(window, w_x + UI.x/2, w_y);
 
     nativeRenderer = SDL_CreateRenderer(
         window,
@@ -48,8 +45,6 @@ Game::Game(SceneID initScene, bool fullscreen) {
 
     SDL_RenderSetLogicalSize(nativeRenderer, WINDOW.x, WINDOW.y);
     SDL_SetRenderDrawBlendMode(nativeRenderer, SDL_BLENDMODE_BLEND);
-    // SDL_Rect rect{0,0, static_cast<int>(WINDOW.x), static_cast<int>(WINDOW.y)};
-    // SDL_RenderSetViewport(nativeRenderer, &rect);
 
     renderer = new Renderer(nativeRenderer, SCREEN.x, SCREEN.y);
     text = new Text(renderer);

@@ -8,7 +8,7 @@
 
 
 enum class SpriteID : size_t {
-#define X(name) name,
+#define X(name,type) name,
 #include "../../../assets/sprite.def"
 #undef X
     Count

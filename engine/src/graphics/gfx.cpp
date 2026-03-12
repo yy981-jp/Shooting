@@ -12,10 +12,22 @@
 
 constexpr std::array<std::string_view,
     static_cast<size_t>(SpriteID::Count)> entityNames = {
-#define X(name) #name,
+#define X(name,type) #name,
 #include "../../../assets/sprite.def"
 #undef X
 };
+
+enum class SpriteFileType {
+	null, png, gif
+};
+
+SpriteFileType sprFTList[] = {
+#define X(name,type) SpriteFileType::type,
+#include "../../../assets/sprite.def"
+#undef X
+	SpriteFileType::null
+};
+
 
 
 Color::operator SDL_Color() const {
