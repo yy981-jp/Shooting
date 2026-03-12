@@ -8,7 +8,7 @@
 
 
 enum class SpriteID : size_t {
-#define X(name,type) name,
+#define X(name) name,
 #include "../../../assets/sprite.def"
 #undef X
     Count
@@ -18,6 +18,7 @@ struct SDL_Vertex;
 struct SDL_Color;
 
 enum class AtlasID {
+    null,
     sprite, font,
     Count
 };
@@ -25,6 +26,13 @@ enum class AtlasID {
 struct SpriteEntry {
 	float u1, v1, u2, v2; // uv rect for GPU
 	uint16_t hw, hh; // half width, half height
+    AtlasID id;
+};
+
+struct Sprite {
+    SpriteEntry* entries;
+    uint16_t frameCount;
+    inline SpriteEntry operator[](const size_t& index) const { return entries[index]; }
 };
 
 struct Color {
@@ -35,12 +43,15 @@ struct Color {
 
 class Renderer {
 	void* native;
-	void* atlasTex[static_cast<size_t>(AtlasID::Count)];
-    SpriteEntry spriteTable[static_cast<size_t>(SpriteID::Count)];
+    Sprite spriteTable[static_cast<size_t>(SpriteID::Count)];
 
 	// ===== for batch buffer =====
 	mutable std::vector<SDL_Vertex> vertexBuffer;
 	mutable std::vector<int> indexBuffer;
+
+    // atlas
+	void* atlasTex[static_cast<size_t>(AtlasID::Count)];
+    mutable AtlasID currentAtlas = AtlasID::null;
 
 public:
 	Renderer(void* sdlRenderer, int halfWidth, int halfHeight);
@@ -48,10 +59,8 @@ public:
 
     vec2f getSpriteSize(SpriteID spriteID) const;
     vec2f getSpriteHalfSize(SpriteID spriteID) const;
-	void drawSprite(SpriteID spriteID, const vec2f& pos, float rad = 0) const; // write to buffer
+	void drawSprite(SpriteID spriteID, const vec2f& pos, float rad = 0, uint16_t frameIndex = 0) const; // write to buffer
     void flush() const;
-	void drawSpriteNow(SpriteID spriteID, const vec2f& pos, float rad = 0, float scale = 1) const;
-	void drawSpriteNow(const SpriteEntry& spriteEntry, const vec2f& pos, float rad = 0, float scale = 1) const;
 
     void* getNativePtr() { return native; }
 

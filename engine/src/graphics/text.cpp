@@ -24,7 +24,7 @@ SpriteEntry Text::createTextureFromTTF(const std::string& text, FontSize size, C
     }
 
 	SDL_Surface* s = TTF_RenderUTF8_Blended(targetFont, text.c_str(), static_cast<SDL_Color>(color));
-	return createEntry(s,static_cast<SDL_Renderer*>(nativeGfx));
+	// return createEntry(s,static_cast<SDL_Renderer*>(nativeGfx));
 }
 
 int Text::getFontLineSkip(FontSize size) const {

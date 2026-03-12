@@ -8,7 +8,7 @@
 #include "../enemy/bezierEnemy.h"
 
 #include "scene.h"
-#include "playSceneUI.h"
+// #include "playSceneUI.h"
 
 
 
@@ -31,7 +31,7 @@ struct PlayScene: public IScene {
         int playerRemainingLives;
     } frameState;
 
-    mutable PlaySceneUI ui;
+    // mutable PlaySceneUI ui;
     float currentFps;
 
     VM vm;

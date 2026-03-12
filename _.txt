@@ -80,3 +80,6 @@ score 敵ごとに何点か振るシステムを作る
 gif対応 先に連番に分解する fpsを格納する設定ファイルがおそらく必要
 
 png webp化 いつかやってもいいかもしれない
+
+
+同じSpriteのSpriteEntryは同じatlasに格納する

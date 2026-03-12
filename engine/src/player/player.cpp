@@ -37,7 +37,7 @@ void Player::update(float deltatime, GCMS& gcm, int dx, int dy, bool slow, bool 
 }
 
 void Player::draw(const Renderer* renderer) const {
-    renderer->drawSpriteNow(SpriteID::player, pos);
+    renderer->drawSprite(SpriteID::player, pos);
 }
 
 Player::Player(const vec2f& spriteHalf, float speed):
