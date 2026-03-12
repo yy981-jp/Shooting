@@ -17,13 +17,14 @@ enum class SpriteID : size_t {
 struct SDL_Vertex;
 struct SDL_Color;
 
+enum class AtlasID {
+    sprite, font,
+    Count
+};
+
 struct SpriteEntry {
-    SpriteEntry(): tex(nullptr), hw(0), hh(0) {}
-    SpriteEntry(void* tex, int width, int height):
-      tex(tex), hw(width), hh(height) {}
-    void* tex;
-    float hw;
-    float hh;
+	float u1, v1, u2, v2; // uv rect for GPU
+	uint16_t hw, hh; // half width, half height
 };
 
 struct Color {
@@ -34,18 +35,18 @@ struct Color {
 
 class Renderer {
 	void* native;
+	void* atlasTex[static_cast<size_t>(AtlasID::Count)];
     SpriteEntry spriteTable[static_cast<size_t>(SpriteID::Count)];
 
 	// ===== for batch buffer =====
 	mutable std::vector<SDL_Vertex> vertexBuffer;
 	mutable std::vector<int> indexBuffer;
-	mutable void* currentTexture = nullptr;
 
 public:
 	Renderer(void* sdlRenderer, int halfWidth, int halfHeight);
     ~Renderer();
 
-    vec2i getSpriteSize(SpriteID spriteID) const;
+    vec2f getSpriteSize(SpriteID spriteID) const;
     vec2f getSpriteHalfSize(SpriteID spriteID) const;
 	void drawSprite(SpriteID spriteID, const vec2f& pos, float rad = 0) const; // write to buffer
     void flush() const;

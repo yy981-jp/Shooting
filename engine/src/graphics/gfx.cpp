@@ -88,24 +88,22 @@ vec2f Renderer::getSpriteHalfSize(SpriteID spriteID) const {
     return vec;
 }
 
-vec2i Renderer::getSpriteSize(SpriteID spriteID) const {
-    return static_cast<vec2i>(getSpriteHalfSize(spriteID) * 2);
+vec2f Renderer::getSpriteSize(SpriteID spriteID) const {
+    return getSpriteHalfSize(spriteID) * 2;
 }
 
 void Renderer::drawSprite(SpriteID spriteID, const vec2f& pos, float rad) const {
-	SDL_Texture* tex = static_cast<SDL_Texture*>(
-		spriteTable[static_cast<size_t>(spriteID)].tex
-	);
-
-	if (currentTexture && currentTexture != tex)
-		throw std::runtime_error("gfx::drawSprite: currentTexture != tex");
-
-	currentTexture = static_cast<void*>(tex);
-
 	const auto& sp = spriteTable[static_cast<size_t>(spriteID)];
+
+	SDL_Texture* tex;
 
 	float hw = sp.hw;
 	float hh = sp.hh;
+
+	float u1 = sp.u1;
+	float v1 = sp.v1;
+	float u2 = sp.u2;
+	float v2 = sp.v2;
 
 	int baseIndex = vertexBuffer.size();
 
@@ -118,17 +116,17 @@ void Renderer::drawSprite(SpriteID spriteID, const vec2f& pos, float rad) const 
 		v[2].position = { SCREEN.x + pos.x + hw, SCREEN.y + pos.y + hh };
 		v[3].position = { SCREEN.x + pos.x - hw, SCREEN.y + pos.y + hh };
 
+		v[0].tex_coord = { u1, v1 };
+		v[1].tex_coord = { u2, v1 };
+		v[2].tex_coord = { u2, v2 };
+		v[3].tex_coord = { u1, v2 };
+
 		for (int i = 0; i < 4; ++i) {
 			v[i].color = {255,255,255,255};
-
-			v[i].tex_coord = {
-				(i == 1 || i == 2) ? 1.0f : 0.0f,
-				(i >= 2) ? 1.0f : 0.0f
-			};
-
 			vertexBuffer.push_back(v[i]);
 		}
-	} else {
+	}
+	else {
 		// ---- 回転ありルート ----
 		float c = cachesv.getCos(rad);
 		float s = -cachesv.getSin(rad);
@@ -140,26 +138,25 @@ void Renderer::drawSprite(SpriteID spriteID, const vec2f& pos, float rad) const 
 			{-hw,  hh}
 		};
 
-		for (int i = 0; i < 4; ++i)
-		{
+		const float u[4] = {u1, u2, u2, u1};
+		const float v[4] = {v1, v1, v2, v2};
+
+		for (int i = 0; i < 4; ++i) {
 			float rx = corners[i].x * c - corners[i].y * s;
 			float ry = corners[i].x * s + corners[i].y * c;
 
-			SDL_Vertex v;
+			SDL_Vertex vert;
 
-			v.position = {
+			vert.position = {
 				SCREEN.x + pos.x + rx,
 				SCREEN.y + pos.y + ry
 			};
 
-			v.color = {255,255,255,255};
+			vert.color = {255,255,255,255};
 
-			v.tex_coord = {
-				(i == 1 || i == 2) ? 1.0f : 0.0f,
-				(i >= 2) ? 1.0f : 0.0f
-			};
+			vert.tex_coord = { u[i], v[i] };
 
-			vertexBuffer.push_back(v);
+			vertexBuffer.push_back(vert);
 		}
 	}
 
@@ -202,11 +199,11 @@ void Renderer::drawSpriteNow(const SpriteEntry& sprite, const vec2f& pos, float 
 }
 
 void Renderer::flush() const {
-	if (vertexBuffer.empty() || !currentTexture) return;
+	if (vertexBuffer.empty()) return;
 
 	SDL_RenderGeometry(
 		static_cast<SDL_Renderer*>(native),
-		static_cast<SDL_Texture*>(currentTexture),
+		static_cast<SDL_Texture*>(atlasTex),
 		vertexBuffer.data(),
 		vertexBuffer.size(),
 		indexBuffer.data(),
@@ -215,7 +212,6 @@ void Renderer::flush() const {
 
 	vertexBuffer.clear();
 	indexBuffer.clear();
-    currentTexture = nullptr;
 }
 
 void Renderer::drawFilledCircle(const vec2f pos, float rad) const {
