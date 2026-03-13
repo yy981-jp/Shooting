@@ -48,7 +48,9 @@ x = 0
 y = 0
 row_h = 0
 
-meta = {}
+meta = {
+	"version": 1
+}
 
 x, y, row_h = exec(draw, x, y, row_h, meta, "16", font16)
 x, y, row_h = exec(draw, x, y, row_h, meta, "32", font32)

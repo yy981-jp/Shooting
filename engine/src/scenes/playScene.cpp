@@ -44,9 +44,7 @@ void PlayScene::draw(const SceneContext& ctx) const {
     ctx.gfx->drawSprite(SpriteID::uiBackground, {500,0});
     IEntityManagerBase::drawAll(ctx.gfx);
     player.draw(ctx.gfx);
-    ctx.gfx->flush();
     drawUI(ctx);
-    ctx.gfx->flush();
 
     // DEBUG
     // physWorld.draw(ctx.gfx);

@@ -29,6 +29,16 @@ struct SpriteEntry {
     AtlasID id;
 };
 
+enum class FontSize {
+    f16, f32, f64,
+    Count
+};
+
+constexpr std::string fontSizeName[static_cast<int>(FontSize::Count)] = {
+    "f16", "f32", "f64"
+};
+
+
 struct Sprite {
     SpriteEntry* entries;
     float spf = std::numeric_limits<float>::quiet_NaN(); // second per frame
@@ -43,8 +53,11 @@ struct Color {
 };
 
 class Renderer {
+    constexpr static int ASCII_RANGE = 95;
+
 	void* native;
     Sprite spriteTable[static_cast<size_t>(SpriteID::Count)];
+    SpriteEntry fontTable[ASCII_RANGE * static_cast<size_t>(FontSize::Count)];
 
 	// ===== for batch buffer =====
 	mutable std::vector<SDL_Vertex> vertexBuffer;
@@ -56,7 +69,16 @@ class Renderer {
 
     // load helper
     void loadSpriteAtlas(const AtlasID id, const std::string atlasName);
+    void loadFontAtlas(const AtlasID id, const std::string atlasName);
 
+    void setAtlas(const AtlasID id, void* tex) { atlasTex[static_cast<int>(id)] = tex; }
+
+    constexpr static size_t getFontTableIndex(FontSize size, char c) {
+		return static_cast<int>(size) * ASCII_RANGE + c - ' ';
+    }
+
+    // draw内部で自動で実行 外部から制御する必要はない
+    void flush() const;
 public:
 	Renderer(void* sdlRenderer, int halfWidth, int halfHeight);
     ~Renderer();
@@ -66,7 +88,7 @@ public:
     const Sprite& getSprite(SpriteID spriteid) const;
 
     void drawSprite(SpriteID spriteID, const vec2f& pos, float rad = 0, uint16_t frameIndex = 0) const; // write to buffer
-    void flush() const;
+    void drawFont(FontSize size, char c, const vec2f& pos, float rad = 0, uint16_t frameIndex = 0) const; // write to buffer
 
     void* getNativePtr() { return native; }
 

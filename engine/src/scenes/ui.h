@@ -9,28 +9,30 @@ enum class CacheID {
     Count
 };
 
-class PlaySceneUI {
-    static constexpr float min = -390;
-    static constexpr float max = 390;
-    float cur = min;
-    static constexpr float wmin = 410;
-    static constexpr float wmax = 600;
+class TextUI {
+    const float hmin = -390;
+    const float hmax = 390;
+    float hcur = hmin;
+    const float wmin = 410;
+    const float wmax = 600;
     float wcur = wmin;
     FontSize currentFontSize;
 
+    SpriteEntry* entries;
+
     const SceneContext& ctx;
+    constexpr static AtlasID atlas = AtlasID::font;
 
 public:
-    PlaySceneUI(SceneContext& ctx): ctx(ctx) {}
+    TextUI(SceneContext& ctx, vec2f min, vec2f max)
+     : ctx(ctx), hmin(min.y), wmin(min.x), hmax(max.y), wmax(max.x) {
+
+    }
 
     Color white{255,255,255,255};
 
-    inline void initTex(CacheID id, FontSize size, const std::string str) {
-        cache[static_cast<size_t>(id)] = ctx.txtgfx->createTextureFromTTF(str, size, white);
-    }
-
     inline void initCur() {
-        cur = min;
+        hcur = hmin;
         wcur = wmin;
     }
 
@@ -38,14 +40,14 @@ public:
     inline void write(FontSize size, const std::string& str) {
         currentFontSize = size;
         const auto entry = ctx.txtgfx->createTextureFromTTF(str, size, white);
-        ctx.gfx->drawSpriteNow(entry, {wcur,cur});
+        ctx.gfx->drawSprite(, {wcur,hcur});
         wcur += entry.hw * 2;
     }
 
     inline void setSize(FontSize size) { currentFontSize = size; }
 
     inline void enter(int loop = 1) {
-        cur += ctx.txtgfx->getFontLineSkip(currentFontSize) * loop;
+        hcur += ctx.txtgfx->getFontLineSkip(currentFontSize) * loop;
         wcur = wmin;
     }
 
@@ -53,7 +55,7 @@ public:
     inline void write(CacheID id) {
         currentFontSize = cacheIndex[static_cast<size_t>(id)];
         const auto& entry = cache[static_cast<size_t>(id)];
-        ctx.gfx->drawSpriteNow(entry, {wcur,cur});
+        ctx.gfx->drawSprite(entry, {wcur,hcur});
         wcur += entry.hw * 2;
     }
 
@@ -77,7 +79,7 @@ public:
         }
         for (const int& n: digits) {
             const SpriteEntry& entry = targetArray[n];
-            ctx.gfx->drawSpriteNow(entry, {wcur,cur});
+            ctx.gfx->drawSpriteNow(entry, {wcur,hcur});
             wcur += entry.hw * 2;
         }
     }
@@ -101,7 +103,7 @@ public:
             if (n == '.') index = 10;
             else index = n - '0';
             const SpriteEntry& entry = targetArray[index];
-            ctx.gfx->drawSprite(entry, {wcur,cur});
+            ctx.gfx->drawSprite(entry, {wcur,hcur});
             wcur += entry.hw * 2;
         }
     }

@@ -1,5 +1,6 @@
 #include "gfx.h"
 #include "util.h"
+#include "text.h"
 #include "../core/fsutil.h"
 #include "../core/mathUtil.h"
 #include "../core/cache.h"
@@ -16,10 +17,6 @@ constexpr std::array<std::string,
 #define X(name) #name,
 #include "../../../assets/sprite.def"
 #undef X
-};
-
-enum class SpriteFileType {
-	null, png, gif
 };
 
 Color::operator SDL_Color() const {
@@ -104,8 +101,59 @@ void Renderer::loadSpriteAtlas(const AtlasID id, const std::string atlasName) {
     }
 }
 
+void Renderer::loadFontAtlas(const AtlasID id, const std::string atlasName) {
+    auto* renderer = static_cast<SDL_Renderer*>(native);
+
+    SDL_Surface* atlas = IMG_Load((Assets + atlasName + ".png").c_str());
+	if (!atlas) throw std::runtime_error("gfx: couldn't open texture");
+
+	int tex_w = atlas->w;
+	int tex_h = atlas->h;
+	SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, atlas);
+	SDL_FreeSurface(atlas);
+
+	atlasTex[static_cast<size_t>(id)] = tex;
+	
+	auto&& atlasTable = readJson(Assets + atlasName + ".json");
+
+	// check json
+	if (atlasTable.HasMember("version")) {
+		if (atlasTable["version"].GetInt() != 1) throw std::runtime_error("gfx: atlasjson: mismatch version");
+	} else throw std::runtime_error("gfx: atlasjson: didn't contain version");
+	
+	// load font entry
+	int frameIndex = 0;
+	for (int i = 0; i < static_cast<int>(FontSize::Count); i++) {
+		auto& sizeEntry = atlasTable[fontSizeName[i].c_str()];
+		for (int c = ' '; c < '~'; c++) { // 32 ~ 126 -> 95
+			int index_insize = c - ' ';
+			rj::Value& entry_j = sizeEntry[std::to_string(c).c_str()];
+
+			int x = entry_j[0].GetInt();
+			int y = entry_j[1].GetInt();
+			int w = entry_j[2].GetInt();
+			int h = entry_j[3].GetInt();
+
+			// entry 構築
+			SpriteEntry entry;
+			entry.u1 = (float)x / tex_w;
+			entry.v1 = (float)y / tex_h;
+			entry.u2 = (float)(x + w) / tex_w;
+			entry.v2 = (float)(y + h) / tex_h;
+			entry.hw = w / 2;
+			entry.hh = h / 2;
+			entry.id = AtlasID::font;
+
+			int index = i * ASCII_RANGE + index_insize;
+			fontTable[index] = entry;
+		}
+	}
+}
+
+
 Renderer::Renderer(void* sdlRenderer, int halfWidth, int halfHeight): native(sdlRenderer) {
 	loadSpriteAtlas(AtlasID::sprite, "atlas");
+	loadFontAtlas(AtlasID::font, "font");
 }
 
 Renderer::~Renderer() {
@@ -136,7 +184,7 @@ void Renderer::drawSprite(SpriteID spriteID, const vec2f& pos, float rad, uint16
 
 	if (currentAtlas == AtlasID::null) currentAtlas = ent.id;
 
-	if (ent.id != currentAtlas) throw std::runtime_error("gfx: targetAtlas != currentAtlas");
+	if (ent.id != currentAtlas) flush();
 
 	float hw = ent.hw;
 	float hh = ent.hh;

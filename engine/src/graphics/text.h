@@ -3,7 +3,8 @@
 
 
 enum class FontSize {
-    f16, f32, f64
+    f16, f32, f64,
+    Count
 };
 
 class Text {
