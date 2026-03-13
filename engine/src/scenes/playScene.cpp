@@ -45,6 +45,7 @@ void PlayScene::draw(const SceneContext& ctx) const {
     IEntityManagerBase::drawAll(ctx.gfx);
     player.draw(ctx.gfx);
     drawUI(ctx);
+    ctx.gfx->flush();
 
     // DEBUG
     // physWorld.draw(ctx.gfx);

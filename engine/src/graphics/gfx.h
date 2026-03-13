@@ -35,7 +35,7 @@ enum class FontSize {
 };
 
 constexpr std::string fontSizeName[static_cast<int>(FontSize::Count)] = {
-    "f16", "f32", "f64"
+    "16", "32", "64"
 };
 
 
@@ -77,9 +77,9 @@ class Renderer {
 		return static_cast<int>(size) * ASCII_RANGE + c - ' ';
     }
 
-    // draw内部で自動で実行 外部から制御する必要はない
-    void flush() const;
 public:
+    /// @brief 外部からの実行は任意 draw関数内部で自動実行
+    void flush() const;
 	Renderer(void* sdlRenderer, int halfWidth, int halfHeight);
     ~Renderer();
 

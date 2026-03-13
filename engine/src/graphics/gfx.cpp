@@ -45,7 +45,7 @@ void Renderer::loadSpriteAtlas(const AtlasID id, const std::string atlasName) {
     auto* renderer = static_cast<SDL_Renderer*>(native);
 
     SDL_Surface* spriteAtlas = IMG_Load((Assets + atlasName + ".png").c_str());
-	if (!spriteAtlas) throw std::runtime_error("gfx: couldn't open texture");
+	if (!spriteAtlas) throw std::runtime_error("gfx: couldn't open sprite texture");
 
 	int tex_w = spriteAtlas->w;
 	int tex_h = spriteAtlas->h;
@@ -59,7 +59,7 @@ void Renderer::loadSpriteAtlas(const AtlasID id, const std::string atlasName) {
 	// check json
 	if (spriteAtlasTable.HasMember("version")) {
 		if (spriteAtlasTable["version"].GetInt() != 1) throw std::runtime_error("gfx: atlasjson: mismatch version");
-	} else throw std::runtime_error("gfx: atlasjson: didn't contain version");
+	} else throw std::runtime_error("gfx: sprite-atlasjson: didn't contain version");
 	
 	// sprite 読み込み
     for (size_t i = 0; i < entityNames.size(); ++i) {
@@ -105,7 +105,7 @@ void Renderer::loadFontAtlas(const AtlasID id, const std::string atlasName) {
     auto* renderer = static_cast<SDL_Renderer*>(native);
 
     SDL_Surface* atlas = IMG_Load((Assets + atlasName + ".png").c_str());
-	if (!atlas) throw std::runtime_error("gfx: couldn't open texture");
+	if (!atlas) throw std::runtime_error("gfx: couldn't open font texture");
 
 	int tex_w = atlas->w;
 	int tex_h = atlas->h;
@@ -119,12 +119,12 @@ void Renderer::loadFontAtlas(const AtlasID id, const std::string atlasName) {
 	// check json
 	if (atlasTable.HasMember("version")) {
 		if (atlasTable["version"].GetInt() != 1) throw std::runtime_error("gfx: atlasjson: mismatch version");
-	} else throw std::runtime_error("gfx: atlasjson: didn't contain version");
+	} else throw std::runtime_error("gfx: font-atlasjson: didn't contain version");
 	
 	// load font entry
 	int frameIndex = 0;
 	for (int i = 0; i < static_cast<int>(FontSize::Count); i++) {
-		auto& sizeEntry = atlasTable[fontSizeName[i].c_str()];
+		rj::Value& sizeEntry = atlasTable[fontSizeName[i].c_str()];
 		for (int c = ' '; c < '~'; c++) { // 32 ~ 126 -> 95
 			int index_insize = c - ' ';
 			rj::Value& entry_j = sizeEntry[std::to_string(c).c_str()];

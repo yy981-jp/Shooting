@@ -2,10 +2,10 @@
 #include "gfx.h"
 
 
-enum class FontSize {
-    f16, f32, f64,
-    Count
-};
+// enum class FontSize {
+//     f16, f32, f64,
+//     Count
+// };
 
 class Text {
     void* nativeGfx;

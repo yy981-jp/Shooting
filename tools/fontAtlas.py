@@ -56,7 +56,7 @@ x, y, row_h = exec(draw, x, y, row_h, meta, "16", font16)
 x, y, row_h = exec(draw, x, y, row_h, meta, "32", font32)
 x, y, row_h = exec(draw, x, y, row_h, meta, "64", font64)
 
-atlas.save("atlas/font.png")
+atlas.save("assets/font.png")
 
-with open("atlas/font.json","w") as f:
+with open("assets/font.json","w") as f:
 	json.dump(meta, f, indent=2)
