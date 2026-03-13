@@ -26,10 +26,6 @@ Color::operator SDL_Color() const {
     return SDL_Color{r,g,b,a};
 }
 
-
-SpriteEntry loadSprite(const std::string& name) {
-	
-}
 /*
 std::vector<std::string> parseU8String(const std::string& str) {
 	int char_size;
@@ -64,16 +60,23 @@ Renderer::Renderer(void* sdlRenderer, int halfWidth, int halfHeight): native(sdl
 	atlasTex[static_cast<size_t>(AtlasID::sprite)] = tex;
 	
 	auto&& spriteAtlasTable = readJson(Assets + "atlas.json");
+
+	// check json
+	if (spriteAtlasTable.HasMember("version")) {
+		if (spriteAtlasTable["version"].GetInt() != 1) throw std::runtime_error("gfx: atlasjson: mismatch version");
+	} else throw std::runtime_error("gfx: atlasjson: didn't contain version");
 	
 	// sprite 読み込み
     for (size_t i = 0; i < entityNames.size(); ++i) {
         auto&& name = entityNames[i];
 
-		const auto& spriteArray = spriteAtlasTable[name.c_str()].GetArray();
+		const auto& spriteArray = spriteAtlasTable[name.c_str()]["frame"].GetArray();
 		int frames = spriteArray.Size();
 		Sprite sprite;
 		sprite.entries = new SpriteEntry[frames];
 		sprite.frameCount = frames;
+		if (spriteAtlasTable[name.c_str()].HasMember("spf"))
+			sprite.spf = spriteAtlasTable[name.c_str()]["spf"].GetFloat();
 
 		// load sprite
 		int frameIndex = 0;
@@ -119,6 +122,11 @@ vec2f Renderer::getSpriteHalfSize(SpriteID spriteID) const {
 vec2f Renderer::getSpriteSize(SpriteID spriteID) const {
     return getSpriteHalfSize(spriteID) * 2;
 }
+
+const Sprite& Renderer::getSprite(SpriteID spriteid) const {
+	return spriteTable[static_cast<size_t>(spriteid)];
+}
+
 
 void Renderer::drawSprite(SpriteID spriteID, const vec2f& pos, float rad, uint16_t frameIndex) const {
 	const Sprite& sp = spriteTable[static_cast<size_t>(spriteID)];

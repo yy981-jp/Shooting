@@ -15,14 +15,18 @@ class Player: public ICollidable {
     vec2f spriteHalf;
     spawnManager spm;
     spawnManager invincible;
+    mutable spawnManager animation;
     ColliderHandle h;
     void onHit(const CollisionInfo& info, GCMS& gcm) override;
+
+    mutable int currentFrame = 0;
+    int frameNum;
 
 public:
     uint64_t score = 0;
     int remainingLives = 500; // DEBUG
 
-    Player(const vec2f& spriteHalf, float speed);
+    Player(const Renderer* r, float speed);
     bool isAllive() { return remainingLives; }
 
     void update(float deltatime, GCMS& gcm, int dx, int dy, bool slow, bool shot);

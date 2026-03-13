@@ -28,18 +28,22 @@ for f in os.listdir(INPUT):
 		images[key] = img
 		rects.append((img.width, img.height, key))
 
-		if sprite not in groups:
-			groups[sprite] = []
+		groups[sprite] = {}
+		groups[sprite]["frame"] = []
 
-		groups[sprite].append(key)
+		groups[sprite]["frame"].append(key)
 
 	# --- GIF ---
 	elif f.endswith(".gif"):
 
 		sprite = os.path.splitext(f)[0]
-		groups[sprite] = []
+		groups[sprite] = {}
+		groups[sprite]["frame"] = []
 
 		gif = Image.open(path)
+
+		# spf
+		groups[sprite]["spf"] = gif.info.get("duration", 0) / 1000
 
 		i = 0
 		for frame in ImageSequence.Iterator(gif):
@@ -51,7 +55,7 @@ for f in os.listdir(INPUT):
 			images[key] = img
 			rects.append((img.width, img.height, key))
 
-			groups[sprite].append(key)
+			groups[sprite]["frame"].append(key)
 
 			i += 1
 
@@ -80,14 +84,20 @@ for rect in packer.rect_list():
 
 # --- sprite単位json生成 ---
 result = {}
+result = {
+	"version": 1 
+}
 
 for sprite, frames in groups.items():
 
-	result[sprite] = []
+    result[sprite] = {}
+    result[sprite]["frame"] = []
 
-	for key in frames:
-		result[sprite].append(meta[key])
-
+    for key in frames["frame"]:
+        result[sprite]["frame"].append(meta[key])
+	
+    if "spf" in frames:
+        result[sprite]["spf"] = frames["spf"]
 
 atlas.save("atlas.png")
 

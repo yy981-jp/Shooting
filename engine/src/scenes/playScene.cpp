@@ -5,7 +5,7 @@
 
 
 PlayScene::PlayScene(SceneContext& ctx):
-    player(static_cast<vec2f>(ctx.gfx->getSpriteHalfSize(SpriteID::player)/2), 5.0f*60.0f),
+    player(ctx.gfx, 5.0f*60.0f),
     simpleBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
     pointBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
     /*ui(ctx),*/ vm(stgdatpath) {
@@ -42,9 +42,11 @@ void PlayScene::update(SceneContext& ctx, const float dt) {
 void PlayScene::draw(const SceneContext& ctx) const {
     ctx.gfx->drawSprite(SpriteID::background, {0,0});
     ctx.gfx->drawSprite(SpriteID::uiBackground, {500,0});
-    player.draw(ctx.gfx);
     IEntityManagerBase::drawAll(ctx.gfx);
+    player.draw(ctx.gfx);
+    ctx.gfx->flush();
     drawUI(ctx);
+    ctx.gfx->flush();
 
     // DEBUG
     // physWorld.draw(ctx.gfx);

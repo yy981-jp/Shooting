@@ -63,6 +63,6 @@ struct EntityManagerBase: IEntityManagerBase {
         for (const auto& object: objects) {
             object.draw(renderer);
         }
-        renderer->flush();
+        // renderer->flush();
     }
 };

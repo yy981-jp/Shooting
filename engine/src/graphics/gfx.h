@@ -17,7 +17,7 @@ enum class SpriteID : size_t {
 struct SDL_Vertex;
 struct SDL_Color;
 
-enum class AtlasID {
+enum class AtlasID: uint8_t {
     null,
     sprite, font,
     Count
@@ -31,6 +31,7 @@ struct SpriteEntry {
 
 struct Sprite {
     SpriteEntry* entries;
+    float spf = std::numeric_limits<float>::quiet_NaN(); // second per frame
     uint16_t frameCount;
     inline SpriteEntry operator[](const size_t& index) const { return entries[index]; }
 };
@@ -59,7 +60,9 @@ public:
 
     vec2f getSpriteSize(SpriteID spriteID) const;
     vec2f getSpriteHalfSize(SpriteID spriteID) const;
-	void drawSprite(SpriteID spriteID, const vec2f& pos, float rad = 0, uint16_t frameIndex = 0) const; // write to buffer
+    const Sprite& getSprite(SpriteID spriteid) const;
+
+    void drawSprite(SpriteID spriteID, const vec2f& pos, float rad = 0, uint16_t frameIndex = 0) const; // write to buffer
     void flush() const;
 
     void* getNativePtr() { return native; }

@@ -24,6 +24,7 @@ void Player::update(float deltatime, GCMS& gcm, int dx, int dy, bool slow, bool 
     // まず経過時間を累積
     spm.update(deltatime);
     invincible.update(deltatime);
+    animation.update(deltatime);
 
     if (shot)
         for (int i = 0; i < spm.get(); ++i) {
@@ -37,12 +38,16 @@ void Player::update(float deltatime, GCMS& gcm, int dx, int dy, bool slow, bool 
 }
 
 void Player::draw(const Renderer* renderer) const {
-    renderer->drawSprite(SpriteID::player, pos);
+    currentFrame += animation.get();
+    currentFrame %= frameNum;
+    renderer->drawSprite(SpriteID::player, pos, 0, currentFrame);
 }
 
-Player::Player(const vec2f& spriteHalf, float speed):
-    speed(speed), spriteHalf(spriteHalf), spm(50), invincible(500) {
+Player::Player(const Renderer* r, float speed):
+    speed(speed), spm(50), invincible(500),
+    animation(r->getSprite(SpriteID::player).spf*1000) {
 
+    // prepare cache
     for (int y = -1; y <= 1; ++y) {
         for (int x = -1; x <= 1; ++x) {
             float& cx = moveTable[y + 1][x + 1][0];
@@ -59,6 +64,13 @@ Player::Player(const vec2f& spriteHalf, float speed):
         }
     }
 
+    // get info
+    spriteHalf = r->getSpriteHalfSize(SpriteID::player);
+    const auto& info = r->getSprite(SpriteID::player);
+    frameNum = info.frameCount;
+
+
+    // entry handle
     EntityHandle e = entMgr.create();
 
     Collider col{};
