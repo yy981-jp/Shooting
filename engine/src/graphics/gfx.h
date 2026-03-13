@@ -54,6 +54,9 @@ class Renderer {
 	void* atlasTex[static_cast<size_t>(AtlasID::Count)];
     mutable AtlasID currentAtlas = AtlasID::null;
 
+    // load helper
+    void loadSpriteAtlas(const AtlasID id, const std::string atlasName);
+
 public:
 	Renderer(void* sdlRenderer, int halfWidth, int halfHeight);
     ~Renderer();

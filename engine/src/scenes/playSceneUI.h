@@ -18,27 +18,10 @@ class PlaySceneUI {
     float wcur = wmin;
     FontSize currentFontSize;
 
-    SpriteEntry cache[static_cast<size_t>(CacheID::Count)];
-    FontSize cacheIndex[static_cast<size_t>(CacheID::Count)];
-    SpriteEntry numCache16[11];
-    SpriteEntry numCache32[11];
-    SpriteEntry numCache64[11];
-    // 0~9 + .
-
     const SceneContext& ctx;
 
 public:
-    PlaySceneUI(SceneContext& ctx): ctx(ctx) {
-        for (int i = 0; i <= 9; i++) {
-            std::string&& i_str = std::to_string(i);
-            numCache16[i] = ctx.txtgfx->createTextureFromTTF(i_str, FontSize::f16, white);
-            numCache32[i] = ctx.txtgfx->createTextureFromTTF(i_str, FontSize::f32, white);
-            numCache64[i] = ctx.txtgfx->createTextureFromTTF(i_str, FontSize::f64, white);
-        }
-        numCache16[10] = ctx.txtgfx->createTextureFromTTF(".", FontSize::f16, white);
-        numCache32[10] = ctx.txtgfx->createTextureFromTTF(".", FontSize::f32, white);
-        numCache64[10] = ctx.txtgfx->createTextureFromTTF(".", FontSize::f64, white);
-    }
+    PlaySceneUI(SceneContext& ctx): ctx(ctx) {}
 
     Color white{255,255,255,255};
 
@@ -118,7 +101,7 @@ public:
             if (n == '.') index = 10;
             else index = n - '0';
             const SpriteEntry& entry = targetArray[index];
-            ctx.gfx->drawSpriteNow(entry, {wcur,cur});
+            ctx.gfx->drawSprite(entry, {wcur,cur});
             wcur += entry.hw * 2;
         }
     }

@@ -3,7 +3,7 @@ from PIL import Image, ImageSequence
 import os
 import json
 
-INPUT = "image"
+INPUT = "assets/image"
 ATLAS_W = 2048
 ATLAS_H = 2048
 
@@ -99,15 +99,15 @@ for sprite, frames in groups.items():
     if "spf" in frames:
         result[sprite]["spf"] = frames["spf"]
 
-atlas.save("atlas.png")
+atlas.save("assets/atlas.png")
 
-with open("atlas.json", "w") as f:
+with open("assets/atlas.json", "w") as f:
 	json.dump(result, f, indent=2)
 
 
 # --- XMacro生成 ---
 
-def_name = "sprite.def"
+def_name = "assets/sprite.def"
 
 # sprite名はgroupsのキーを使う
 names = sorted(groups.keys())

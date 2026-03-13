@@ -1,7 +1,7 @@
 from PIL import Image, ImageDraw, ImageFont
 import json
 
-FONT_PATH = "NotoSansJP.ttf"
+FONT_PATH = "assets/NotoSansJP.ttf"
 
 ATLAS_W = 1024
 ATLAS_H = 512
@@ -54,7 +54,7 @@ x, y, row_h = exec(draw, x, y, row_h, meta, "16", font16)
 x, y, row_h = exec(draw, x, y, row_h, meta, "32", font32)
 x, y, row_h = exec(draw, x, y, row_h, meta, "64", font64)
 
-atlas.save("font.png")
+atlas.save("atlas/font.png")
 
-with open("font.json","w") as f:
+with open("atlas/font.json","w") as f:
 	json.dump(meta, f, indent=2)

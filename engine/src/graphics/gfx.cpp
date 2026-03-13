@@ -43,13 +43,11 @@ std::vector<std::string> parseU8String(const std::string& str) {
 }
 */
 
-/*------------------------------**
-**          Renderer            **
-**------------------------------*/
-Renderer::Renderer(void* sdlRenderer, int halfWidth, int halfHeight): native(sdlRenderer) {
+
+void Renderer::loadSpriteAtlas(const AtlasID id, const std::string atlasName) {
     auto* renderer = static_cast<SDL_Renderer*>(native);
 
-    SDL_Surface* spriteAtlas = IMG_Load((Assets + "atlas.png").c_str());
+    SDL_Surface* spriteAtlas = IMG_Load((Assets + atlasName + ".png").c_str());
 	if (!spriteAtlas) throw std::runtime_error("gfx: couldn't open texture");
 
 	int tex_w = spriteAtlas->w;
@@ -57,9 +55,9 @@ Renderer::Renderer(void* sdlRenderer, int halfWidth, int halfHeight): native(sdl
 	SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, spriteAtlas);
 	SDL_FreeSurface(spriteAtlas);
 
-	atlasTex[static_cast<size_t>(AtlasID::sprite)] = tex;
+	atlasTex[static_cast<size_t>(id)] = tex;
 	
-	auto&& spriteAtlasTable = readJson(Assets + "atlas.json");
+	auto&& spriteAtlasTable = readJson(Assets + atlasName + ".json");
 
 	// check json
 	if (spriteAtlasTable.HasMember("version")) {
@@ -106,6 +104,10 @@ Renderer::Renderer(void* sdlRenderer, int halfWidth, int halfHeight): native(sdl
     }
 }
 
+Renderer::Renderer(void* sdlRenderer, int halfWidth, int halfHeight): native(sdlRenderer) {
+	loadSpriteAtlas(AtlasID::sprite, "atlas");
+}
+
 Renderer::~Renderer() {
     for (size_t i = 0; i < static_cast<int>(AtlasID::Count); ++i)
         SDL_DestroyTexture(static_cast<SDL_Texture*>(atlasTex[i]));
@@ -147,7 +149,7 @@ void Renderer::drawSprite(SpriteID spriteID, const vec2f& pos, float rad, uint16
 	int baseIndex = vertexBuffer.size();
 
 	if (rad == 0.0f) {
-		// ---- 回転なしルート ----
+		// ---- 回転なし ----
 		SDL_Vertex v[4];
 
 		vec2f graPos = SCREEN + pos;
@@ -167,9 +169,9 @@ void Renderer::drawSprite(SpriteID spriteID, const vec2f& pos, float rad, uint16
 			vertexBuffer.push_back(v[i]);
 		}
 	} else {
-		// ---- 回転ありルート ----
+		// ---- 回転あり ----
 		float c = cachesv.getCos(rad);
-		float s = -cachesv.getSin(rad);
+		float s = cachesv.getSin(rad);
 
 		SDL_FPoint corners[4] = {
 			{-hw, -hh},

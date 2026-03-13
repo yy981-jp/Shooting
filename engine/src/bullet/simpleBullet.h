@@ -27,7 +27,7 @@ struct SimpleBullet: public EntityBase<SimpleBullet>, ICollidable {
     }
 
     void draw(const Renderer* r) const {
-        r->drawSprite(SpriteID::simpleBullet, ms.pos);
+        r->drawSprite(SpriteID::simpleBullet, ms.pos, ms.angle);
     }
 };
 
