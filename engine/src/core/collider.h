@@ -96,7 +96,7 @@ private:
 
 public:
     void draw(const Renderer* r) {
-        r->setColor(255,255,255,200); // 少し透過
+        r->setColor(255,0,255,127); // 少し透過
         for (const auto& e: alive) {
             r->drawFilledCircle(pos[e], radius[e]);
         }

@@ -52,7 +52,7 @@ public:
 		}
 
         running = alive;
-        vec2f dir = cachesv.getDir(ms.angle);
+        vec2f dir = cachesv.getDir(ms.angle + CacheSV::OFFSET);
         vec2f vel = dir * ms.speed;
         return vel;
 	};

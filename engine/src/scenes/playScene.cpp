@@ -5,10 +5,10 @@
 
 
 PlayScene::PlayScene(SceneContext& ctx):
-    player(static_cast<vec2f>(ctx.gfx->getSpriteHalfSize(SpriteID::player)/2), 5.0f*60.0f),
+    player(ctx.gfx, 5.0f*60.0f),
     simpleBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
     pointBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
-    ui(ctx), vm(stgdatpath) {
+    ui(ctx,{410,-390},{600,390}), vm(stgdatpath) {
         std::ifstream ifs(Assets+"build.info");
         if (!ifs) {
             buildID = "UNKNOWN";
@@ -40,14 +40,15 @@ void PlayScene::update(SceneContext& ctx, const float dt) {
 }
 
 void PlayScene::draw(const SceneContext& ctx) const {
-    ctx.gfx->drawSpriteNow(SpriteID::background, {0,0});
-    ctx.gfx->drawSpriteNow(SpriteID::uiBackground, {500,0});
-    player.draw(ctx.gfx);
+    ctx.gfx->drawSprite(SpriteID::background, {0,0});
     IEntityManagerBase::drawAll(ctx.gfx);
+    player.draw(ctx.gfx);
+    ctx.gfx->drawSprite(SpriteID::uiBackground, {500,0});
     drawUI(ctx);
+    ctx.gfx->flush();
 
     // DEBUG
-    // physWorld.draw(ctx.gfx);
+    physWorld.draw(ctx.gfx);
 }
 
 void PlayScene::drawUI(const SceneContext& ctx) const {
@@ -61,7 +62,8 @@ void PlayScene::drawUI(const SceneContext& ctx) const {
     ui.write(FontSize::f16, buildTimeStamp);
     ui.enter(2);
     ui.write(FontSize::f16, "Copyright (c) 2026 yy981");
-    ui.enter(5);
+    ui.setSize(FontSize::f32);
+    ui.enter();
     ui.write(FontSize::f32, "fps: ");
     ui.write(currentFps, FontSize::f32);
     ui.enter();
@@ -71,7 +73,7 @@ void PlayScene::drawUI(const SceneContext& ctx) const {
     ui.write(FontSize::f32, "score: ");
     ui.write((int)player.score, FontSize::f32);
     ui.enter();
-    ui.write(FontSize::f32, "残機: ");
+    ui.write(FontSize::f32, "RL: ");
     ui.write((int)player.remainingLives, FontSize::f32);
     ui.enter();
 }
