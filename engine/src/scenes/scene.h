@@ -3,7 +3,6 @@
 #include "../gcms/gcms.h"
 #include "../core/input.h"
 #include "../graphics/gfx.h"
-#include "../graphics/text.h"
 #include "../audio/sfx.h"
 
 
@@ -13,7 +12,6 @@ struct SceneContext {
 	GCMS* gcms;
 	uint8_t* input; // SHTKeyCode
 	Renderer* gfx;
-	Text* txtgfx;
 	SFXManager* sfx;
 };
 

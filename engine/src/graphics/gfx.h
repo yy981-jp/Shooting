@@ -77,6 +77,8 @@ class Renderer {
 		return static_cast<int>(size) * ASCII_RANGE + c - ' ';
     }
 
+    void draw(SpriteEntry entry, const vec2f& pos, float rad) const;
+
 public:
     /// @brief 外部からの実行は任意 draw関数内部で自動実行
     void flush() const;
@@ -86,9 +88,10 @@ public:
     vec2f getSpriteSize(SpriteID spriteID) const;
     vec2f getSpriteHalfSize(SpriteID spriteID) const;
     const Sprite& getSprite(SpriteID spriteid) const;
+    const SpriteEntry& getFontEntry(FontSize size, char c) const;
 
     void drawSprite(SpriteID spriteID, const vec2f& pos, float rad = 0, uint16_t frameIndex = 0) const; // write to buffer
-    void drawFont(FontSize size, char c, const vec2f& pos, float rad = 0, uint16_t frameIndex = 0) const; // write to buffer
+    const SpriteEntry& drawFont(FontSize size, char c, const vec2f& pos, float rad = 0) const; // write to buffer
 
     void* getNativePtr() { return native; }
 

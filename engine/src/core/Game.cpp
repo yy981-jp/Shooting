@@ -47,10 +47,9 @@ Game::Game(SceneID initScene, bool fullscreen) {
     SDL_SetRenderDrawBlendMode(nativeRenderer, SDL_BLENDMODE_BLEND);
 
     renderer = new Renderer(nativeRenderer, SCREEN.x, SCREEN.y);
-    text = new Text(renderer);
     sfxMgr = new SFXManager;
 
-    ctx = SceneContext{ &gcm, &keyStat, renderer, text, sfxMgr };
+    ctx = SceneContext{ &gcm, &keyStat, renderer, sfxMgr };
 
     setScene(initScene);
 }

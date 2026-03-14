@@ -1,7 +1,7 @@
 #pragma once
 #include "scene.h"
 
-#include <cstring>
+#include <algorithm>
 
 
 enum class CacheID {
@@ -10,11 +10,8 @@ enum class CacheID {
 };
 
 class TextUI {
-    const float hmin = -390;
-    const float hmax = 390;
+    const float hmin, hmax, wmin, wmax;
     float hcur = hmin;
-    const float wmin = 410;
-    const float wmax = 600;
     float wcur = wmin;
     FontSize currentFontSize;
 
@@ -25,9 +22,7 @@ class TextUI {
 
 public:
     TextUI(SceneContext& ctx, vec2f min, vec2f max)
-     : ctx(ctx), hmin(min.y), wmin(min.x), hmax(max.y), wmax(max.x) {
-
-    }
+     : ctx(ctx), hmin(min.y), wmin(min.x), hmax(max.y), wmax(max.x) {}
 
     Color white{255,255,255,255};
 
@@ -39,24 +34,18 @@ public:
     /// @brief write no enter, write direct string
     inline void write(FontSize size, const std::string& str) {
         currentFontSize = size;
-        const auto entry = ctx.txtgfx->createTextureFromTTF(str, size, white);
-        ctx.gfx->drawSprite(, {wcur,hcur});
-        wcur += entry.hw * 2;
+        for (char c: str) {
+            const SpriteEntry& entry = ctx.gfx->drawFont(size, c, {wcur,hcur});
+            wcur += entry.hw * 2;
+        }
     }
 
     inline void setSize(FontSize size) { currentFontSize = size; }
 
     inline void enter(int loop = 1) {
-        hcur += ctx.txtgfx->getFontLineSkip(currentFontSize) * loop;
+        const SpriteEntry& entry = ctx.gfx->getFontEntry(currentFontSize, '|'); // |は最も縦幅が長いのでそれを基準とする
+        hcur += entry.hh * 2 * 2;
         wcur = wmin;
-    }
-
-    /// @brief write no enter (use cache)
-    inline void write(CacheID id) {
-        currentFontSize = cacheIndex[static_cast<size_t>(id)];
-        const auto& entry = cache[static_cast<size_t>(id)];
-        ctx.gfx->drawSprite(entry, {wcur,hcur});
-        wcur += entry.hw * 2;
     }
 
     /// @brief no enter int
@@ -70,16 +59,8 @@ public:
         }
         std::reverse(digits.begin(), digits.end());
 
-        SpriteEntry* targetArray;
-        switch (size) {
-            using enum FontSize;
-            case f16: targetArray = numCache16; break;
-            case f32: targetArray = numCache32; break;
-            case f64: targetArray = numCache64; break;
-        }
         for (const int& n: digits) {
-            const SpriteEntry& entry = targetArray[n];
-            ctx.gfx->drawSpriteNow(entry, {wcur,hcur});
+            const SpriteEntry& entry = ctx.gfx->drawFont(size, '0' + n , {wcur,hcur});
             wcur += entry.hw * 2;
         }
     }
@@ -89,22 +70,12 @@ public:
         currentFontSize = size;
         SpriteEntry* targetArray;
         std::string num_str = std::to_string(num);
-        switch (size) {
-            using enum FontSize;
-            case f16: targetArray = numCache16; break;
-            case f32: targetArray = numCache32; break;
-            case f64: targetArray = numCache64; break;
-        }
         int loop = 0;
-        for (char n: num_str) {
+        for (char c: num_str) {
             loop++;
-            if (loop > significantFigures) return;
-            int index;
-            if (n == '.') index = 10;
-            else index = n - '0';
-            const SpriteEntry& entry = targetArray[index];
-            ctx.gfx->drawSprite(entry, {wcur,hcur});
+            const SpriteEntry& entry = ctx.gfx->drawFont(size, c, {wcur,hcur});
             wcur += entry.hw * 2;
+            if (loop > significantFigures) return;
         }
     }
 };

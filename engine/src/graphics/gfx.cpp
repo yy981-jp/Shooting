@@ -1,6 +1,4 @@
 #include "gfx.h"
-#include "util.h"
-#include "text.h"
 #include "../core/fsutil.h"
 #include "../core/mathUtil.h"
 #include "../core/cache.h"
@@ -177,22 +175,37 @@ const Sprite& Renderer::getSprite(SpriteID spriteid) const {
 	return spriteTable[static_cast<size_t>(spriteid)];
 }
 
+const SpriteEntry& Renderer::getFontEntry(FontSize size, char c) const {
+	return fontTable[ getFontTableIndex(size, c) ];
+}
 
 void Renderer::drawSprite(SpriteID spriteID, const vec2f& pos, float rad, uint16_t frameIndex) const {
 	const Sprite& sp = spriteTable[static_cast<size_t>(spriteID)];
-	const SpriteEntry& ent = sp[frameIndex];
+	const SpriteEntry& entry = sp[frameIndex];
+	draw(entry, pos, rad);
+}
 
-	if (currentAtlas == AtlasID::null) currentAtlas = ent.id;
+const SpriteEntry& Renderer::drawFont(FontSize size, char c, const vec2f& pos, float rad) const {
+	const SpriteEntry& entry = fontTable[ getFontTableIndex(size, c) ];
+	draw(entry, pos, rad);
+	return entry;
+}
 
-	if (ent.id != currentAtlas) flush();
+void Renderer::draw(SpriteEntry entry, const vec2f& pos, float rad) const {
+	if (currentAtlas == AtlasID::null) currentAtlas = entry.id;
 
-	float hw = ent.hw;
-	float hh = ent.hh;
+	if (currentAtlas != entry.id) {
+		flush();
+		currentAtlas = entry.id;
+	}
 
-	float u1 = ent.u1;
-	float v1 = ent.v1;
-	float u2 = ent.u2;
-	float v2 = ent.v2;
+	float hw = entry.hw;
+	float hh = entry.hh;
+
+	float u1 = entry.u1;
+	float v1 = entry.v1;
+	float u2 = entry.u2;
+	float v2 = entry.v2;
 
 	int baseIndex = vertexBuffer.size();
 
@@ -257,6 +270,7 @@ void Renderer::drawSprite(SpriteID spriteID, const vec2f& pos, float rad, uint16
 	indexBuffer.push_back(baseIndex + 3);
 	indexBuffer.push_back(baseIndex + 0);
 }
+
 
 void Renderer::flush() const {
 	if (vertexBuffer.empty()) return;

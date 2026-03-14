@@ -8,7 +8,7 @@ PlayScene::PlayScene(SceneContext& ctx):
     player(ctx.gfx, 5.0f*60.0f),
     simpleBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
     pointBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
-    /*ui(ctx),*/ vm(stgdatpath) {
+    ui(ctx,{410,-390},{600,390}), vm(stgdatpath) {
         std::ifstream ifs(Assets+"build.info");
         if (!ifs) {
             buildID = "UNKNOWN";
@@ -41,9 +41,9 @@ void PlayScene::update(SceneContext& ctx, const float dt) {
 
 void PlayScene::draw(const SceneContext& ctx) const {
     ctx.gfx->drawSprite(SpriteID::background, {0,0});
-    ctx.gfx->drawSprite(SpriteID::uiBackground, {500,0});
     IEntityManagerBase::drawAll(ctx.gfx);
     player.draw(ctx.gfx);
+    ctx.gfx->drawSprite(SpriteID::uiBackground, {500,0});
     drawUI(ctx);
     ctx.gfx->flush();
 
@@ -52,7 +52,6 @@ void PlayScene::draw(const SceneContext& ctx) const {
 }
 
 void PlayScene::drawUI(const SceneContext& ctx) const {
-    /*
     ui.initCur();
     ui.write(FontSize::f16, "buildID:");
     ui.enter();
@@ -73,10 +72,9 @@ void PlayScene::drawUI(const SceneContext& ctx) const {
     ui.write(FontSize::f32, "score: ");
     ui.write((int)player.score, FontSize::f32);
     ui.enter();
-    ui.write(FontSize::f32, "残機: ");
+    ui.write(FontSize::f32, "RL: ");
     ui.write((int)player.remainingLives, FontSize::f32);
     ui.enter();
-    */
 }
 
 void PlayScene::handleCommand(const GameCommand& cmd, Game& game) {
