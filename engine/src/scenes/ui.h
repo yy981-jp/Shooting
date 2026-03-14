@@ -44,7 +44,7 @@ public:
 
     inline void enter(int loop = 1) {
         const SpriteEntry& entry = ctx.gfx->getFontEntry(currentFontSize, '|'); // |は最も縦幅が長いのでそれを基準とする
-        hcur += entry.hh * 2 * 2;
+        hcur += entry.hh * 2;
         wcur = wmin;
     }
 

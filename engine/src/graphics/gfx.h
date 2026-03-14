@@ -93,8 +93,6 @@ public:
     void drawSprite(SpriteID spriteID, const vec2f& pos, float rad = 0, uint16_t frameIndex = 0) const; // write to buffer
     const SpriteEntry& drawFont(FontSize size, char c, const vec2f& pos, float rad = 0) const; // write to buffer
 
-    void* getNativePtr() { return native; }
-
     // for Debug
     void drawFilledCircle(const vec2f pos, float rad) const;
     void setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a) const;

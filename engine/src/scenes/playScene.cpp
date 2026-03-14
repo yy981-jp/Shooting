@@ -48,7 +48,7 @@ void PlayScene::draw(const SceneContext& ctx) const {
     ctx.gfx->flush();
 
     // DEBUG
-    // physWorld.draw(ctx.gfx);
+    physWorld.draw(ctx.gfx);
 }
 
 void PlayScene::drawUI(const SceneContext& ctx) const {
@@ -62,7 +62,8 @@ void PlayScene::drawUI(const SceneContext& ctx) const {
     ui.write(FontSize::f16, buildTimeStamp);
     ui.enter(2);
     ui.write(FontSize::f16, "Copyright (c) 2026 yy981");
-    ui.enter(5);
+    ui.setSize(FontSize::f32);
+    ui.enter();
     ui.write(FontSize::f32, "fps: ");
     ui.write(currentFps, FontSize::f32);
     ui.enter();
