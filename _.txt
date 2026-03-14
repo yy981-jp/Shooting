@@ -43,7 +43,7 @@ bullet追加手順
 	bullet/に.hでEntitytemplateを継承したクラスを作り、その.hをplayscene.cppに埋め込む
 	gcms/gcms.hにコマンドを構成
 
-描画システムの座標系は左上を原点に, 論理部分の座標系は中央を原点に
+描画システム内部の座標系は左上を原点に, 論理部分の座標系は中央を原点に
 
 entity.def.jsonを廃止 entityTable.defに移行 imgはentity名と一致させる
 
@@ -75,11 +75,9 @@ batch無効->
 	数万 60
 当たり範囲処理が重すぎる
 
-PlaySceneUI 汎用性をもう少し上げて全Scene共通UI編集システムを作るべき?
+TextUI TUI用font描画システム コンストラクタで描画範囲をrectで指定する
 score 敵ごとに何点か振るシステムを作る
-gif対応 先に連番に分解する fpsを格納する設定ファイルがおそらく必要
 
-png webp化 いつかやってもいいかもしれない
-
+assets/image atlas化済み
 
 同じSpriteのSpriteEntryは同じatlasに格納する
