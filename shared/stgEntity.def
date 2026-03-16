@@ -1,11 +1,3 @@
-#ifndef ENTITY
-#define ENTITY(name, fields)
-#define FIELD(type, name, ...)
-#endif
-
-
-
-
 ENTITY(bezierEnemy,
 	FIELD(s16, x)
 	FIELD(s16, y)
@@ -19,8 +11,3 @@ ENTITY(enemyStraight,
 	FIELD(s16, vx)
 	FIELD(s16, vy)
 )
-
-
-
-#undef ENTITY
-#undef FIELD

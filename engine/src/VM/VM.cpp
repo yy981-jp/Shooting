@@ -1,6 +1,6 @@
 #include "VM.h"
 #include "../tables/all.h"
-#include "../../../shared/entity_table.h"
+#include "stgEntityTable.h"
 
 
 VM::VM(const std::string& stgdatPath): eventTableDoc(readJson(Assets+"eventTable.json")), eventTable(eventTableDoc), pc(0) {

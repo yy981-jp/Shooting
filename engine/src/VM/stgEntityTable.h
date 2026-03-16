@@ -5,7 +5,7 @@ enum class STGEntityID : uint16_t {
 
 #define ENTITY(name, fields) name,
 #define FIELD(...)
-#include "stgEntity.xmac"
+#include "../../../shared/stgEntity.def"
 #undef ENTITY
 #undef FIELD
 
@@ -40,7 +40,7 @@ struct name { \
 #define FIELD3(type, name, default_value) \
     type name = default_value;
 
-#include "stgEntity.xmac"
+#include "../../../shared/stgEntity.def"
 
 #undef FIELD
 #undef FIELD2

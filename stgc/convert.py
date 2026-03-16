@@ -123,7 +123,7 @@ def parse_second_value(value: str) -> int:
 
 # XMacro から entity 定義と ID を読み込む
 current_dir = os.path.dirname(os.path.abspath(__file__))
-entity_defs_path = os.path.join(current_dir, "..", "shared", "stgEntity.xmac")
+entity_defs_path = os.path.join(current_dir, "..", "shared", "stgEntity.def")
 
 ENTITY_DEFS: Dict[str, List[tuple]] = load_entity_defs(entity_defs_path)
 ENTITY_IDS: Dict[str, int] = load_entity_ids(entity_defs_path)
