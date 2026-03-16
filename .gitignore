@@ -4,3 +4,4 @@ build*/
 *.stg.dat
 *.o
 *.exe
+*.zip

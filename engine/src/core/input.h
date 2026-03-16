@@ -2,7 +2,7 @@
 #include "def.h"
 
 
-enum class SHTKeyCode: uint8_t {
+enum class KCode: uint8_t {
     up      = 1 << 0,
     down    = 1 << 1,
     left    = 1 << 2,
@@ -12,6 +12,6 @@ enum class SHTKeyCode: uint8_t {
     shift   = 1 << 6
 };
 
-constexpr bool has(uint8_t keys, SHTKeyCode k) {
+constexpr bool has(uint8_t keys, KCode k) {
     return keys & static_cast<uint8_t>(k);
 }

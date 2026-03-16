@@ -1,3 +1,3 @@
 #include "input.h"
 
-SHTKeyCode keyStat;
+KCode keyStat;

@@ -24,6 +24,11 @@ protected:
     virtual void draw(const Renderer* renderer) const = 0;
 
 public:
+    virtual ~IEntityManagerBase() {
+        auto it = std::find(list.begin(), list.end(), this);
+        if (it != list.end()) list.erase(it);
+    }
+
     static void updateAll(float dt, GCMS& gcm) {
         for (const auto& e: list) {
             e->update(dt,gcm);

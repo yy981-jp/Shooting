@@ -10,7 +10,7 @@ class Game;
 
 struct SceneContext {
 	GCMS* gcms;
-	uint8_t* input; // SHTKeyCode
+	uint8_t* key; // KCode
 	Renderer* gfx;
 	SFXManager* sfx;
 };

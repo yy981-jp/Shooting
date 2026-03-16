@@ -14,11 +14,11 @@
 
 inline vec2i makeDir(uint8_t keys) {
     return {
-        (has(keys, SHTKeyCode::right) ? 1 : 0)
-      - (has(keys, SHTKeyCode::left)  ? 1 : 0),
+        (has(keys, KCode::right) ? 1 : 0)
+      - (has(keys, KCode::left)  ? 1 : 0),
 
-        (has(keys, SHTKeyCode::down)  ? 1 : 0)
-      - (has(keys, SHTKeyCode::up)    ? 1 : 0)
+        (has(keys, KCode::down)  ? 1 : 0)
+      - (has(keys, KCode::up)    ? 1 : 0)
     };
 }
 

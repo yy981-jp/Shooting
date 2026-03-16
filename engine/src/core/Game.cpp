@@ -22,12 +22,13 @@ IMPL_CMD_GLOBAL(cmd::onHit) {
 IMPL_CMD_GLOBAL(cmd::_) { /* dummy */ }
 
 
-std::unique_ptr<IScene> createScene(SceneID id, SceneContext& ctx) {
-	switch (id) {
-		case SceneID::title:    return std::make_unique<TitleScene>(ctx);
-		case SceneID::play:     return std::make_unique<PlayScene>(ctx);
+IScene* createScene(SceneID id, SceneContext& ctx) {
+	IScene* result = nullptr;
+    switch (id) {
+		case SceneID::title:    result = new TitleScene(ctx);   break;
+		case SceneID::play:     result = new PlayScene(ctx);    break;
 	}
-	return nullptr;
+	return result;
 }
 
 
@@ -91,7 +92,7 @@ void Game::update() {
 }
 
 void Game::draw() const {
-    currentScene->draw(ctx);
+    if (currentScene) currentScene->draw(ctx);
 
     SDL_RenderPresent(nativeRenderer);
 }
@@ -100,16 +101,16 @@ void Game::onKeyDown(const SDL_KeyboardEvent& e) {
     if (e.repeat) return;
     switch (e.keysym.scancode) {
         case SDL_SCANCODE_I:
-        case SDL_SCANCODE_UP:       keyStat |= static_cast<uint8_t>(SHTKeyCode::up);    break;
+        case SDL_SCANCODE_UP:       keyStat |= static_cast<uint8_t>(KCode::up);    break;
         case SDL_SCANCODE_K:
-        case SDL_SCANCODE_DOWN:     keyStat |= static_cast<uint8_t>(SHTKeyCode::down);  break;
+        case SDL_SCANCODE_DOWN:     keyStat |= static_cast<uint8_t>(KCode::down);  break;
         case SDL_SCANCODE_J:
-        case SDL_SCANCODE_LEFT:     keyStat |= static_cast<uint8_t>(SHTKeyCode::left);  break;
+        case SDL_SCANCODE_LEFT:     keyStat |= static_cast<uint8_t>(KCode::left);  break;
         case SDL_SCANCODE_L:
-        case SDL_SCANCODE_RIGHT:    keyStat |= static_cast<uint8_t>(SHTKeyCode::right); break;
-        case SDL_SCANCODE_Z:        keyStat |= static_cast<uint8_t>(SHTKeyCode::z);     break;
-        case SDL_SCANCODE_X:        keyStat |= static_cast<uint8_t>(SHTKeyCode::x);     break;
-        case SDL_SCANCODE_LSHIFT:   keyStat |= static_cast<uint8_t>(SHTKeyCode::shift); break;
+        case SDL_SCANCODE_RIGHT:    keyStat |= static_cast<uint8_t>(KCode::right); break;
+        case SDL_SCANCODE_Z:        keyStat |= static_cast<uint8_t>(KCode::z);     break;
+        case SDL_SCANCODE_X:        keyStat |= static_cast<uint8_t>(KCode::x);     break;
+        case SDL_SCANCODE_LSHIFT:   keyStat |= static_cast<uint8_t>(KCode::shift); break;
     }
     if (e.keysym.sym == SDLK_ESCAPE) exit(111);
 }
@@ -117,16 +118,16 @@ void Game::onKeyDown(const SDL_KeyboardEvent& e) {
 void Game::onKeyUP(const SDL_KeyboardEvent& e) {
     switch (e.keysym.scancode) {
         case SDL_SCANCODE_I:
-        case SDL_SCANCODE_UP:       keyStat &= ~static_cast<uint8_t>(SHTKeyCode::up);    break;
+        case SDL_SCANCODE_UP:       keyStat &= ~static_cast<uint8_t>(KCode::up);    break;
         case SDL_SCANCODE_K:
-        case SDL_SCANCODE_DOWN:     keyStat &= ~static_cast<uint8_t>(SHTKeyCode::down);  break;
+        case SDL_SCANCODE_DOWN:     keyStat &= ~static_cast<uint8_t>(KCode::down);  break;
         case SDL_SCANCODE_J:
-        case SDL_SCANCODE_LEFT:     keyStat &= ~static_cast<uint8_t>(SHTKeyCode::left);  break;
+        case SDL_SCANCODE_LEFT:     keyStat &= ~static_cast<uint8_t>(KCode::left);  break;
         case SDL_SCANCODE_L:
-        case SDL_SCANCODE_RIGHT:    keyStat &= ~static_cast<uint8_t>(SHTKeyCode::right); break;
-        case SDL_SCANCODE_Z:        keyStat &= ~static_cast<uint8_t>(SHTKeyCode::z);     break;
-        case SDL_SCANCODE_X:        keyStat &= ~static_cast<uint8_t>(SHTKeyCode::x);     break;
-        case SDL_SCANCODE_LSHIFT:   keyStat &= ~static_cast<uint8_t>(SHTKeyCode::shift); break;
+        case SDL_SCANCODE_RIGHT:    keyStat &= ~static_cast<uint8_t>(KCode::right); break;
+        case SDL_SCANCODE_Z:        keyStat &= ~static_cast<uint8_t>(KCode::z);     break;
+        case SDL_SCANCODE_X:        keyStat &= ~static_cast<uint8_t>(KCode::x);     break;
+        case SDL_SCANCODE_LSHIFT:   keyStat &= ~static_cast<uint8_t>(KCode::shift); break;
     }
 }
 
@@ -152,6 +153,8 @@ void Game::tick() {
 }
 
 void Game::setScene(SceneID id) {
+    delete currentScene;
+    currentScene = nullptr;
     if (!(currentScene = createScene(id,ctx)))
         throw std::runtime_error("createScene: nullptr");
 }

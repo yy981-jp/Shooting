@@ -31,7 +31,7 @@ PlayScene::PlayScene(SceneContext& ctx):
 
 void PlayScene::update(SceneContext& ctx, const float dt) {
     // DEBUG
-    if (has(*ctx.input, SHTKeyCode::x)) (*ctx.gcms)(cmd::changeScene{SceneID::title});
+    if (has(*ctx.key, KCode::x)) (*ctx.gcms)(cmd::changeScene{SceneID::title});
 
     // VM step
     if (vm.running) vm.step(*ctx.gcms);
@@ -40,8 +40,8 @@ void PlayScene::update(SceneContext& ctx, const float dt) {
     physWorld.step(*ctx.gcms);
 
     // entity update
-    vec2i d = makeDir(*ctx.input);
-    player.update(dt, *ctx.gcms, d.x, d.y, has(*ctx.input, SHTKeyCode::shift), has(*ctx.input, SHTKeyCode::z));
+    vec2i d = makeDir(*ctx.key);
+    player.update(dt, *ctx.gcms, d.x, d.y, has(*ctx.key, KCode::shift), has(*ctx.key, KCode::z));
     if (!player.isAllive()) (*ctx.gcms)(cmd::changeScene{SceneID::title});
     IEntityManagerBase::updateAll(dt,*ctx.gcms);
 }

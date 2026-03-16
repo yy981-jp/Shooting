@@ -20,6 +20,10 @@ add_custom_target(buildinfo ALL
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
 
+if(NOT EXISTS "${CMAKE_SOURCE_DIR}/assets/sprite.def")
+	message(FATAL_ERROR "assets/sprite.def が必要です")
+endif()
+
 if(EMSCRIPTEN)
 
 	# wasm出力をhtmlにする
