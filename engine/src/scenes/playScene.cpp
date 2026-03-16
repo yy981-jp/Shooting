@@ -1,7 +1,14 @@
 #include "playScene.h"
-#include "../gcms/playScene.h"
+#include "../gcms/exec.h"
 
 #include <y9inc/string.h>
+
+
+IMPL_CMD_PLAY(cmd::bezierEnemy) { scene.bezierEnemy_Manager.generate(vec2f(c.x,c.y),c.pattern,c.duration); }
+IMPL_CMD_PLAY(cmd::simpleBullet) { scene.simpleBullet_Manager.generate(c.pos,c.degree,c.speed); }
+IMPL_CMD_PLAY(cmd::pointBullet) { scene.pointBullet_Manager.generate(c.pos, false /* TODO */); }
+IMPL_CMD_PLAY(cmd::playerBullet) { scene.playerBullet_Manager.generate(c.pos); }
+IMPL_CMD_PLAY(cmd::notiFps) { scene.currentFps = c.fps; }
 
 
 PlayScene::PlayScene(SceneContext& ctx):
@@ -79,5 +86,5 @@ void PlayScene::drawUI(const SceneContext& ctx) const {
 }
 
 void PlayScene::handleCommand(const GameCommand& cmd, Game& game) {
-   std::visit(commandExec::playScene{game,*this}, cmd);
+   std::visit(commandExec::Play{game,*this}, cmd);
 }

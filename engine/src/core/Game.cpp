@@ -8,6 +8,20 @@
 #include "../scenes/titleScene.h"
 
 
+IMPL_CMD_GLOBAL(cmd::sfx) { game.playSfx(c.id); }
+IMPL_CMD_GLOBAL(cmd::changeScene) { game.setScene(c.id); }
+IMPL_CMD_GLOBAL(cmd::onHit) {
+    // 衝突処理
+    for (const auto& ev: c.events) {
+        if (auto* a = entMgr.getPtr<ICollidable>(ev.a_handle))
+            a->onHit(ev.a_info, game.gcm);
+        if (auto* b = entMgr.getPtr<ICollidable>(ev.b_handle))
+            b->onHit(ev.b_info, game.gcm);
+    }
+}
+IMPL_CMD_GLOBAL(cmd::_) { /* dummy */ }
+
+
 std::unique_ptr<IScene> createScene(SceneID id, SceneContext& ctx) {
 	switch (id) {
 		case SceneID::title:    return std::make_unique<TitleScene>(ctx);

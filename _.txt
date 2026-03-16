@@ -81,3 +81,19 @@ score 敵ごとに何点か振るシステムを作る
 assets/image atlas化済み
 
 同じSpriteのSpriteEntryは同じatlasに格納する
+
+
+xmac def
+----<名称>				<参照元>		<生成>
+	sprite.def:			engine		自動(atlas.py)
+	entity_table.xmac	engine,stgc	手動
+	sfx.def:			engine		手動
+	
+gcms
+	cmd構造体 宣言 -> macro - gcms/gcms.h
+			 定義 -> 各entityのcpp
+	exe 宣言 -> macro - gcms/exec.h
+		実装 -> 各entityのcpp
+	variant -> macro - gcms/gcms.h
+
+scene追加は大変でもいい entity追加が大変なのは問題だ

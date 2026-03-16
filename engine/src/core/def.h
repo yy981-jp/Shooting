@@ -7,6 +7,7 @@
 
 
 const std::string Assets = "../assets/";
+const std::string Shared = "../shared/";
 constexpr vec2f WINDOW{1000,800};
 constexpr vec2f UI = {200,0};
 constexpr vec2f SCREEN = {400,400};
