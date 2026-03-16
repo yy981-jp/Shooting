@@ -101,18 +101,34 @@ void VM::step(GCMS& gcm) {
 
 
 void VM::op_spawn(GCMS& gcm) {
-    uint16_t entityType = read_u16();
-    switch (static_cast<STGEntityID>(entityType)) {
-        using enum STGEntityID;
-        case bezierEnemy: {
-            const auto raw = readStruct<STGEntity::bezierEnemy>();
-            cmd::bezierEnemy c;
-            c.x = raw.x;
-            c.y = raw.y;
-            c.pattern = raw.pattern;
-            c.duration = raw.duration;
-            gcm(c);
-        } break;
-        default: throw std::runtime_error("VM::op_spawn(): entityType");
-    }
+	uint16_t entityType = read_u16();
+
+	switch(static_cast<STGEntityID>(entityType)) {
+
+#define ENTITY(name, fields) \
+case STGEntityID::name: { \
+	auto raw = readStruct<STGEntity::name>(); \
+	cmd::name c{}; \
+	fields \
+	gcm(c); \
+	break; \
+}
+
+#define FIELD_CHOOSER(_1,_2,_3,NAME,...) NAME
+#define FIELD(...) FIELD_CHOOSER(__VA_ARGS__, FIELD3, FIELD2)(__VA_ARGS__)
+
+#define FIELD2(type, name) c.name = raw.name;
+#define FIELD3(type, name, def) c.name = raw.name;
+
+#include "../../../shared/stgEntity.def"
+
+#undef ENTITY
+#undef FIELD
+#undef FIELD2
+#undef FIELD3
+#undef FIELD_CHOOSER
+
+	default:
+		throw std::runtime_error("VM::op_spawn()");
+	}
 }

@@ -9,24 +9,6 @@
 #include "../core/hitEvent.h"
 
 
-/*
-namespace cmd {
-    struct sfx { SFXID id; };
-    struct changeScene { SceneID id; };
-    struct onHit { HitEvents events; };
-
-    struct bezierEnemy { int x, y, pattern, duration; };
-    struct simpleBullet {
-        vec2f pos;
-        int degree;
-        float speed;
-    };
-    struct pointBullet { vec2f pos; };
-    struct playerBullet { vec2f pos; };
-    struct notiFps { float fps; };
-}
-*/
-
 namespace cmd {
 #define GLOBAL(name, body) struct name { body };
 #define PLAY(name, body) struct name { body };
