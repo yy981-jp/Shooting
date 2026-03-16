@@ -29,7 +29,7 @@ class Game {
     ElapsedTime elapsedTime;
     FpsCounter fpsc;
 
-    uint8_t keyStat; // SHTKeyCode
+    uint8_t keyStat = 0; // SHTKeyCode
     SceneContext ctx;
     std::unique_ptr<IScene> currentScene = nullptr;
 

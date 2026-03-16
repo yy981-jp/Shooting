@@ -1,0 +1,6 @@
+ENTITY(bezierEnemy,
+	FIELD(s16, x)
+	FIELD(s16, y)
+	FIELD(s16, pattern, 0)
+	FIELD(s32, duration, 5000)
+)
