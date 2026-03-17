@@ -38,5 +38,4 @@ private:
 };
 
 
-
-extern EntityManager entMgr; 
+extern EntityManager entMgr;

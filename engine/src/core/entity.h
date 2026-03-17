@@ -18,7 +18,7 @@ struct EntityBase {
 
 struct IEntityManagerBase {
 protected:
-    static inline std::vector<IEntityManagerBase*> list;
+    static inline std::vector<IEntityManagerBase*> list; // 各EntityManager
 
     virtual void update(float dt, GCMS& gcm) = 0;
     virtual void draw(const Renderer* renderer) const = 0;
