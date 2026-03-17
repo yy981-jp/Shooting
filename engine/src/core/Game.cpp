@@ -83,11 +83,39 @@ void Game::update() {
 
     currentScene->update(ctx,deltatime);
 
-    // ハンドラー内で発行されたコマンドも処理するため、ループを繰り返す
-    while (!ctx.gcms->get().empty()) {
-        auto cmds = ctx.gcms->get();
-        ctx.gcms->clear();
-        for (const auto& c: cmds) currentScene->handleCommand(c,*this);
+    runGCMS();
+}
+
+void Game::runGCMS() {
+    // Game (Global) command 実行
+    {
+        auto& cmds_ref = ctx.gcms->get<GameCommand::Game>();
+        while (true) {
+            std::vector<GameCommand::Game> cmds;
+            cmds.swap(cmds_ref);
+
+            for (auto& cmd : cmds)
+                std::visit(commandExec::Global{*this}, cmd);
+            if (cmds_ref.empty()) break;
+        }
+    }
+
+    // Scene command 実行
+    switch (currentScene->type) {
+        case SceneID::play: {
+            auto& cmds_ref = ctx.gcms->get<GameCommand::Play>();
+            while (true) {
+                std::vector<GameCommand::Play> cmds;
+                cmds.swap(cmds_ref);
+                for (auto& cmd : cmds)
+                    std::visit(commandExec::Play{static_cast<PlayScene&>(*currentScene)}, cmd);
+                if (cmds_ref.empty()) break;
+            }
+        } break;
+        case SceneID::title: {
+            // TODO
+        } break;
+        default: throw std::runtime_error("execute GCMS: switch scene");
     }
 }
 

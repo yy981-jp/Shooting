@@ -38,6 +38,8 @@ class Game {
     void onKeyDown(const SDL_KeyboardEvent& e);
     void onKeyUP(const SDL_KeyboardEvent& e);
 
+    void runGCMS();
+
 public:
     GCMS gcm;
     void setScene(SceneID id);

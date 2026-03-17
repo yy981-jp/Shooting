@@ -25,7 +25,7 @@ class TitleScene: public IScene {
     std::array<Widget, static_cast<size_t>(wd::Count)> widgets;
 
 public:
-    TitleScene(SceneContext& ctx) {
+    TitleScene(SceneContext& ctx): IScene(SceneID::title) {
         widgets[static_cast<size_t>(wd::background)] = {SpriteID::titleBackground, {0,0}};
         widgets[static_cast<size_t>(wd::start)] = {SpriteID::titleStart, {0, -200}};
         widgets[static_cast<size_t>(wd::end)] = {SpriteID::titleExit, {0, 200}, 0};
@@ -44,7 +44,7 @@ public:
         }
         ctx.gfx->flush();
     }
-    void handleCommand(const GameCommand& cmd, Game& game) override {
-        std::visit(commandExec::Global{game}, cmd);
-    }
+    // void handleCommand(const GameCommand& cmd, Game& game) {
+    //     std::visit(commandExec::Global{game}, cmd);
+    // }
 };

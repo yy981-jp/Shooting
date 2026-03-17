@@ -21,8 +21,7 @@ struct Global {
     void operator()(const cmd::_& c) const;
 };
 
-struct Play: public Global {
-    using Global::operator();
+struct Play {
     PlayScene& scene;
 
 #define GLOBAL(name, body)
@@ -30,6 +29,7 @@ struct Play: public Global {
 #include "../../../shared/cmd.def"
 #undef GLOBAL
 #undef PLAY
+    void operator()(const cmd::_& c) const;
 };
 
 }

@@ -46,5 +46,5 @@ struct PlayScene: public IScene {
     void update(SceneContext& ctx, const float dt) override;
     void draw(const SceneContext& ctx) const override;
     void drawUI(const SceneContext& ctx) const;
-    void handleCommand(const GameCommand& cmd, Game& game) override;
+    void handleCommand(const GameCommand::Play& cmd);
 };

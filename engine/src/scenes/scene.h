@@ -16,8 +16,9 @@ struct SceneContext {
 };
 
 struct IScene {
+	SceneID type;
 	virtual void update(SceneContext& ctx, const float dt) = 0;
 	virtual void draw(const SceneContext& ctx) const = 0;
-	virtual void handleCommand(const GameCommand& cmd, Game& game) = 0;
 	virtual ~IScene() = default;
+	IScene(SceneID type): type(type) {}
 };

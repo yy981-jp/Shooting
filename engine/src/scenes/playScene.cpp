@@ -4,6 +4,7 @@
 #include <y9inc/string.h>
 
 
+IMPL_CMD_PLAY(cmd::_) { /* dummy */ }
 IMPL_CMD_PLAY(cmd::bezierEnemy) { scene.bezierEnemy_Manager.generate(vec2f(c.x,c.y),c.pattern,c.duration); }
 IMPL_CMD_PLAY(cmd::simpleBullet) { scene.simpleBullet_Manager.generate(c.pos,c.degree,c.speed); }
 IMPL_CMD_PLAY(cmd::pointBullet) { scene.pointBullet_Manager.generate(c.pos, false /* TODO */); }
@@ -12,7 +13,7 @@ IMPL_CMD_PLAY(cmd::notiFps) { scene.currentFps = c.fps; }
 
 
 PlayScene::PlayScene(SceneContext& ctx):
-    player(ctx.gfx, 5.0f*60.0f),
+    IScene(SceneID::play), player(ctx.gfx, 5.0f*60.0f),
     simpleBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
     pointBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
     ui(ctx,{410,-390},{600,390}), vm(stgdatpath) {
@@ -85,6 +86,6 @@ void PlayScene::drawUI(const SceneContext& ctx) const {
     ui.enter();
 }
 
-void PlayScene::handleCommand(const GameCommand& cmd, Game& game) {
-   std::visit(commandExec::Play{game,*this}, cmd);
+void PlayScene::handleCommand(const GameCommand::Play& cmd) {
+   std::visit(commandExec::Play{*this}, cmd);
 }

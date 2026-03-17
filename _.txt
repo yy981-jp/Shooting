@@ -1,3 +1,6 @@
+データ駆動 + コンパイル時決定
+
+
 bossはenemyの一種
 stgはリンクする　<- 基盤が完成すれば
 
@@ -97,3 +100,6 @@ gcms
 	variant -> macro - gcms/gcms.h
 
 scene追加は大変でもいい entity追加が大変なのは問題だ
+
+
+gcms gameとscene固有を継承関係ではなく分離させる
