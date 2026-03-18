@@ -35,6 +35,7 @@ struct PlayScene: public IScene {
     float currentFps;
 
     VM vm;
+    EntityManager entMgr;
 
     Player player;
     PlayerBullet_Manager playerBullet_Manager;
@@ -42,9 +43,9 @@ struct PlayScene: public IScene {
     SimpleBullet_Manager simpleBullet_Manager;
     PointBullet_Manager pointBullet_Manager;
 
-    PlayScene(SceneContext& ctx);
-    void update(SceneContext& ctx, const float dt) override;
-    void draw(const SceneContext& ctx) const override;
-    void drawUI(const SceneContext& ctx) const;
+    PlayScene(GlobalContext& ctx);
+    void update(GlobalContext& ctx, const float dt) override;
+    void draw(const GlobalContext& ctx) const override;
+    void drawUI(const GlobalContext& ctx) const;
     void handleCommand(const GameCommand::Play& cmd);
 };

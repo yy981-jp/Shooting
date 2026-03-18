@@ -12,7 +12,7 @@ IMPL_CMD_PLAY(cmd::playerBullet) { scene.playerBullet_Manager.generate(c.pos); }
 IMPL_CMD_PLAY(cmd::notiFps) { scene.currentFps = c.fps; }
 
 
-PlayScene::PlayScene(SceneContext& ctx):
+PlayScene::PlayScene(GlobalContext& ctx):
     IScene(SceneID::play), player(ctx.gfx, 5.0f*60.0f),
     simpleBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
     pointBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
@@ -30,7 +30,7 @@ PlayScene::PlayScene(SceneContext& ctx):
         }
     }
 
-void PlayScene::update(SceneContext& ctx, const float dt) {
+void PlayScene::update(GlobalContext& ctx, const float dt) {
     // DEBUG
     if (has(*ctx.key, KCode::x)) (*ctx.gcms)(cmd::changeScene{SceneID::title});
 
@@ -47,7 +47,7 @@ void PlayScene::update(SceneContext& ctx, const float dt) {
     IEntityManagerBase::updateAll(dt,*ctx.gcms);
 }
 
-void PlayScene::draw(const SceneContext& ctx) const {
+void PlayScene::draw(const GlobalContext& ctx) const {
     ctx.gfx->drawSprite(SpriteID::background, {0,0});
     IEntityManagerBase::drawAll(ctx.gfx);
     player.draw(ctx.gfx);
@@ -59,7 +59,7 @@ void PlayScene::draw(const SceneContext& ctx) const {
     physWorld.draw(ctx.gfx);
 }
 
-void PlayScene::drawUI(const SceneContext& ctx) const {
+void PlayScene::drawUI(const GlobalContext& ctx) const {
     ui.initCur();
     ui.write(FontSize::f16, "buildID:");
     ui.enter();

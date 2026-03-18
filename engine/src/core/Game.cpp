@@ -22,7 +22,7 @@ IMPL_CMD_GLOBAL(cmd::onHit) {
 IMPL_CMD_GLOBAL(cmd::_) { /* dummy */ }
 
 
-IScene* createScene(SceneID id, SceneContext& ctx) {
+IScene* createScene(SceneID id, GlobalContext& ctx) {
 	IScene* result = nullptr;
     switch (id) {
 		case SceneID::title:    result = new TitleScene(ctx);   break;
@@ -64,7 +64,7 @@ Game::Game(SceneID initScene, bool fullscreen) {
     renderer = new Renderer(nativeRenderer, SCREEN.x, SCREEN.y);
     sfxMgr = new SFXManager;
 
-    ctx = SceneContext{ &gcm, &keyStat, renderer, sfxMgr };
+    ctx = GlobalContext{ &gcm, &keyStat, renderer, sfxMgr };
 
     setScene(initScene);
 }

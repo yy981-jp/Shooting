@@ -30,7 +30,7 @@ class Game {
     FpsCounter fpsc;
 
     uint8_t keyStat = 0; // KCode
-    SceneContext ctx;
+    GlobalContext ctx;
     IScene* currentScene = nullptr;
 
     void update();

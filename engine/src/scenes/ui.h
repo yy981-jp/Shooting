@@ -17,11 +17,11 @@ class TextUI {
 
     SpriteEntry* entries;
 
-    const SceneContext& ctx;
+    const GlobalContext& ctx;
     constexpr static AtlasID atlas = AtlasID::font;
 
 public:
-    TextUI(SceneContext& ctx, vec2f min, vec2f max)
+    TextUI(GlobalContext& ctx, vec2f min, vec2f max)
      : ctx(ctx), hmin(min.y), wmin(min.x), hmax(max.y), wmax(max.x) {}
 
     Color white{255,255,255,255};
