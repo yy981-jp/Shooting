@@ -29,14 +29,16 @@ class Game {
     ElapsedTime elapsedTime;
     FpsCounter fpsc;
 
-    uint8_t keyStat; // SHTKeyCode
-    SceneContext ctx;
-    std::unique_ptr<IScene> currentScene = nullptr;
+    uint8_t keyStat = 0; // KCode
+    GlobalContext ctx;
+    IScene* currentScene = nullptr;
 
     void update();
     void draw() const;
     void onKeyDown(const SDL_KeyboardEvent& e);
     void onKeyUP(const SDL_KeyboardEvent& e);
+
+    void runGCMS();
 
 public:
     GCMS gcm;

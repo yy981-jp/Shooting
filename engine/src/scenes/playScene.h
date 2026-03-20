@@ -14,11 +14,11 @@
 
 inline vec2i makeDir(uint8_t keys) {
     return {
-        (has(keys, SHTKeyCode::right) ? 1 : 0)
-      - (has(keys, SHTKeyCode::left)  ? 1 : 0),
+        (has(keys, KCode::right) ? 1 : 0)
+      - (has(keys, KCode::left)  ? 1 : 0),
 
-        (has(keys, SHTKeyCode::down)  ? 1 : 0)
-      - (has(keys, SHTKeyCode::up)    ? 1 : 0)
+        (has(keys, KCode::down)  ? 1 : 0)
+      - (has(keys, KCode::up)    ? 1 : 0)
     };
 }
 
@@ -42,9 +42,9 @@ struct PlayScene: public IScene {
     SimpleBullet_Manager simpleBullet_Manager;
     PointBullet_Manager pointBullet_Manager;
 
-    PlayScene(SceneContext& ctx);
-    void update(SceneContext& ctx, const float dt) override;
-    void draw(const SceneContext& ctx) const override;
-    void drawUI(const SceneContext& ctx) const;
-    void handleCommand(const GameCommand& cmd, Game& game) override;
+    PlayScene(GlobalContext& ctx);
+    void update(GlobalContext& ctx, const float dt) override;
+    void draw(const GlobalContext& ctx) const override;
+    void drawUI(const GlobalContext& ctx) const;
+    void handleCommand(const GameCommand::Play& cmd);
 };

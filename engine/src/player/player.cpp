@@ -71,7 +71,7 @@ Player::Player(const Renderer* r, float speed):
 
 
     // entry handle
-    EntityHandle e = entMgr.create();
+    e = entMgr.create();
 
     Collider col{};
     col.type = ColliderType::Circle;
@@ -87,6 +87,11 @@ Player::Player(const Renderer* r, float speed):
     h = physWorld.add(col);
 
     entMgr.setPtr(e,this);
+}
+
+Player::~Player() {
+    entMgr.destroy(e);
+    physWorld.destroy(h);
 }
 
 void Player::onHit(const CollisionInfo& info, GCMS& gcm) {

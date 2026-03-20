@@ -1,11 +1,19 @@
 #include "playScene.h"
-#include "../gcms/playScene.h"
+#include "../gcms/exec.h"
 
 #include <y9inc/string.h>
 
 
-PlayScene::PlayScene(SceneContext& ctx):
-    player(ctx.gfx, 5.0f*60.0f),
+IMPL_CMD_PLAY(cmd::_) { /* dummy */ }
+IMPL_CMD_PLAY(cmd::bezierEnemy) { scene.bezierEnemy_Manager.generate(vec2f(c.x,c.y),c.pattern,c.duration); }
+IMPL_CMD_PLAY(cmd::simpleBullet) { scene.simpleBullet_Manager.generate(c.pos,c.degree,c.speed); }
+IMPL_CMD_PLAY(cmd::pointBullet) { scene.pointBullet_Manager.generate(c.pos, false /* TODO */); }
+IMPL_CMD_PLAY(cmd::playerBullet) { scene.playerBullet_Manager.generate(c.pos); }
+IMPL_CMD_PLAY(cmd::notiFps) { scene.currentFps = c.fps; }
+
+
+PlayScene::PlayScene(GlobalContext& ctx):
+    IScene(SceneID::play), player(ctx.gfx, 5.0f*60.0f),
     simpleBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
     pointBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
     ui(ctx,{410,-390},{600,390}), vm(stgdatpath) {
@@ -22,9 +30,9 @@ PlayScene::PlayScene(SceneContext& ctx):
         }
     }
 
-void PlayScene::update(SceneContext& ctx, const float dt) {
+void PlayScene::update(GlobalContext& ctx, const float dt) {
     // DEBUG
-    if (has(*ctx.input, SHTKeyCode::x)) (*ctx.gcms)(cmd::changeScene{SceneID::title});
+    if (has(*ctx.key, KCode::x)) (*ctx.gcms)(cmd::changeScene{SceneID::title});
 
     // VM step
     if (vm.running) vm.step(*ctx.gcms);
@@ -33,13 +41,13 @@ void PlayScene::update(SceneContext& ctx, const float dt) {
     physWorld.step(*ctx.gcms);
 
     // entity update
-    vec2i d = makeDir(*ctx.input);
-    player.update(dt, *ctx.gcms, d.x, d.y, has(*ctx.input, SHTKeyCode::shift), has(*ctx.input, SHTKeyCode::z));
+    vec2i d = makeDir(*ctx.key);
+    player.update(dt, *ctx.gcms, d.x, d.y, has(*ctx.key, KCode::shift), has(*ctx.key, KCode::z));
     if (!player.isAllive()) (*ctx.gcms)(cmd::changeScene{SceneID::title});
     IEntityManagerBase::updateAll(dt,*ctx.gcms);
 }
 
-void PlayScene::draw(const SceneContext& ctx) const {
+void PlayScene::draw(const GlobalContext& ctx) const {
     ctx.gfx->drawSprite(SpriteID::background, {0,0});
     IEntityManagerBase::drawAll(ctx.gfx);
     player.draw(ctx.gfx);
@@ -51,7 +59,7 @@ void PlayScene::draw(const SceneContext& ctx) const {
     physWorld.draw(ctx.gfx);
 }
 
-void PlayScene::drawUI(const SceneContext& ctx) const {
+void PlayScene::drawUI(const GlobalContext& ctx) const {
     ui.initCur();
     ui.write(FontSize::f16, "buildID:");
     ui.enter();
@@ -78,6 +86,6 @@ void PlayScene::drawUI(const SceneContext& ctx) const {
     ui.enter();
 }
 
-void PlayScene::handleCommand(const GameCommand& cmd, Game& game) {
-   std::visit(commandExec::playScene{game,*this}, cmd);
+void PlayScene::handleCommand(const GameCommand::Play& cmd) {
+   std::visit(commandExec::Play{*this}, cmd);
 }

@@ -8,16 +8,17 @@
 
 class Game;
 
-struct SceneContext {
+struct GlobalContext {
 	GCMS* gcms;
-	uint8_t* input; // SHTKeyCode
+	uint8_t* key; // KCode
 	Renderer* gfx;
 	SFXManager* sfx;
 };
 
 struct IScene {
-	virtual void update(SceneContext& ctx, const float dt) = 0;
-	virtual void draw(const SceneContext& ctx) const = 0;
-	virtual void handleCommand(const GameCommand& cmd, Game& game) = 0;
+	SceneID type;
+	virtual void update(GlobalContext& ctx, const float dt) = 0;
+	virtual void draw(const GlobalContext& ctx) const = 0;
 	virtual ~IScene() = default;
+	IScene(SceneID type): type(type) {}
 };

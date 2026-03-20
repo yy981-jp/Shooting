@@ -8,12 +8,27 @@
 #include "../scenes/titleScene.h"
 
 
-std::unique_ptr<IScene> createScene(SceneID id, SceneContext& ctx) {
-	switch (id) {
-		case SceneID::title:    return std::make_unique<TitleScene>(ctx);
-		case SceneID::play:     return std::make_unique<PlayScene>(ctx);
+IMPL_CMD_GLOBAL(cmd::sfx) { game.playSfx(c.id); }
+IMPL_CMD_GLOBAL(cmd::changeScene) { game.setScene(c.id); }
+IMPL_CMD_GLOBAL(cmd::onHit) {
+    // 衝突処理
+    for (const auto& ev: c.events) {
+        if (auto* a = entMgr.getPtr<ICollidable>(ev.a_handle))
+            a->onHit(ev.a_info, game.gcm);
+        if (auto* b = entMgr.getPtr<ICollidable>(ev.b_handle))
+            b->onHit(ev.b_info, game.gcm);
+    }
+}
+IMPL_CMD_GLOBAL(cmd::_) { /* dummy */ }
+
+
+IScene* createScene(SceneID id, GlobalContext& ctx) {
+	IScene* result = nullptr;
+    switch (id) {
+		case SceneID::title:    result = new TitleScene(ctx);   break;
+		case SceneID::play:     result = new PlayScene(ctx);    break;
 	}
-	return nullptr;
+	return result;
 }
 
 
@@ -49,7 +64,7 @@ Game::Game(SceneID initScene, bool fullscreen) {
     renderer = new Renderer(nativeRenderer, SCREEN.x, SCREEN.y);
     sfxMgr = new SFXManager;
 
-    ctx = SceneContext{ &gcm, &keyStat, renderer, sfxMgr };
+    ctx = GlobalContext{ &gcm, &keyStat, renderer, sfxMgr };
 
     setScene(initScene);
 }
@@ -68,16 +83,47 @@ void Game::update() {
 
     currentScene->update(ctx,deltatime);
 
-    // ハンドラー内で発行されたコマンドも処理するため、ループを繰り返す
-    while (!ctx.gcms->get().empty()) {
-        auto cmds = ctx.gcms->get();
-        ctx.gcms->clear();
-        for (const auto& c: cmds) currentScene->handleCommand(c,*this);
+    runGCMS();
+}
+
+
+// gcms scene executor helper
+template<typename CMD, typename EXEC, typename SCENE>
+void runSceneGCMS(GCMS& gcms, IScene* currentScene) {
+    auto& cmds_ref = gcms.get<CMD>();
+    while (true) {
+        std::vector<CMD> cmds;
+        cmds.swap(cmds_ref);
+        for (auto& cmd : cmds)
+            std::visit(EXEC{static_cast<SCENE&>(*currentScene)}, cmd);
+        if (cmds_ref.empty()) break;
+    }
+}
+
+void Game::runGCMS() {
+    // Game (Global) command 実行
+    {
+        auto& cmds_ref = ctx.gcms->get<GameCommand::Game>();
+        while (true) {
+            std::vector<GameCommand::Game> cmds;
+            cmds.swap(cmds_ref);
+
+            for (auto& cmd : cmds)
+                std::visit(commandExec::Global{*this}, cmd);
+            if (cmds_ref.empty()) break;
+        }
+    }
+
+    // Scene command 実行
+    switch (currentScene->type) {
+        case SceneID::play: runSceneGCMS<GameCommand::Play,commandExec::Play,PlayScene>(*ctx.gcms,currentScene); break;
+        case SceneID::title: /* TODO */ break;
+        default: throw std::runtime_error("execute GCMS: switch scene");
     }
 }
 
 void Game::draw() const {
-    currentScene->draw(ctx);
+    if (currentScene) currentScene->draw(ctx);
 
     SDL_RenderPresent(nativeRenderer);
 }
@@ -86,16 +132,16 @@ void Game::onKeyDown(const SDL_KeyboardEvent& e) {
     if (e.repeat) return;
     switch (e.keysym.scancode) {
         case SDL_SCANCODE_I:
-        case SDL_SCANCODE_UP:       keyStat |= static_cast<uint8_t>(SHTKeyCode::up);    break;
+        case SDL_SCANCODE_UP:       keyStat |= static_cast<uint8_t>(KCode::up);    break;
         case SDL_SCANCODE_K:
-        case SDL_SCANCODE_DOWN:     keyStat |= static_cast<uint8_t>(SHTKeyCode::down);  break;
+        case SDL_SCANCODE_DOWN:     keyStat |= static_cast<uint8_t>(KCode::down);  break;
         case SDL_SCANCODE_J:
-        case SDL_SCANCODE_LEFT:     keyStat |= static_cast<uint8_t>(SHTKeyCode::left);  break;
+        case SDL_SCANCODE_LEFT:     keyStat |= static_cast<uint8_t>(KCode::left);  break;
         case SDL_SCANCODE_L:
-        case SDL_SCANCODE_RIGHT:    keyStat |= static_cast<uint8_t>(SHTKeyCode::right); break;
-        case SDL_SCANCODE_Z:        keyStat |= static_cast<uint8_t>(SHTKeyCode::z);     break;
-        case SDL_SCANCODE_X:        keyStat |= static_cast<uint8_t>(SHTKeyCode::x);     break;
-        case SDL_SCANCODE_LSHIFT:   keyStat |= static_cast<uint8_t>(SHTKeyCode::shift); break;
+        case SDL_SCANCODE_RIGHT:    keyStat |= static_cast<uint8_t>(KCode::right); break;
+        case SDL_SCANCODE_Z:        keyStat |= static_cast<uint8_t>(KCode::z);     break;
+        case SDL_SCANCODE_X:        keyStat |= static_cast<uint8_t>(KCode::x);     break;
+        case SDL_SCANCODE_LSHIFT:   keyStat |= static_cast<uint8_t>(KCode::shift); break;
     }
     if (e.keysym.sym == SDLK_ESCAPE) exit(111);
 }
@@ -103,16 +149,16 @@ void Game::onKeyDown(const SDL_KeyboardEvent& e) {
 void Game::onKeyUP(const SDL_KeyboardEvent& e) {
     switch (e.keysym.scancode) {
         case SDL_SCANCODE_I:
-        case SDL_SCANCODE_UP:       keyStat &= ~static_cast<uint8_t>(SHTKeyCode::up);    break;
+        case SDL_SCANCODE_UP:       keyStat &= ~static_cast<uint8_t>(KCode::up);    break;
         case SDL_SCANCODE_K:
-        case SDL_SCANCODE_DOWN:     keyStat &= ~static_cast<uint8_t>(SHTKeyCode::down);  break;
+        case SDL_SCANCODE_DOWN:     keyStat &= ~static_cast<uint8_t>(KCode::down);  break;
         case SDL_SCANCODE_J:
-        case SDL_SCANCODE_LEFT:     keyStat &= ~static_cast<uint8_t>(SHTKeyCode::left);  break;
+        case SDL_SCANCODE_LEFT:     keyStat &= ~static_cast<uint8_t>(KCode::left);  break;
         case SDL_SCANCODE_L:
-        case SDL_SCANCODE_RIGHT:    keyStat &= ~static_cast<uint8_t>(SHTKeyCode::right); break;
-        case SDL_SCANCODE_Z:        keyStat &= ~static_cast<uint8_t>(SHTKeyCode::z);     break;
-        case SDL_SCANCODE_X:        keyStat &= ~static_cast<uint8_t>(SHTKeyCode::x);     break;
-        case SDL_SCANCODE_LSHIFT:   keyStat &= ~static_cast<uint8_t>(SHTKeyCode::shift); break;
+        case SDL_SCANCODE_RIGHT:    keyStat &= ~static_cast<uint8_t>(KCode::right); break;
+        case SDL_SCANCODE_Z:        keyStat &= ~static_cast<uint8_t>(KCode::z);     break;
+        case SDL_SCANCODE_X:        keyStat &= ~static_cast<uint8_t>(KCode::x);     break;
+        case SDL_SCANCODE_LSHIFT:   keyStat &= ~static_cast<uint8_t>(KCode::shift); break;
     }
 }
 
@@ -138,6 +184,8 @@ void Game::tick() {
 }
 
 void Game::setScene(SceneID id) {
+    delete currentScene;
+    currentScene = nullptr;
     if (!(currentScene = createScene(id,ctx)))
         throw std::runtime_error("createScene: nullptr");
 }

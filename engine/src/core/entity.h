@@ -18,12 +18,17 @@ struct EntityBase {
 
 struct IEntityManagerBase {
 protected:
-    static inline std::vector<IEntityManagerBase*> list;
+    static inline std::vector<IEntityManagerBase*> list; // 各EntityManager
 
     virtual void update(float dt, GCMS& gcm) = 0;
     virtual void draw(const Renderer* renderer) const = 0;
 
 public:
+    virtual ~IEntityManagerBase() {
+        auto it = std::find(list.begin(), list.end(), this);
+        if (it != list.end()) list.erase(it);
+    }
+
     static void updateAll(float dt, GCMS& gcm) {
         for (const auto& e: list) {
             e->update(dt,gcm);
@@ -42,6 +47,13 @@ struct EntityManagerBase: IEntityManagerBase {
 
     EntityManagerBase() {
         IEntityManagerBase::list.push_back(this);
+    }
+
+    virtual ~EntityManagerBase() {
+        for (auto& object: objects) {
+            physWorld.destroy(object.col_h);
+            entMgr.destroy(object.ent_h);
+        }
     }
 
     virtual void update(float dt, GCMS& gcm) override {

@@ -1,3 +1,8 @@
+データ駆動 + コンパイル時決定
+
+
+scene追加は大変でもいい entity追加が大変なのは問題だ
+
 bossはenemyの一種
 stgはリンクする　<- 基盤が完成すれば
 
@@ -35,13 +40,13 @@ cmd:: は手動でstructを書き、engine内部に特化している
 entity update: true -> 生存, false -> 削除
 
 enemy追加手順
-	enemy/に.hでEntitytemplateを継承したクラスを作り、その.hをplayscene.cppに埋め込む
+	enemy/に.hでEntitytemplateを継承したクラスを作り、その.hをplayScene.cppに埋め込む
 	shared/stgEntity.xmacにメモリ構成を定義
-	gcms/gcms.hにコマンドを構成
+	shared/cmd.defにコマンドを記述
 
 bullet追加手順
-	bullet/に.hでEntitytemplateを継承したクラスを作り、その.hをplayscene.cppに埋め込む
-	gcms/gcms.hにコマンドを構成
+	bullet/に.hでEntitytemplateを継承したクラスを作り、その.hをplayScene.cppに埋め込む
+	shared/cmd.defにコマンドを記述
 
 描画システム内部の座標系は左上を原点に, 論理部分の座標系は中央を原点に
 
@@ -68,7 +73,7 @@ batch有効->
 batch無効->
 	5000 50~60
 	6000 30~40
-ハイブリッド->
+ハイブリッド(採用)->
 	5000~6000 60
 	7000 30
 当たり判定無効化->
@@ -76,8 +81,26 @@ batch無効->
 当たり範囲処理が重すぎる
 
 TextUI TUI用font描画システム コンストラクタで描画範囲をrectで指定する
-score 敵ごとに何点か振るシステムを作る
 
 assets/image atlas化済み
 
 同じSpriteのSpriteEntryは同じatlasに格納する
+
+
+xmac def
+----<名称>				<参照元>		<生成>
+	sprite.def:			engine		自動(atlas.py)
+	entity_table.xmac	engine,stgc	手動
+	sfx.def:			engine		手動
+	
+gcms
+	cmd構造体 宣言 -> macro - gcms/gcms.h
+			 定義 -> 各entityのcpp
+	exe 宣言 -> macro - gcms/exec.h
+		実装 -> 各entityのcpp
+	variant -> macro - gcms/gcms.h
+
+gcms gameとscene固有を継承関係ではなく分離させた
+
+cmd::onHit: PlaySceneの担当では? gcmsを使用するのでcmdにgcmsの参照でも乗せるか?
+score 敵ごとに何点か振るシステムを作る

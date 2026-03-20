@@ -16,6 +16,7 @@ class Player: public ICollidable {
     spawnManager spm;
     spawnManager invincible;
     mutable spawnManager animation;
+    EntityHandle e;
     ColliderHandle h;
     void onHit(const CollisionInfo& info, GCMS& gcm) override;
 
@@ -27,6 +28,7 @@ public:
     int remainingLives = 500; // DEBUG
 
     Player(const Renderer* r, float speed);
+    ~Player();
     bool isAllive() { return remainingLives; }
 
     void update(float deltatime, GCMS& gcm, int dx, int dy, bool slow, bool shot);

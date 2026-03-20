@@ -1,0 +1,30 @@
+GLOBAL(sfx,
+    SFXID id;
+)
+GLOBAL(changeScene,
+    SceneID id;
+)
+GLOBAL(onHit,
+    HitEvents events;
+)
+
+PLAY(bezierEnemy,
+    int x;
+    int y;
+    int pattern;
+    int duration;
+)
+PLAY(simpleBullet,
+    vec2f pos;
+    int degree;
+    float speed;
+)
+PLAY(pointBullet,
+    vec2f pos;
+)
+PLAY(playerBullet,
+    vec2f pos;
+)
+PLAY(notiFps,
+    float fps;
+)
