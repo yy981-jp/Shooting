@@ -49,6 +49,13 @@ struct EntityManagerBase: IEntityManagerBase {
         IEntityManagerBase::list.push_back(this);
     }
 
+    virtual ~EntityManagerBase() {
+        for (auto& object: objects) {
+            physWorld.destroy(object.col_h);
+            entMgr.destroy(object.ent_h);
+        }
+    }
+
     virtual void update(float dt, GCMS& gcm) override {
         for (size_t i = 0; i < objects.size();) {
             if (!objects[i].update(dt, gcm)) {

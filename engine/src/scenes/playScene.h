@@ -35,7 +35,6 @@ struct PlayScene: public IScene {
     float currentFps;
 
     VM vm;
-    EntityManager entMgr;
 
     Player player;
     PlayerBullet_Manager playerBullet_Manager;

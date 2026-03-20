@@ -1,4 +1,4 @@
-#include "VM.h"
+#include "vm.h"
 #include "../tables/all.h"
 #include "stgEntityTable.h"
 
