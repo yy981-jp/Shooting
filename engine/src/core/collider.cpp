@@ -93,6 +93,9 @@ ColliderHandle PhysicsWorld::add(const Collider& c) {
 
         aabbMin.push_back({});
         aabbMax.push_back({});
+
+        ptr_collidable.push_back(nullptr);
+        ptr_set.push_back({});
     }
 
     // ===== alive 登録（共通）=====
@@ -123,8 +126,7 @@ ColliderHandle PhysicsWorld::add(const Collider& c) {
 
         aabbMin[id] = c.circle.center - vec2f{c.circle.r, c.circle.r};
         aabbMax[id] = c.circle.center + vec2f{c.circle.r, c.circle.r};
-    } 
-    else {
+    } else {
         rectMin[id] = c.rect.min;
         rectMax[id] = c.rect.max;
 
@@ -187,12 +189,30 @@ bool PhysicsWorld::isAlive(ColliderHandle h) const {
 }
 
 HitEvent PhysicsWorld::genHitInfo(EntityID a, EntityID b) {
+    ColliderHandle a_handle = {a, records[a].gen};
+    ColliderHandle b_handle = {b, records[b].gen};
     return {
-        .a_handle = owner[a],
-        .b_handle = owner[b],
-        .a_info = CollisionInfo{.layer = layer[b]},
-        .b_info = CollisionInfo{.layer = layer[a]}
+        .a_handle = a_handle,
+        .b_handle = b_handle,
+
+        .a_info = CollisionInfo{
+            .layer = layer[b],
+            .handle = owner[b],
+            .col_h = b_handle,
+        },
+        .b_info = CollisionInfo{
+            .layer = layer[a],
+            .handle = owner[a],
+            .col_h = a_handle,
+        }
     };
+}
+
+void PhysicsWorld::draw(const Renderer* r) {
+    r->setColor(255,0,255,127); // 少し透過
+    for (const auto& e: alive) {
+        r->drawFilledCircle(pos[e], radius[e]);
+    }
 }
 
 

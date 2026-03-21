@@ -14,7 +14,7 @@
 
 
 struct BezierEnemy: public EntityBase<BezierEnemy>, ICollidable {
-    bool wasShot = false;
+    uint16_t hp = 3;
     bool req_enable = false;
     spawnManager spm;
     MotionPipeline mp;
@@ -23,11 +23,10 @@ struct BezierEnemy: public EntityBase<BezierEnemy>, ICollidable {
       std::span<const vec2f> bezierCurve, int duration,
       const ColliderHandle& col_h)
       : EntityBase(e, col_h, pos), spm(300),
-        mp(BezierController(bezierCurve,duration,pos)) {
-    }
+        mp(BezierController(bezierCurve,duration,pos)) {}
 
     bool update(float deltatime, GCMS& gcm) { // false -> 削除,  true -> 生存
-        if (!mp.isRunning() || wasShot) return false;
+        if (!mp.isRunning() || !hp) return false;
         mp.update(deltatime, ms);
 
         spm.update(deltatime);
@@ -50,10 +49,12 @@ struct BezierEnemy: public EntityBase<BezierEnemy>, ICollidable {
     
     void onHit(const CollisionInfo& info, GCMS& gcm) override {
         if (info.layer == CollisionLayer::playerBullet) {
+            // 点生成
             cmd::pointBullet c;
             c.pos = ms.pos;
             gcm(c);
-            wasShot = true;
+            // 衰弱
+            hp-= physWorld.getPtr(info.col_h).pb->attackPower;
         }
     }
 };
@@ -108,6 +109,6 @@ public:
         BezierEnemy& enemy = objects.back();
 
         // EntityManagerにポインタ登録
-        entMgr.setPtr(e,&enemy);
+        physWorld.setColPtr(col_handle,&enemy);
     }
 };

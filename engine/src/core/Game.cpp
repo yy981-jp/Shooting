@@ -13,9 +13,9 @@ IMPL_CMD_GLOBAL(cmd::changeScene) { game.setScene(c.id); }
 IMPL_CMD_GLOBAL(cmd::onHit) {
     // 衝突処理
     for (const auto& ev: c.events) {
-        if (auto* a = entMgr.getPtr<ICollidable>(ev.a_handle))
+        if (auto* a = physWorld.getColPtr(ev.a_handle))
             a->onHit(ev.a_info, game.gcm);
-        if (auto* b = entMgr.getPtr<ICollidable>(ev.b_handle))
+        if (auto* b = physWorld.getColPtr(ev.b_handle))
             b->onHit(ev.b_info, game.gcm);
     }
 }

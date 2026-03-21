@@ -62,7 +62,7 @@ struct EntityManagerBase: IEntityManagerBase {
                 physWorld.destroy(objects[i].col_h);
                 entMgr.destroy(objects[i].ent_h);
                 objects[i] = std::move(objects.back());
-                entMgr.setPtr(objects[i].ent_h, &objects[i]);
+                physWorld.setColPtr(objects[i].col_h, &objects[i]);
                 objects.pop_back();
             } else {
                 physWorld.setPos(objects[i].col_h, objects[i].ms.pos);
@@ -75,6 +75,10 @@ struct EntityManagerBase: IEntityManagerBase {
         for (const auto& object: objects) {
             object.draw(renderer);
         }
-        // renderer->flush();
     }
+};
+
+
+struct IEnemy {
+    uint16_t hp, pointValue;
 };

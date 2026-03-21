@@ -53,6 +53,6 @@ public:
         
         objects.emplace_back(pos, deg2rad(degree), speed, eh, ch, spriteHalf);
 
-        entMgr.setPtr(eh, &objects.back());
+        physWorld.setColPtr(ch, &objects.back());
     }
 };

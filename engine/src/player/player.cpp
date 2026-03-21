@@ -86,7 +86,7 @@ Player::Player(const Renderer* r, float speed):
 
     h = physWorld.add(col);
 
-    entMgr.setPtr(e,this);
+    physWorld.setColPtr(h,this);
 }
 
 Player::~Player() {
@@ -98,10 +98,7 @@ void Player::onHit(const CollisionInfo& info, GCMS& gcm) {
     switch (info.layer) {
         using enum CollisionLayer;
 
-        case item: {
-            // 暫定
-            score++;
-        } break;
+        case item: break;
 
         case enemy: case enemyBullet: {
             if (!invincible.get()) break;

@@ -4,6 +4,7 @@
 #include "hitEvent.h"
 #include "../graphics/gfx.h"
 #include "../gcms/gcms.h"
+#include "../bullet/iplayerBullet.h"
 
 
 // 衝突時処理があるentityはこれを継承する
@@ -36,12 +37,8 @@ struct Collider {
 	};
 };
 
-// 基本情報
-using ColliderID = uint32_t;
-using ColliderGen = uint32_t;
-struct ColliderHandle {
-    ColliderID id;
-    ColliderGen gen;
+struct ColPtrSet {
+    IPlayerBullet* pb;
 };
 
 
@@ -55,7 +52,7 @@ public:
 private:
     static constexpr ColliderID INVALID = UINT32_MAX;
 
-    // SoA（データを分離）
+    // ----- SoA -----
     // 共通
     std::vector<ColliderType> type;
     std::vector<vec2f> pos;        // center (circle) / center (rect)
@@ -78,7 +75,11 @@ private:
     std::vector<Entry> records;
     ColliderID freeHead = INVALID;
 
+    // ptr
+    std::vector<ICollidable*> ptr_collidable;
+    std::vector<ColPtrSet> ptr_set;
 
+    // ----- Func -----
     bool hitCircleCircle(EntityID a, EntityID b);
     bool hitRectCircle(EntityID r, EntityID c);
     bool hitCircleRect(EntityID c, EntityID r);
@@ -95,14 +96,29 @@ private:
     HitEvent genHitInfo(EntityID a, EntityID b);
 
 public:
-    void draw(const Renderer* r) {
-        r->setColor(255,0,255,127); // 少し透過
-        for (const auto& e: alive) {
-            r->drawFilledCircle(pos[e], radius[e]);
-        }
+    ICollidable* getColPtr(const ColliderHandle& h) const {
+        if (!isAlive(h)) return {};
+        return ptr_collidable[h.id];
     }
 
+    ColPtrSet getPtr(const ColliderHandle& h) const {
+        if (!isAlive(h)) return {};
+        return ptr_set[h.id];
+    }
+
+    void draw(const Renderer* r);
+
     ColliderHandle add(const Collider& c);
+
+    void setColPtr(ColliderHandle h, ICollidable* ptr) {
+        if (!isAlive(h)) return;
+        ptr_collidable[h.id] = ptr;
+    }
+
+    void setPtr(ColliderHandle h, const ColPtrSet& ptrSet) {
+        if (!isAlive(h)) return;
+        ptr_set[h.id] = ptrSet;
+    }
 
     // 判定ループ（circle only broadphase）
     void step(GCMS& gcm);

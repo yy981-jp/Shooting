@@ -104,3 +104,5 @@ gcms gameとscene固有を継承関係ではなく分離させた
 
 cmd::onHit: PlaySceneの担当では? gcmsを使用するのでcmdにgcmsの参照でも乗せるか?
 score 敵ごとに何点か振るシステムを作る
+
+EntityManagerのptr管理機能を分離して

@@ -10,6 +10,7 @@ IMPL_CMD_PLAY(cmd::simpleBullet) { scene.simpleBullet_Manager.generate(c.pos,c.d
 IMPL_CMD_PLAY(cmd::pointBullet) { scene.pointBullet_Manager.generate(c.pos, false /* TODO */); }
 IMPL_CMD_PLAY(cmd::playerBullet) { scene.playerBullet_Manager.generate(c.pos); }
 IMPL_CMD_PLAY(cmd::notiFps) { scene.currentFps = c.fps; }
+IMPL_CMD_PLAY(cmd::addScore) { scene.score += c.value; }
 
 
 PlayScene::PlayScene(GlobalContext& ctx):
@@ -79,7 +80,7 @@ void PlayScene::drawUI(const GlobalContext& ctx) const {
     ui.write((int)entMgr.size(), FontSize::f32);
     ui.enter();
     ui.write(FontSize::f32, "score: ");
-    ui.write((int)player.score, FontSize::f32);
+    ui.write((int)score, FontSize::f32);
     ui.enter();
     ui.write(FontSize::f32, "RL: ");
     ui.write((int)player.remainingLives, FontSize::f32);
