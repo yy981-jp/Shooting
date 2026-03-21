@@ -4,7 +4,7 @@
 #include "../core/collider.h"
 #include "../gcms/gcms.h"
 #include "../core/entityManager.h"
-#include "../core/spawnManager.h"
+#include "../core/intervalTrigger.h"
 #include "../core/entity.h"
 #include "../graphics/gfx.h"
 #include "../motion/motion.h"
@@ -16,13 +16,13 @@
 struct BezierEnemy: public EntityBase<BezierEnemy>, ICollidable {
     uint16_t hp = 3;
     bool req_enable = false;
-    spawnManager spm;
+    IntervalTrigger spm;
     MotionPipeline mp;
     
     BezierEnemy(const EntityHandle& e, const vec2f& pos,
       std::span<const vec2f> bezierCurve, int duration,
       const ColliderHandle& col_h)
-      : EntityBase(e, col_h, pos), spm(300),
+      : EntityBase(e, col_h, pos), spm(1),
         mp(BezierController(bezierCurve,duration,pos)) {}
 
     bool update(float deltatime, GCMS& gcm) { // false -> 削除,  true -> 生存
@@ -31,7 +31,7 @@ struct BezierEnemy: public EntityBase<BezierEnemy>, ICollidable {
 
         spm.update(deltatime);
         for (int i = 0; i < spm.get(); ++i) {
-            for (int rotate = 0; rotate < 360; rotate += 10) {
+            for (int rotate = -30; rotate < 30; rotate += 10) {
                 cmd::simpleBullet c;
                 c.pos = ms.pos;
                 c.degree = rotate;
@@ -54,7 +54,9 @@ struct BezierEnemy: public EntityBase<BezierEnemy>, ICollidable {
             c.pos = ms.pos;
             gcm(c);
             // 衰弱
-            hp-= physWorld.getPtr(info.col_h).pb->attackPower;
+            applyDamage(hp, physWorld.getPtr(info.col_h).pb->attackPower);
+            // 直接加点
+            gcm(cmd::addScore{10});
         }
     }
 };
@@ -99,7 +101,7 @@ public:
             static_cast<uint8_t>(CollisionLayer::playerBullet);
 
         col.circle.center = pos;
-        col.circle.r = 5.0f; // 敵の当たり判定半径
+        col.circle.r = 5.f; // 敵の当たり判定半径
 
         // ===== Physics登録 =====
         auto col_handle = physWorld.add(col);

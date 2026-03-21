@@ -39,7 +39,7 @@ public:
         col.layer = CollisionLayer::playerBullet;
         col.mask = static_cast<uint8_t>(CollisionLayer::enemy);
         col.circle.center = pos;
-        col.circle.r = 3.0f;
+        col.circle.r = 5.f;
         auto col_h = physWorld.add(col);
         
         objects.emplace_back(pos,col_h,e);

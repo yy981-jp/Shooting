@@ -44,8 +44,8 @@ void Player::draw(const Renderer* renderer) const {
 }
 
 Player::Player(const Renderer* r, float speed):
-    speed(speed), spm(50), invincible(500),
-    animation(r->getSprite(SpriteID::player).spf*1000) {
+    speed(speed), spm(0.05), invincible(5),
+    animation(r->getSprite(SpriteID::player).spf) {
 
     // prepare cache
     for (int y = -1; y <= 1; ++y) {

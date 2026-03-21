@@ -3,7 +3,7 @@
 #include "../core/def.h"
 #include "../core/collider.h"
 #include "../gcms/gcms.h"
-#include "../core/spawnManager.h"
+#include "../core/intervalTrigger.h"
 #include "../graphics/gfx.h"
 
 
@@ -13,9 +13,9 @@ class Player: public ICollidable {
     static constexpr vec2f initPos = {0,350};
     vec2f pos = initPos;
     vec2f spriteHalf;
-    spawnManager spm;
-    spawnManager invincible;
-    mutable spawnManager animation;
+    IntervalTrigger spm;
+    IntervalTrigger invincible;
+    mutable IntervalTrigger animation;
     EntityHandle e;
     ColliderHandle h;
     void onHit(const CollisionInfo& info, GCMS& gcm) override;
