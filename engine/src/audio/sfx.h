@@ -34,3 +34,5 @@ private:
     static void playBGMLoopC();
     inline static SFXManager* instance = nullptr;
 };
+
+extern SFXManager* g_sfxMgr;

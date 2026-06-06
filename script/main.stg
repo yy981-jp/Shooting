@@ -1,80 +1,56 @@
 :main
-	wait 40
-	spawn bezierEnemy	x=-400	y=-229	duration=10s	pattern=4
-	wait 40
-	spawn bezierEnemy	x=400	y=-229	duration=10s	pattern=3
-	wait 40
-	spawn bezierEnemy	x=-300	y=-200	duration=10s	pattern=4
-	wait 40
-	spawn bezierEnemy	x=300	y=-200	duration=10s	pattern=3
-	wait 40
-	spawn bezierEnemy	x=-200	y=-220	duration=10s	pattern=4
-	wait 40
-	spawn bezierEnemy	x=200	y=-220	duration=10s	pattern=3
-	wait 40
-	spawn bezierEnemy	x=-300	y=-229	duration=10s	pattern=2
-	wait 20
-	spawn bezierEnemy	x=300	y=-229	duration=10s	pattern=1
-	wait 40
-	spawn bezierEnemy	x=-300	y=-100	duration=10s	pattern=2
-	wait 40
-	spawn bezierEnemy	x=300	y=-100	duration=10s	pattern=1
-	wait 40
-	spawn bezierEnemy	x=-300	y=-50	duration=10s	pattern=2
-	wait 40
-	spawn bezierEnemy	x=300	y=-50	duration=10s	pattern=1
-	wait 40
-	spawn bezierEnemy	x=-300	y=-150	duration=10s	pattern=2
-	wait 40
-	spawn bezierEnemy	x=300	y=-150	duration=10s	pattern=1
-	wait 40
-	spawn bezierEnemy	x=-300	y=-170	duration=10s	pattern=2
-	wait 20
-	spawn bezierEnemy	x=300	y=-170	duration=10s	pattern=1
-	wait 40
-	spawn bezierEnemy	x=-400	y=-300	duration=10s	pattern=4
-	wait 40
-	spawn bezierEnemy	x=400	y=-300	duration=10s	pattern=3
-	wait 120
-	spawn bezierEnemy	x=400	y=-300	duration=10s	pattern=0
-	spawn bezierEnemy	x=250	y=-300	duration=10s	pattern=0
-	spawn bezierEnemy	x=100	y=-300	duration=10s	pattern=0
-	spawn bezierEnemy	x=0		y=-300	duration=10s	pattern=0
-	spawn bezierEnemy	x=-250	y=-300	duration=10s	pattern=0
-	spawn bezierEnemy	x=-400	y=-300	duration=10s	pattern=0
-	wait 40
-	spawn bezierEnemy	x=-400	y=-300	duration=10s	pattern=4
-	wait 40
-	spawn bezierEnemy	x=400	y=-300	duration=10s	pattern=3
-	wait 40
-	spawn bezierEnemy	x=-400	y=-300	duration=10s	pattern=6
-	wait 20
-	spawn bezierEnemy	x=400	y=-300	duration=10s	pattern=7
-	wait 40
-	spawn bezierEnemy	x=-200	y=-300	duration=10s	pattern=6
-	wait 40
-	spawn bezierEnemy	x=200	y=-300	duration=10s	pattern=7
-	wait 40
-	spawn bezierEnemy	x=-100	y=-300	duration=10s	pattern=6
-	wait 40
-	spawn bezierEnemy	x=100	y=-300	duration=10s	pattern=7
-	wait 40
-	spawn bezierEnemy	x=0		y=-300	duration=10s	pattern=6
-	wait 40
-	spawn bezierEnemy	x=0		y=-300	duration=10s	pattern=7
-	wait 40
-	spawn bezierEnemy	x=-400	y=-200	duration=50s	pattern=6
-	wait 40
-	spawn bezierEnemy	x=400	y=-200	duration=50s	pattern=7
-	wait 40
-	spawn bezierEnemy	x=-400	y=-200	duration=10s	pattern=6
-	wait 40
-	spawn bezierEnemy	x=400	y=-200	duration=10s	pattern=7
-	wait 40
-	spawn bezierEnemy	x=-400	y=-200	duration=10s	pattern=6
-	wait 40
-	spawn bezierEnemy	x=400	y=-200	duration=10s	pattern=7
-	wait 40
-	spawn bezierEnemy	x=-400	y=-200	duration=10s	pattern=6
-	wait 40
-	spawn bezierEnemy	x=400	y=-200	duration=10s	pattern=7
+    // Easier intro wave
+    repeat 3
+        spawn bezierEnemy x=-400 y=-400 duration=7s pattern=verylittleRightUp
+        wait 40
+        spawn bezierEnemy x=400 y=-400 duration=7s pattern=verylittleLeftUp
+        wait 60
+    end
+
+    wait 60
+
+    // Gentle side sweep
+    repeat 4
+        spawn bezierEnemy x=-400 y=-400 duration=6s pattern=straightright
+        wait 50
+        spawn bezierEnemy x=400 y=-400 duration=6s pattern=straightleft
+        wait 70
+    end
+
+    wait 80
+
+    // Soft diagonal cross
+    repeat 3
+        spawn bezierEnemy x=-300 y=-400 duration=7s pattern=sweepRight
+        wait 60
+        spawn bezierEnemy x=300 y=-400 duration=7s pattern=sweepLeft
+        wait 80
+    end
+
+    wait 80
+
+    // Small spiral set
+    spawn bezierEnemy x=-200 y=-400 duration=7s pattern=zigzagRight
+    wait 60
+    spawn bezierEnemy x=200 y=-400 duration=7s pattern=zigzagLeft
+    wait 80
+    spawn bezierEnemy x=0 y=-400 duration=7s pattern=straightdown
+    wait 100
+
+    // Light hammer
+    repeat 2
+        spawn bezierEnemy x=-100 y=-400 duration=5s pattern=verylittleRightUp
+        wait 60
+        spawn bezierEnemy x=100 y=-400 duration=5s pattern=verylittleLeftUp
+        wait 80
+    end
+
+    wait 100
+
+    // Calm final pair
+    repeat 4
+        spawn bezierEnemy x=-400 y=-400 duration=6s pattern=rightdownUp
+        wait 70
+        spawn bezierEnemy x=400 y=-400 duration=6s pattern=leftdownUp
+        wait 90
+    end

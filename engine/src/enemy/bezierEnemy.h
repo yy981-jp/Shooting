@@ -7,6 +7,7 @@
 #include "../core/intervalTrigger.h"
 #include "../core/entity.h"
 #include "../graphics/gfx.h"
+#include "../audio/sfx.h"
 #include "../motion/motion.h"
 #include "../tables/all.h"
 #include "../motion/motion.h"
@@ -39,6 +40,7 @@ struct BezierEnemy: public EntityBase<BezierEnemy>, ICollidable {
                 c.speed = 3;
                 gcm(c);
             }
+            // g_sfxMgr->play(SFXID::shot);
         }
 
         return true;
