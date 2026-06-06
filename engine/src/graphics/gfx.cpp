@@ -1,6 +1,6 @@
 #include "gfx.h"
 #include "../core/fsutil.h"
-#include "../core/mathUtil.h"
+#include "../core/mathutil.h"
 #include "../core/cache.h"
 
 #include <SDL.h>
@@ -10,7 +10,7 @@
 #include <cmath>
 
 
-constexpr std::array<std::string,
+const std::array<std::string,
     static_cast<size_t>(SpriteID::Count)> entityNames = {
 #define X(name) #name,
 #include "../../../assets/sprite.def"

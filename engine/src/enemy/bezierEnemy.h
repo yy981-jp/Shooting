@@ -32,6 +32,7 @@ struct BezierEnemy: public EntityBase<BezierEnemy>, ICollidable {
         spm.update(deltatime);
         for (int i = 0; i < spm.get(); ++i) {
             for (int rotate = -30; rotate < 30; rotate += 10) {
+            // for (float rotate = -180; rotate < 180; rotate += 0.5) {
                 cmd::simpleBullet c;
                 c.pos = ms.pos;
                 c.degree = rotate;

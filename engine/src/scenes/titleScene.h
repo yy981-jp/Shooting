@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../core/def.h"
-#include "../core/mathUtil.h"
+#include "../core/mathutil.h"
 #include "../graphics/gfx.h"
 #include "scene.h"
 
@@ -15,8 +15,8 @@ struct Widget {
 
 enum class wd {
     background,
-    start,
-    end,
+    // start,
+    // end,
 
     Count
 };
@@ -27,8 +27,8 @@ class TitleScene: public IScene {
 public:
     TitleScene(GlobalContext& ctx): IScene(SceneID::title) {
         widgets[static_cast<size_t>(wd::background)] = {SpriteID::titleBackground, {0,0}};
-        widgets[static_cast<size_t>(wd::start)] = {SpriteID::titleStart, {0, -200}};
-        widgets[static_cast<size_t>(wd::end)] = {SpriteID::titleExit, {0, 200}, 0};
+        // widgets[static_cast<size_t>(wd::start)] = {SpriteID::titleStart, {0, -200}};
+        // widgets[static_cast<size_t>(wd::end)] = {SpriteID::titleExit, {0, 200}, 0};
 
         ctx.sfx->play(SFXID::opening);
     }
