@@ -21,8 +21,6 @@ IMPL_CMD_GLOBAL(cmd::onHit) {
 }
 IMPL_CMD_GLOBAL(cmd::_) { /* dummy */ }
 
-SFXManager* g_sfxMgr;
-
 IScene* createScene(SceneID id, GlobalContext& ctx) {
 	IScene* result = nullptr;
     switch (id) {
@@ -64,7 +62,6 @@ Game::Game(SceneID initScene, bool fullscreen) {
 
     renderer = new Renderer(nativeRenderer, SCREEN.x, SCREEN.y);
     sfxMgr = new SFXManager;
-    g_sfxMgr = sfxMgr;
 
     ctx = GlobalContext{ &gcm, &keyStat, renderer, sfxMgr };
 
@@ -143,6 +140,7 @@ void Game::onKeyDown(const SDL_KeyboardEvent& e) {
         case SDL_SCANCODE_RIGHT:    keyStat |= static_cast<uint8_t>(KCode::right); break;
         case SDL_SCANCODE_Z:        keyStat |= static_cast<uint8_t>(KCode::z);     break;
         case SDL_SCANCODE_X:        keyStat |= static_cast<uint8_t>(KCode::x);     break;
+        case SDL_SCANCODE_E:        keyStat |= static_cast<uint8_t>(KCode::e);     break;
         case SDL_SCANCODE_LSHIFT:   keyStat |= static_cast<uint8_t>(KCode::shift); break;
     }
     if (e.keysym.sym == SDLK_ESCAPE) exit(111);
@@ -160,6 +158,7 @@ void Game::onKeyUP(const SDL_KeyboardEvent& e) {
         case SDL_SCANCODE_RIGHT:    keyStat &= ~static_cast<uint8_t>(KCode::right); break;
         case SDL_SCANCODE_Z:        keyStat &= ~static_cast<uint8_t>(KCode::z);     break;
         case SDL_SCANCODE_X:        keyStat &= ~static_cast<uint8_t>(KCode::x);     break;
+        case SDL_SCANCODE_E:        keyStat &= ~static_cast<uint8_t>(KCode::e);     break;
         case SDL_SCANCODE_LSHIFT:   keyStat &= ~static_cast<uint8_t>(KCode::shift); break;
     }
 }

@@ -23,7 +23,6 @@ private:
 };
 
 
-
 class FpsCounter {
 	using clock = std::chrono::steady_clock;
 
@@ -35,3 +34,7 @@ public:
 	void update();
 	float getFps() const;
 };
+
+inline int64_t getUnixTime() {
+	return static_cast<int64_t>(std::time(nullptr));
+}

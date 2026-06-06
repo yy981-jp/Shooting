@@ -24,7 +24,7 @@ class Player: public ICollidable {
     int frameNum;
 
 public:
-    int remainingLives = 500; // DEBUG
+    int remainingLives = 5;
 
     Player(const Renderer* r, float speed);
     ~Player();

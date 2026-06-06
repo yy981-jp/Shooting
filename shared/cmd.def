@@ -31,3 +31,6 @@ PLAY(notiFps,
 PLAY(addScore,
     unsigned int value;
 )
+PLAY(debugMode,
+    bool value;
+)

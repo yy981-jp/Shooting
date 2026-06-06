@@ -37,6 +37,7 @@ struct PlayScene: public IScene {
     VM vm;
 
     uint64_t score = 0;
+    bool debugMode = false;
 
     Player player;
     PlayerBullet_Manager playerBullet_Manager;

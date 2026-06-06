@@ -11,6 +11,13 @@ IMPL_CMD_PLAY(cmd::pointBullet) { scene.pointBullet_Manager.generate(c.pos, fals
 IMPL_CMD_PLAY(cmd::playerBullet) { scene.playerBullet_Manager.generate(c.pos); }
 IMPL_CMD_PLAY(cmd::notiFps) { scene.currentFps = c.fps; }
 IMPL_CMD_PLAY(cmd::addScore) { scene.score += c.value; }
+IMPL_CMD_PLAY(cmd::debugMode) {
+    scene.debugMode = c.value;
+    if (c.value)
+        scene.player.remainingLives = 500;
+    else
+        scene.player.remainingLives = 5;
+}
 
 
 PlayScene::PlayScene(GlobalContext& ctx):
@@ -32,8 +39,8 @@ PlayScene::PlayScene(GlobalContext& ctx):
     }
 
 void PlayScene::update(GlobalContext& ctx, const float dt) {
-    // DEBUG
-    if (has(*ctx.key, KCode::x)) (*ctx.gcms)(cmd::changeScene{SceneID::title});
+    // 終了
+    if (has(*ctx.key, KCode::e)) (*ctx.gcms)(cmd::changeScene{SceneID::title});
 
     // VM step
     if (vm.running) vm.step(*ctx.gcms);
@@ -57,7 +64,7 @@ void PlayScene::draw(const GlobalContext& ctx) const {
     ctx.gfx->flush();
 
     // DEBUG
-    physWorld.draw(ctx.gfx);
+    if (debugMode) physWorld.draw(ctx.gfx);
 }
 
 void PlayScene::drawUI(const GlobalContext& ctx) const {
