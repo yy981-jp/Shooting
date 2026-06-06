@@ -21,6 +21,7 @@ IMPL_CMD_GLOBAL(cmd::onHit) {
 }
 IMPL_CMD_GLOBAL(cmd::_) { /* dummy */ }
 
+SFXManager* g_sfxMgr;
 
 IScene* createScene(SceneID id, GlobalContext& ctx) {
 	IScene* result = nullptr;
@@ -63,6 +64,7 @@ Game::Game(SceneID initScene, bool fullscreen) {
 
     renderer = new Renderer(nativeRenderer, SCREEN.x, SCREEN.y);
     sfxMgr = new SFXManager;
+    g_sfxMgr = sfxMgr;
 
     ctx = GlobalContext{ &gcm, &keyStat, renderer, sfxMgr };
 
