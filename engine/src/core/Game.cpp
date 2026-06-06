@@ -13,14 +13,13 @@ IMPL_CMD_GLOBAL(cmd::changeScene) { game.setScene(c.id); }
 IMPL_CMD_GLOBAL(cmd::onHit) {
     // 衝突処理
     for (const auto& ev: c.events) {
-        if (auto* a = entMgr.getPtr<ICollidable>(ev.a_handle))
+        if (auto* a = physWorld.getColPtr(ev.a_handle))
             a->onHit(ev.a_info, game.gcm);
-        if (auto* b = entMgr.getPtr<ICollidable>(ev.b_handle))
+        if (auto* b = physWorld.getColPtr(ev.b_handle))
             b->onHit(ev.b_info, game.gcm);
     }
 }
 IMPL_CMD_GLOBAL(cmd::_) { /* dummy */ }
-
 
 IScene* createScene(SceneID id, GlobalContext& ctx) {
 	IScene* result = nullptr;
@@ -141,6 +140,7 @@ void Game::onKeyDown(const SDL_KeyboardEvent& e) {
         case SDL_SCANCODE_RIGHT:    keyStat |= static_cast<uint8_t>(KCode::right); break;
         case SDL_SCANCODE_Z:        keyStat |= static_cast<uint8_t>(KCode::z);     break;
         case SDL_SCANCODE_X:        keyStat |= static_cast<uint8_t>(KCode::x);     break;
+        case SDL_SCANCODE_E:        keyStat |= static_cast<uint8_t>(KCode::e);     break;
         case SDL_SCANCODE_LSHIFT:   keyStat |= static_cast<uint8_t>(KCode::shift); break;
     }
     if (e.keysym.sym == SDLK_ESCAPE) exit(111);
@@ -158,6 +158,7 @@ void Game::onKeyUP(const SDL_KeyboardEvent& e) {
         case SDL_SCANCODE_RIGHT:    keyStat &= ~static_cast<uint8_t>(KCode::right); break;
         case SDL_SCANCODE_Z:        keyStat &= ~static_cast<uint8_t>(KCode::z);     break;
         case SDL_SCANCODE_X:        keyStat &= ~static_cast<uint8_t>(KCode::x);     break;
+        case SDL_SCANCODE_E:        keyStat &= ~static_cast<uint8_t>(KCode::e);     break;
         case SDL_SCANCODE_LSHIFT:   keyStat &= ~static_cast<uint8_t>(KCode::shift); break;
     }
 }

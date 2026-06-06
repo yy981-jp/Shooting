@@ -1,0 +1,103 @@
+:main
+    // Easier intro wave with gentle vertical drift
+    repeat 3
+        spawn bezierEnemy x=-400 y=-400 duration=7s pattern=verylittleRightUp
+        wait 40
+        spawn bezierEnemy x=400 y=-400 duration=7s pattern=verylittleLeftUp
+        wait 60
+        spawn bezierEnemy x=0 y=-400 duration=7s pattern=straightdown
+        wait 40
+    end
+
+    wait 80
+
+    // Gentle side sweep with a small center pulse
+    repeat 4
+        spawn bezierEnemy x=-400 y=-400 duration=6s pattern=straightright
+        wait 50
+        spawn bezierEnemy x=400 y=-400 duration=6s pattern=straightleft
+        wait 30
+        spawn bezierEnemy x=0 y=-400 duration=6s pattern=verylittleRightUp
+        wait 60
+    end
+
+    wait 90
+
+    // Soft diagonal cross with two staggered extras
+    repeat 3
+        spawn bezierEnemy x=-300 y=-400 duration=7s pattern=sweepRight
+        wait 50
+        spawn bezierEnemy x=300 y=-400 duration=7s pattern=sweepLeft
+        wait 60
+        spawn bezierEnemy x=-100 y=-400 duration=7s pattern=arcLeftSmall
+        wait 50
+        spawn bezierEnemy x=100 y=-400 duration=7s pattern=arcRightSmall
+        wait 70
+    end
+
+    wait 100
+
+    // Small spiral set with a gentle pair afterwards
+    spawn bezierEnemy x=-200 y=-400 duration=7s pattern=zigzagRight
+    wait 60
+    spawn bezierEnemy x=200 y=-400 duration=7s pattern=zigzagLeft
+    wait 80
+    spawn bezierEnemy x=-150 y=-400 duration=7s pattern=arcRightLong
+    wait 50
+    spawn bezierEnemy x=150 y=-400 duration=7s pattern=arcLeftLong
+    wait 80
+    spawn bezierEnemy x=0 y=-400 duration=7s pattern=straightdown
+    wait 100
+
+    // Light hammer with a centered drop
+    repeat 2
+        spawn bezierEnemy x=-100 y=-400 duration=5s pattern=verylittleRightUp
+        wait 60
+        spawn bezierEnemy x=100 y=-400 duration=5s pattern=verylittleLeftUp
+        wait 80
+        spawn bezierEnemy x=0 y=-400 duration=5s pattern=straightdown
+        wait 80
+    end
+
+    wait 100
+
+    // Calm final pair with soft offset helpers
+    repeat 4
+        spawn bezierEnemy x=-400 y=-400 duration=6s pattern=rightdownUp
+        wait 70
+        spawn bezierEnemy x=400 y=-400 duration=6s pattern=leftdownUp
+        wait 60
+        spawn bezierEnemy x=0 y=-400 duration=6s pattern=arcLeftSmall
+        wait 90
+    end
+
+    wait 120
+
+    // Extended encore: new pattern showcases
+    // Spiral in/out pairings
+    repeat 2
+        spawn bezierEnemy x=-200 y=-400 duration=8s pattern=spiralIn
+        wait 80
+        spawn bezierEnemy x=200 y=-400 duration=8s pattern=spiralOut
+        wait 100
+    end
+
+    wait 80
+
+    // Fan and zigzag mix for variety
+    repeat 3
+        spawn bezierEnemy x=-300 y=-400 duration=6s pattern=fanLeft
+        wait 60
+        spawn bezierEnemy x=300 y=-400 duration=6s pattern=fanRight
+        wait 80
+        spawn bezierEnemy x=0 y=-400 duration=6s pattern=zigzagSmall
+        wait 60
+    end
+
+    wait 100
+
+    // Soft closing bounce and sine
+    spawn bezierEnemy x=0 y=-400 duration=6s pattern=bounce
+    wait 100
+    spawn bezierEnemy x=0 y=-400 duration=7s pattern=sineWave
+    wait 160

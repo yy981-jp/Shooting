@@ -1,3 +1,6 @@
+    set(CMAKE_CXX_DEPENDS_USE_COMPILER FALSE)
+    set(CMAKE_DEPENDS_USE_COMPILER FALSE)
+    set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
 cmake_minimum_required(VERSION 3.20...4.1)
 project(ST) # Shooting
 add_compile_options(-fdiagnostics-color=always)
@@ -32,6 +35,8 @@ if(EMSCRIPTEN)
     target_compile_options(${PROJECT_NAME} PRIVATE
         -sUSE_SDL=2
         -sUSE_SDL_IMAGE=2
+        -sUSE_SDL_MIXER=2
+        -sUSE_SDL_TTF=2
         "-sSDL2_IMAGE_FORMATS=['png']"
         -Wno-deprecated-declarations
         -Wno-nontrivial-memcall
@@ -41,8 +46,11 @@ if(EMSCRIPTEN)
 	target_link_options(${PROJECT_NAME} PRIVATE
 		-sUSE_SDL=2
 		-sUSE_SDL_IMAGE=2
+		-sUSE_SDL_MIXER=2
+		-sUSE_SDL_TTF=2
 		-sSDL2_IMAGE_FORMATS=["png"]
-		--preload-file ${CMAKE_SOURCE_DIR}/../assets@/assets
+		--preload-file ${CMAKE_SOURCE_DIR}/assets@/assets
+        -sALLOW_MEMORY_GROWTH
 	)
     
 else()

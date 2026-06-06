@@ -47,12 +47,12 @@ public:
         col.mask   = static_cast<uint8_t>(CollisionLayer::player);
 
         col.circle.center = pos;
-        col.circle.r = 3.0f;
+        col.circle.r = 10.f;
 
         ColliderHandle ch = physWorld.add(col);
         
         objects.emplace_back(pos, deg2rad(degree), speed, eh, ch, spriteHalf);
 
-        entMgr.setPtr(eh, &objects.back());
+        physWorld.setColPtr(ch, &objects.back());
     }
 };

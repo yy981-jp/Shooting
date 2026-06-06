@@ -21,10 +21,6 @@ EntityHandle EntityManager::create() {
     return {id,records[id].gen};
 }
 
-void EntityManager::setPtr(EntityHandle e, void* ptr) {
-    records[e.id].ptr = ptr;
-}
-
 void EntityManager::destroy(EntityHandle h) {
     --aliveCount;
 

@@ -28,3 +28,9 @@ PLAY(playerBullet,
 PLAY(notiFps,
     float fps;
 )
+PLAY(addScore,
+    unsigned int value;
+)
+PLAY(debugMode,
+    bool value;
+)

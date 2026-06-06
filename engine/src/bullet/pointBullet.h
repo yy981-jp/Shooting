@@ -13,6 +13,7 @@ struct PointBullet: public EntityBase<PointBullet>, ICollidable {
     vec2f spriteHalf;
     bool alive = true;
     static constexpr float speed = 150.f;
+    constexpr static uint16_t pointValue = 100;
 
     PointBullet(vec2f pos, float angle, EntityHandle eh, ColliderHandle ch, const vec2f& spriteHalf)
       : EntityBase(eh, ch, pos), spriteHalf(spriteHalf) {}
@@ -29,6 +30,7 @@ struct PointBullet: public EntityBase<PointBullet>, ICollidable {
     }
 
     void onHit(const CollisionInfo& info, GCMS& gcm) override {
+        gcm(cmd::addScore{pointValue});
         alive = false;
     }
 };
@@ -49,7 +51,7 @@ public:
         col.mask   = static_cast<uint8_t>(CollisionLayer::player);
 
         col.circle.center = pos;
-        col.circle.r = 10.0f;
+        col.circle.r = 15.f;
 
         ColliderHandle ch = physWorld.add(col);
 
@@ -57,6 +59,6 @@ public:
         
         objects.emplace_back(pos, angle, eh, ch, spriteHalf);
 
-        entMgr.setPtr(eh, &objects.back());
+        physWorld.setColPtr(ch, &objects.back());
     }
 };

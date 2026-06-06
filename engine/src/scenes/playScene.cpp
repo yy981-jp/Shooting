@@ -10,6 +10,14 @@ IMPL_CMD_PLAY(cmd::simpleBullet) { scene.simpleBullet_Manager.generate(c.pos,c.d
 IMPL_CMD_PLAY(cmd::pointBullet) { scene.pointBullet_Manager.generate(c.pos, false /* TODO */); }
 IMPL_CMD_PLAY(cmd::playerBullet) { scene.playerBullet_Manager.generate(c.pos); }
 IMPL_CMD_PLAY(cmd::notiFps) { scene.currentFps = c.fps; }
+IMPL_CMD_PLAY(cmd::addScore) { scene.score += c.value; }
+IMPL_CMD_PLAY(cmd::debugMode) {
+    scene.debugMode = c.value;
+    if (c.value)
+        scene.player.remainingLives = 500;
+    else
+        scene.player.remainingLives = 5;
+}
 
 
 PlayScene::PlayScene(GlobalContext& ctx):
@@ -31,8 +39,8 @@ PlayScene::PlayScene(GlobalContext& ctx):
     }
 
 void PlayScene::update(GlobalContext& ctx, const float dt) {
-    // DEBUG
-    if (has(*ctx.key, KCode::x)) (*ctx.gcms)(cmd::changeScene{SceneID::title});
+    // 終了
+    if (has(*ctx.key, KCode::e)) (*ctx.gcms)(cmd::changeScene{SceneID::title});
 
     // VM step
     if (vm.running) vm.step(*ctx.gcms);
@@ -56,7 +64,7 @@ void PlayScene::draw(const GlobalContext& ctx) const {
     ctx.gfx->flush();
 
     // DEBUG
-    physWorld.draw(ctx.gfx);
+    if (debugMode) physWorld.draw(ctx.gfx);
 }
 
 void PlayScene::drawUI(const GlobalContext& ctx) const {
@@ -79,7 +87,7 @@ void PlayScene::drawUI(const GlobalContext& ctx) const {
     ui.write((int)entMgr.size(), FontSize::f32);
     ui.enter();
     ui.write(FontSize::f32, "score: ");
-    ui.write((int)player.score, FontSize::f32);
+    ui.write((int)score, FontSize::f32);
     ui.enter();
     ui.write(FontSize::f32, "RL: ");
     ui.write((int)player.remainingLives, FontSize::f32);

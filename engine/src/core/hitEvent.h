@@ -13,15 +13,25 @@ enum class CollisionLayer: uint8_t {
     item            = 1 << 4
 };
 
+// 基本情報
+using ColliderID = uint32_t;
+using ColliderGen = uint32_t;
+struct ColliderHandle {
+    ColliderID id;
+    ColliderGen gen;
+};
+
 // CollisionSystemが衝突処理関数に情報を渡すのに使う構造体
 // 衝突相手についての情報を持つ
 struct CollisionInfo {
     CollisionLayer layer;
+    EntityHandle handle;
+    ColliderHandle col_h;
 };
 
 // 衝突に関する情報全部
 struct HitEvent {
-    EntityHandle a_handle, b_handle;
+    ColliderHandle a_handle, b_handle;
     CollisionInfo a_info, b_info;
 };
 using HitEvents = std::vector<HitEvent>;

@@ -1,7 +1,8 @@
 #pragma once
 
 #include "../core/def.h"
-#include "../core/mathUtil.h"
+#include "../core/mathutil.h"
+#include "../core/time.h"
 #include "../graphics/gfx.h"
 #include "scene.h"
 
@@ -15,26 +16,34 @@ struct Widget {
 
 enum class wd {
     background,
-    start,
-    end,
+    // start,
+    // end,
 
     Count
 };
 
 class TitleScene: public IScene {
     std::array<Widget, static_cast<size_t>(wd::Count)> widgets;
+    uint64_t changed;
+
 
 public:
     TitleScene(GlobalContext& ctx): IScene(SceneID::title) {
         widgets[static_cast<size_t>(wd::background)] = {SpriteID::titleBackground, {0,0}};
-        widgets[static_cast<size_t>(wd::start)] = {SpriteID::titleStart, {0, -200}};
-        widgets[static_cast<size_t>(wd::end)] = {SpriteID::titleExit, {0, 200}, 0};
+        // widgets[static_cast<size_t>(wd::start)] = {SpriteID::titleStart, {0, -200}};
+        // widgets[static_cast<size_t>(wd::end)] = {SpriteID::titleExit, {0, 200}, 0};
 
+        changed = getUnixTime();
         ctx.sfx->play(SFXID::opening);
     }
     void update(GlobalContext& ctx, const float dt) override {
-        // DEBUG
-        if (has(*ctx.key, KCode::z)) {
+        if (has(*ctx.key, KCode::z) && (getUnixTime() - changed) >= 5) {
+            (*ctx.gcms)(cmd::debugMode{false});
+            (*ctx.gcms)(cmd::changeScene{SceneID::play});
+        }
+
+        if (has(*ctx.key, KCode::x) && (getUnixTime() - changed) >= 5) {
+            (*ctx.gcms)(cmd::debugMode{true});
             (*ctx.gcms)(cmd::changeScene{SceneID::play});
         }
     }
