@@ -4,6 +4,17 @@
 
 
 VM::VM(const std::string& stgdatPath): eventTableDoc(readJson(Assets+"eventTable.json")), eventTable(eventTableDoc), pc(0) {
+    // Ensure execution frame and stacks are initialized deterministically
+    frame = ExecFrame{};
+    frame.state = ExecState::Running;
+    frame.pc = 0;
+    frame.waitTick = 0;
+    frame.waitFlag = 0;
+    frame.loopCount = 0;
+    running = true;
+    callStack.clear();
+    loopStack.clear();
+
     std::ifstream ifs(stgdatPath,std::ios::binary|std::ios::ate);
     if (!ifs) throw std::runtime_error("VM::VM(): ifs");
     auto size = ifs.tellg();
@@ -101,7 +112,8 @@ void VM::step(GCMS& gcm) {
 
 
 void VM::op_spawn(GCMS& gcm) {
-	uint16_t entityType = read_u16();
+    uint16_t entityType = read_u16();
+    (void)entityType; (void)pc;
 
 	switch(static_cast<STGEntityID>(entityType)) {
 
