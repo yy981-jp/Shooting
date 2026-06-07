@@ -52,7 +52,7 @@ public:
     }
 
     /// @brief no enter int
-    inline void write(FontSize size, int num) {
+    inline void write(int num, FontSize size) {
         currentFontSize = size;
 
         std::vector<int> digits;

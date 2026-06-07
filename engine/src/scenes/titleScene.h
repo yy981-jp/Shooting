@@ -66,7 +66,7 @@ public:
 
         ui.write(FontSize::f32, "LastScore");
         ui.enter();
-        if (ctx.scSys->getLast()) ui.write(FontSize::f32, ctx.scSys->getLast());
+        if (ctx.scSys->getLast()) ui.write((int)ctx.scSys->getLast(), FontSize::f32);
         else ui.write(FontSize::f16, "No Data");
         
         ui.setSize(FontSize::f32);
@@ -76,7 +76,7 @@ public:
         ui.enter();
 
         for (const uint64_t& score: ctx.scSys->get(30)) {
-            ui.write(FontSize::f16, score);
+            ui.write((int)score, FontSize::f16);
             ui.enter();
         }
     }
