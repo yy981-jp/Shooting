@@ -1,3 +1,5 @@
+@echo off
+
 xcopy /y assets build\assets\ > nul
 xcopy /y /e assets\audio build\assets\audio\ > nul
 
