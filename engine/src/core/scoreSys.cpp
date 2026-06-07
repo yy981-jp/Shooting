@@ -1,5 +1,6 @@
 #include "scoreSys.h"
 #include <filesystem>
+#include <algorithm>
 
 namespace fs = std::filesystem;
 

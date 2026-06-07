@@ -29,30 +29,33 @@ endif()
 
 if(EMSCRIPTEN)
 
-	# wasm出力をhtmlにする
-	set(CMAKE_EXECUTABLE_SUFFIX ".html")
+    # wasm 出力を html にする
+    set(CMAKE_EXECUTABLE_SUFFIX ".html")
 
     target_compile_options(${PROJECT_NAME} PRIVATE
+        -O3
+        -sWASM=1
         -sUSE_SDL=2
         -sUSE_SDL_IMAGE=2
         -sUSE_SDL_MIXER=2
         -sUSE_SDL_TTF=2
-        "-sSDL2_IMAGE_FORMATS=['png']"
         -Wno-deprecated-declarations
         -Wno-nontrivial-memcall
     )
 
-    # Emscripten用リンクオプション
-	target_link_options(${PROJECT_NAME} PRIVATE
-		-sUSE_SDL=2
-		-sUSE_SDL_IMAGE=2
-		-sUSE_SDL_MIXER=2
-		-sUSE_SDL_TTF=2
-		-sSDL2_IMAGE_FORMATS=["png"]
-		--preload-file ${CMAKE_SOURCE_DIR}/assets@/assets
+    # Emscripten 用リンクオプション
+    target_link_options(${PROJECT_NAME} PRIVATE
+        -O3
+        -sWASM=1
+        -sUSE_SDL=2
+        -sUSE_SDL_IMAGE=2
+        -sUSE_SDL_MIXER=2
+        -sUSE_SDL_TTF=2
+        -sSDL2_IMAGE_FORMATS=["png"]
+        --preload-file ${CMAKE_SOURCE_DIR}/assets@/assets
         -sALLOW_MEMORY_GROWTH
-	)
-    
+    )
+
 else()
 
     find_package(PkgConfig REQUIRED)

@@ -5,4 +5,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
 
 add_subdirectory(engine)
-add_subdirectory(tools/pos)
+
+if(NOT EMSCRIPTEN)
+    add_subdirectory(tools/pos)
+else()
+    message(STATUS "EMSCRIPTEN build: skipping tools/pos subdirectory")
+endif()
