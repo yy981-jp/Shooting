@@ -59,15 +59,26 @@ public:
 
     void drawUi(const GlobalContext& ctx) const {
         ui.initCur();
+
+        // ui.write(FontSize::f16, "Copyright (c) 2026 yy981");
+        // ui.setSize(FontSize::f32);
+        // ui.enter();
+
+        ui.write(FontSize::f32, "LastScore");
+        ui.enter();
+        if (ctx.scSys->getLast()) ui.write(FontSize::f32, ctx.scSys->getLast());
+        else ui.write(FontSize::f16, "No Data");
+        
+        ui.setSize(FontSize::f32);
+        ui.enter(10);
+
         ui.write(FontSize::f32, "ScoreBord");
         ui.enter();
 
-        for (const uint64_t& score: ctx.scSys->get()) {
+        for (const uint64_t& score: ctx.scSys->get(30)) {
             ui.write(FontSize::f16, score);
             ui.enter();
         }
-
-        ui.write(FontSize::f64, "test");
     }
 
     // void handleCommand(const GameCommand& cmd, Game& game) {

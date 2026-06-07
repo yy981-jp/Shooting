@@ -22,7 +22,10 @@ class TextUI {
 
 public:
     TextUI(GlobalContext& ctx, vec2f min, vec2f max)
-     : ctx(ctx), hmin(min.y), wmin(min.x), hmax(max.y), wmax(max.x) {}
+     : ctx(ctx), hmin(min.y), wmin(min.x), hmax(max.y), wmax(max.x) {
+        ctx.gfx->setColor(0,0,0,0);
+        ctx.gfx->clear();
+    }
 
     Color white{255,255,255,255};
 

@@ -96,4 +96,5 @@ public:
     // for Debug
     void drawFilledCircle(const vec2f pos, float rad) const;
     void setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a) const;
+    void clear() const;
 };
