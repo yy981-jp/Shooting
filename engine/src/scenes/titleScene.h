@@ -5,6 +5,7 @@
 #include "../core/time.h"
 #include "../graphics/gfx.h"
 #include "scene.h"
+#include "ui.h"
 
 
 struct Widget {
@@ -26,9 +27,10 @@ class TitleScene: public IScene {
     std::array<Widget, static_cast<size_t>(wd::Count)> widgets;
     uint64_t changed;
 
+    TextUI ui;
 
 public:
-    TitleScene(GlobalContext& ctx): IScene(SceneID::title) {
+    TitleScene(GlobalContext& ctx): IScene(SceneID::title), ui(ctx,{410,-390},{600,390}) {
         widgets[static_cast<size_t>(wd::background)] = {SpriteID::titleBackground, {0,0}};
         // widgets[static_cast<size_t>(wd::start)] = {SpriteID::titleStart, {0, -200}};
         // widgets[static_cast<size_t>(wd::end)] = {SpriteID::titleExit, {0, 200}, 0};
@@ -37,14 +39,14 @@ public:
         ctx.sfx->play(SFXID::opening);
     }
     void update(GlobalContext& ctx, const float dt) override {
-        if (has(*ctx.key, KCode::z) && (getUnixTime() - changed) >= 5) {
-            (*ctx.gcms)(cmd::debugMode{false});
+        if (has(*ctx.key, KCode::z) && (getUnixTime() - changed) >= 2) {
             (*ctx.gcms)(cmd::changeScene{SceneID::play});
+            (*ctx.gcms)(cmd::debugMode{false});
         }
 
-        if (has(*ctx.key, KCode::x) && (getUnixTime() - changed) >= 5) {
-            (*ctx.gcms)(cmd::debugMode{true});
+        if (has(*ctx.key, KCode::x) && (getUnixTime() - changed) >= 2) {
             (*ctx.gcms)(cmd::changeScene{SceneID::play});
+            (*ctx.gcms)(cmd::debugMode{true});
         }
     }
     void draw(const GlobalContext& ctx) const override {

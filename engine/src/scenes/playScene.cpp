@@ -21,29 +21,35 @@ IMPL_CMD_PLAY(cmd::debugMode) {
 
 
 PlayScene::PlayScene(GlobalContext& ctx):
-    IScene(SceneID::play), player(ctx.gfx, 5.0f*60.0f),
-    simpleBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
-    pointBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
-    ui(ctx,{410,-390},{600,390}), vm(stgdatpath) {
-        std::ifstream ifs(Assets+"build.info");
-        if (!ifs) {
-            buildID = "UNKNOWN";
-            buildTimeStamp = "UNKNOWN";
-        } else {
-            std::string line;
-            std::getline(ifs, line);
-            const auto&& values = st::split(line, ",");
-            buildID = values[0];
-            buildTimeStamp = values[1];
-        }
+  IScene(SceneID::play), player(ctx.gfx, 5.0f*60.0f),
+  simpleBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
+  pointBullet_Manager(ctx.gfx->getSpriteHalfSize(SpriteID::simpleBullet)),
+  ui(ctx,{410,-390},{600,390}), vm(stgdatpath) {
+    std::ifstream ifs(Assets+"build.info");
+    if (!ifs) {
+        buildID = "UNKNOWN";
+        buildTimeStamp = "UNKNOWN";
+    } else {
+        std::string line;
+        std::getline(ifs, line);
+        const auto&& values = st::split(line, ",");
+        buildID = values[0];
+        buildTimeStamp = values[1];
     }
+}
+
+void PlayScene::changeToTitleScene(GlobalContext& ctx) {
+    if (!debugMode) ctx.scSys->add(score);
+    (*ctx.gcms)(cmd::changeScene{SceneID::title});
+}
 
 void PlayScene::update(GlobalContext& ctx, const float dt) {
     // 終了
-    if (has(*ctx.key, KCode::e)) (*ctx.gcms)(cmd::changeScene{SceneID::title});
+    if (has(*ctx.key, KCode::e)) changeToTitleScene(ctx);
 
     // VM step
     if (vm.running) vm.step(*ctx.gcms);
+    else changeToTitleScene(ctx);
 
     // 当たり判定
     physWorld.step(*ctx.gcms);
@@ -51,7 +57,7 @@ void PlayScene::update(GlobalContext& ctx, const float dt) {
     // entity update
     vec2i d = makeDir(*ctx.key);
     player.update(dt, *ctx.gcms, d.x, d.y, has(*ctx.key, KCode::shift), has(*ctx.key, KCode::z));
-    if (!player.isAllive()) (*ctx.gcms)(cmd::changeScene{SceneID::title});
+    if (!player.isAllive()) changeToTitleScene(ctx);
     IEntityManagerBase::updateAll(dt,*ctx.gcms);
 }
 

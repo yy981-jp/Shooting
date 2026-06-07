@@ -63,7 +63,7 @@ Game::Game(SceneID initScene, bool fullscreen) {
     renderer = new Renderer(nativeRenderer, SCREEN.x, SCREEN.y);
     sfxMgr = new SFXManager;
 
-    ctx = GlobalContext{ &gcm, &keyStat, renderer, sfxMgr };
+    ctx = GlobalContext{ &gcm, &keyStat, renderer, sfxMgr, &scSys };
 
     setScene(initScene);
 }

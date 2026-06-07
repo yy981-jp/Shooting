@@ -1,0 +1,18 @@
+	// ゆっくりと左右から ここはよけではなく得点を狙える
+	repeat 3
+		spawn bezierEnemy	x=-400	y=-300	duration=10s	pattern=straightright
+		spawn bezierEnemy	x=400	y=-300	duration=10s	pattern=straightleft
+		wait 100
+	end
+
+	wait 100
+
+	spawn bezierEnemy	x=-400	y=-300	duration=100s	pattern=straightright
+	spawn bezierEnemy	x=400	y=-300	duration=100s	pattern=straightleft
+
+	// 油断をさせておいて定位置じゃないと必ず死ぬようにする
+	repeat 50
+		spawn bezierEnemy	x=-400	y=-400	duration=3s	pattern=straightright
+		spawn bezierEnemy	x=400	y=-400	duration=3s	pattern=straightleft
+		wait 10
+	end
