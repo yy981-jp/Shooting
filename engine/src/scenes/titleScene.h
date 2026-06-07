@@ -27,7 +27,7 @@ class TitleScene: public IScene {
     std::array<Widget, static_cast<size_t>(wd::Count)> widgets;
     uint64_t changed;
 
-    TextUI ui;
+    mutable TextUI ui;
 
 public:
     TitleScene(GlobalContext& ctx): IScene(SceneID::title), ui(ctx,{410,-390},{600,390}) {
@@ -54,7 +54,22 @@ public:
             ctx.gfx->drawSprite(widget.sprite, widget.pos, widget.angle);
         }
         ctx.gfx->flush();
+        drawUi(ctx);
     }
+
+    void drawUi(const GlobalContext& ctx) const {
+        ui.initCur();
+        ui.write(FontSize::f32, "ScoreBord");
+        ui.enter();
+
+        for (const uint64_t& score: ctx.scSys->get()) {
+            ui.write(FontSize::f16, score);
+            ui.enter();
+        }
+
+        ui.write(FontSize::f64, "test");
+    }
+
     // void handleCommand(const GameCommand& cmd, Game& game) {
     //     std::visit(commandExec::Global{game}, cmd);
     // }

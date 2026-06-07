@@ -1,38 +1,25 @@
-#pragma ocne
+#pragma once
 #include <fstream>
 #include <string>
 #include <vector>
 #include <cstdint>
+#include <span>
 
 
 class ScoreSys {
-    std::ofstream ofs;
+    std::string path;
     
     std::vector<uint64_t> scores;
     uint64_t last = 0;
 
-    void sort() { std::sort(scores.begin(), scores.end(), std::greater<>()); }
+    void sort();
 
 public:
-    ScoreSys(const std::string& path): ofs(path) {
-        std::ifstream ifs(path);
-        if (!ifs) throw std::runtime_error("failed to open file - input");
-        if (!ofs) throw std::runtime_error("failed to open file - output");
-        
-        std::string line;
-        while (std::getline(ifs,line)) {
-            scores.push_back( std::stoll(line) );
-        }
-        ifs.close();
-        sort();
-    }
-
-    uint64_t getLast() { return last; }
-
-    const std::vector<uint64_t> get() { return scores; }
-
-    void add(uint64_t score) {
-        scores.push_back(score);
-        last = score;
-    }
+    ScoreSys(const std::string& path);
+    
+    uint64_t getLast();
+    std::span<const uint64_t> get(int maxSize = -1);
+    void add(uint64_t score);
+    
+    void save();
 };
