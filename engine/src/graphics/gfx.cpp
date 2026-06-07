@@ -312,3 +312,8 @@ void Renderer::drawFilledCircle(const vec2f pos, float rad) const {
 void Renderer::setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a) const {
     SDL_SetRenderDrawColor(static_cast<SDL_Renderer*>(native),r,g,b,a);
 }
+
+void Renderer::clear() const {
+    SDL_Renderer* renderer = static_cast<SDL_Renderer*>(native);
+	SDL_RenderClear(renderer);
+}

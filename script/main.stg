@@ -101,3 +101,68 @@
     wait 100
     spawn bezierEnemy x=0 y=-400 duration=7s pattern=sineWave
     wait 160
+
+    wait 120
+
+    // Late stage loop duo
+    repeat 2
+        spawn bezierEnemy x=-180 y=-400 duration=8s pattern=loopLeft
+        wait 80
+        spawn bezierEnemy x=180 y=-400 duration=8s pattern=loopRight
+        wait 100
+    end
+
+    wait 100
+
+    // Wide arc finale
+    repeat 3
+        spawn bezierEnemy x=0 y=-400 duration=7s pattern=wideArc
+        wait 90
+        spawn bezierEnemy x=-200 y=-400 duration=7s pattern=pulseLeft
+        wait 70
+        spawn bezierEnemy x=200 y=-400 duration=7s pattern=pulseRight
+        wait 80
+    end
+
+    wait 120
+
+    // Reverse sine and falling wave cadence
+    spawn bezierEnemy x=0 y=-400 duration=8s pattern=reverseSine
+    wait 110
+    spawn bezierEnemy x=0 y=-400 duration=8s pattern=fallingWave
+    wait 130
+
+    wait 120
+
+    // Final calm big zigzag
+    repeat 2
+        spawn bezierEnemy x=-300 y=-400 duration=8s pattern=zigzagBig
+        wait 100
+        spawn bezierEnemy x=300 y=-400 duration=8s pattern=zigzagBig
+        wait 120
+    end
+
+
+    // ===== ここ以降は固定 =====
+
+	// ゆっくりと左右から ここはよけではなく得点を狙える
+	repeat 3
+		spawn bezierEnemy	x=-400	y=-300	duration=10s	pattern=straightright
+		spawn bezierEnemy	x=400	y=-300	duration=10s	pattern=straightleft
+		wait 100
+	end
+
+	wait 100
+
+	spawn bezierEnemy	x=-400	y=-300	duration=100s	pattern=straightright
+	spawn bezierEnemy	x=400	y=-300	duration=100s	pattern=straightleft
+
+	// 油断をさせておいて定位置じゃないと必ず死ぬようにする
+	repeat 50
+		spawn bezierEnemy	x=-400	y=-400	duration=3s	pattern=straightright
+		spawn bezierEnemy	x=400	y=-400	duration=3s	pattern=straightleft
+		wait 10
+	end
+
+    // タイトル画面に戻るまでの猶予を持たせる
+    wait 1000

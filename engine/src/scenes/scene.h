@@ -2,6 +2,7 @@
 
 #include "../gcms/gcms.h"
 #include "../core/input.h"
+#include "../core/scoreSys.h"
 #include "../graphics/gfx.h"
 #include "../audio/sfx.h"
 
@@ -13,6 +14,7 @@ struct GlobalContext {
 	uint8_t* key; // KCode
 	Renderer* gfx;
 	SFXManager* sfx;
+	ScoreSys* scSys;
 };
 
 struct IScene {

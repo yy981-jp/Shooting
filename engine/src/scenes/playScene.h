@@ -50,4 +50,6 @@ struct PlayScene: public IScene {
     void draw(const GlobalContext& ctx) const override;
     void drawUI(const GlobalContext& ctx) const;
     void handleCommand(const GameCommand::Play& cmd);
+
+    void changeToTitleScene(GlobalContext& ctx);
 };

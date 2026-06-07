@@ -14,6 +14,7 @@
 
 
 
+
 struct BezierEnemy: public EntityBase<BezierEnemy>, ICollidable {
     uint16_t hp = 3;
     bool req_enable = false;

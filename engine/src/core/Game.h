@@ -33,6 +33,8 @@ class Game {
     GlobalContext ctx;
     IScene* currentScene = nullptr;
 
+    ScoreSys scSys{"score.txt"};
+
     void update();
     void draw() const;
     void onKeyDown(const SDL_KeyboardEvent& e);
