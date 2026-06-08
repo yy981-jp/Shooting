@@ -25,9 +25,11 @@ void SFXManager::play(SFXID id) {
     switch (modes[idx]) {
         case SFXMode::SE: playSE(idx); break;
         case SFXMode::BGM: {
-            playBGMIntro(idx);
             currentBGM = idx;
-            Mix_HookMusicFinished(playBGMLoopC);
+            if (bgm_intro[idx]) {
+                playBGMIntro(idx);
+                Mix_HookMusicFinished(playBGMLoopC);
+            } else playBGMLoop(idx);
         } break;
     }
 }
@@ -43,7 +45,7 @@ void SFXManager::loadOne(SFXMode mode, SFXID id, const char* name) {
         se[idx] = chunk;
     } else {
         auto* intro = Mix_LoadMUS((Assets + "audio/" + name + "/intro.ogg").c_str());
-        if (!intro) throw std::runtime_error("BGM intro load failed" + std::string(Mix_GetError()));
+        // if (!intro) throw std::runtime_error("BGM intro load failed" + std::string(Mix_GetError()));
 
         auto* loop = Mix_LoadMUS((Assets + "audio/" + name + "/loop.ogg").c_str());
         if (!loop) throw std::runtime_error("BGM loop load failed" + std::string(Mix_GetError()));

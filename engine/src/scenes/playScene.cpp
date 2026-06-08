@@ -36,6 +36,8 @@ PlayScene::PlayScene(GlobalContext& ctx):
         buildID = values[0];
         buildTimeStamp = values[1];
     }
+
+    ctx.sfx->play(SFXID::d1);
 }
 
 void PlayScene::changeToTitleScene(GlobalContext& ctx) {
